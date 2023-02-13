@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title=""
+        android:id="@+id/board"
+        android:enabled="true"
+        android:icon="@drawable/icon_board"/>
+
+    <item
+        android:title=""
+        android:id="@+id/home"
+        android:enabled="true"
+        android:icon="@drawable/icon_home"/>
+
+    <item
+        android:title=""
+        android:id="@+id/route"
+        android:enabled="true"
+        android:icon="@drawable/icon_routemap"/>
+</menu>
