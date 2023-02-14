@@ -6,10 +6,13 @@ import androidx.fragment.app.Fragment
 import androidx.activity.viewModels
 import com.capstone.traffic.R
 import com.capstone.traffic.databinding.ActivityHomeBinding
+import com.capstone.traffic.ui.home.board.BoardFragment
+import com.capstone.traffic.ui.home.main.MainFragment
+import com.capstone.traffic.ui.home.route.RouteFragment
+
 class HomeActivity : AppCompatActivity() {
 
     private val viewModel: HomeViewModel by viewModels()
-
     private val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {

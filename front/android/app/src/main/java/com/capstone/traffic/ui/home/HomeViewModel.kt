@@ -9,6 +9,26 @@ class HomeViewModel : ViewModel() {
     private val _currentPageType = MutableLiveData(PageType.PAGE1)
     val currentPageType: LiveData<PageType> = _currentPageType
 
+    private val _selectedLine = MutableLiveData<Int>()
+    private val _beforeSelectedLine = MutableLiveData<Int>()
+    val beforeSelectedLine : LiveData<Int> = _beforeSelectedLine
+    val selectedLine : LiveData<Int> = _selectedLine
+
+    init {
+        _selectedLine.value = 2
+    }
+
+    fun line1() {_beforeSelectedLine.value = _selectedLine.value; _selectedLine.value = 1}
+    fun line2() {_beforeSelectedLine.value = _selectedLine.value; _selectedLine.value = 2}
+    fun line3() {_beforeSelectedLine.value = _selectedLine.value; _selectedLine.value = 3}
+    fun line4() {_beforeSelectedLine.value = _selectedLine.value; _selectedLine.value = 4}
+    fun line5() {_beforeSelectedLine.value = _selectedLine.value; _selectedLine.value = 5}
+    fun line6() {_beforeSelectedLine.value = _selectedLine.value; _selectedLine.value = 6}
+    fun line7() {_beforeSelectedLine.value = _selectedLine.value; _selectedLine.value = 7}
+    fun line8() {_beforeSelectedLine.value = _selectedLine.value; _selectedLine.value = 8}
+    fun line9() {_beforeSelectedLine.value = _selectedLine.value; _selectedLine.value = 9}
+
+
     fun setCurrentPage(menuItemId: Int): Boolean {
         val pageType = getPageType(menuItemId)
         changeCurrentPage(pageType)

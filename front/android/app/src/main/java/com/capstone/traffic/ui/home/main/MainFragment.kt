@@ -1,15 +1,15 @@
-package com.capstone.traffic.ui.home
+package com.capstone.traffic.ui.home.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.capstone.traffic.databinding.FragmentBoardBinding
+import com.capstone.traffic.databinding.FragmentMainBinding
 
-class BoardFragment : Fragment() {
+class MainFragment : Fragment() {
 
-    private val binding by lazy { FragmentBoardBinding.inflate(layoutInflater) }
+    private val binding by lazy { FragmentMainBinding.inflate(layoutInflater) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val title = requireArguments().getString("title")
@@ -19,7 +19,7 @@ class BoardFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(title: String) = BoardFragment().apply {
+        fun newInstance(title: String) = MainFragment().apply {
             arguments = Bundle().apply {
                 putString("title", title)
             }
