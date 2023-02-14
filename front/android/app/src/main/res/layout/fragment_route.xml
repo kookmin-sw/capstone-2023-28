@@ -1,17 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+        <variable
+            name="route"
+            type="com.capstone.traffic.ui.home.HomeViewModel" />
+    </data>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/lineTV"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="40sp"
             android:gravity="center"
-            tools:text="page 3" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            tools:text="2호선"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="5sp"
+            android:background="@drawable/shape_rect" />
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Subway Lines"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="80sp"
+            android:layout_margin="5sp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/line1Btn"
+                    android:onClick="@{()->route.line1()}"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/shape_circle1"
+                    android:text="@string/n1"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/line2Btn"
+                    android:onClick="@{()->route.line2()}"
+                    android:layout_width="65sp"
+                    android:layout_height="65sp"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/shape_circle2"
+                    android:text="@string/n2" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/line3Btn"
+                    android:onClick="@{()->route.line3()}"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/shape_circle3"
+                    android:text="@string/n3" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/line4Btn"
+                    android:onClick="@{()->route.line4()}"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/shape_circle4"
+                    android:text="@string/n4" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/line5Btn"
+                    android:onClick="@{()->route.line5()}"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/shape_circle5"
+                    android:text="@string/n5" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/line6Btn"
+                    android:onClick="@{()->route.line6()}"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/shape_circle6"
+                    android:text="@string/n6" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/line7Btn"
+                    android:onClick="@{()->route.line7()}"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/shape_circle7"
+                    android:text="@string/n7" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/line8Btn"
+                    android:onClick="@{()->route.line8()}"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/shape_circle8"
+                    android:text="@string/n8" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/line9Btn"
+                    android:onClick="@{()->route.line9()}"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/shape_circle9"
+                    android:text="@string/n9" />
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
 </layout>

@@ -9,5 +9,14 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#C6D14F</color>
     <color name="green2">#CEDB73</color>
-
+    <color name="gray">#CFCFCF</color>
+    <color name="hs1">#0055AA</color>
+    <color name="hs2">#00AB41</color>
+    <color name="hs3">#FF7500</color>
+    <color name="hs4">#00A7E9</color>
+    <color name="hs5">#9A6DAD</color>
+    <color name="hs6">#C7792F</color>
+    <color name="hs7">#717C04</color>
+    <color name="hs8">#DE186A</color>
+    <color name="hs9">#C0AF8E</color>
 </resources>
