@@ -6,14 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.traffic.R
 
-class SubwayAdapter(private val context: Context) : RecyclerView.Adapter<SubwayAdapter.ViewHolder>() {
+class SubwayAdapter(private val context: Context, private val r : Int) : RecyclerView.Adapter<SubwayAdapter.ViewHolder>() {
 
-    var datas = mutableListOf<SubwayData>()
+    var datas = listOf<SubwayData>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.subway_line_two_item,parent,false)
+        val view = LayoutInflater.from(context).inflate(r, parent,false)
         return ViewHolder(view)
     }
 
@@ -26,15 +27,15 @@ class SubwayAdapter(private val context: Context) : RecyclerView.Adapter<SubwayA
     override fun getItemViewType(position: Int): Int {
         return position
     }
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val subWayName: TextView = itemView.findViewById(R.id.stationName)
-        private val startSW : ImageView = itemView.findViewById(R.id.startSubway)
-        private val centerSW : ImageView = itemView.findViewById(R.id.centerSubway)
-        private val endSW : ImageView = itemView.findViewById(R.id.endSubway)
-        private val rStartSW : ImageView = itemView.findViewById(R.id.reverseStartSubway)
-        private val rCenterSW : ImageView = itemView.findViewById(R.id.reverseCenterSubway)
-        private val rEndSW : ImageView = itemView.findViewById(R.id.reverseEndSubway)
+        private val startSW : AppCompatImageView = itemView.findViewById(R.id.startSubway)
+        private val centerSW : AppCompatImageView = itemView.findViewById(R.id.centerSubway)
+        private val endSW : AppCompatImageView = itemView.findViewById(R.id.endSubway)
+        private val rStartSW : AppCompatImageView = itemView.findViewById(R.id.reverseStartSubway)
+        private val rCenterSW : AppCompatImageView = itemView.findViewById(R.id.reverseCenterSubway)
+        private val rEndSW : AppCompatImageView = itemView.findViewById(R.id.reverseEndSubway)
 
         fun bind(item: SubwayData) {
             subWayName.text = item.subwayStation
