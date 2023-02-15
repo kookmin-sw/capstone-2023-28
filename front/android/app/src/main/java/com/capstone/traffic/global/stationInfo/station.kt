@@ -1,20 +1,21 @@
 package com.capstone.traffic.global.stationInfo
 
-object stationTwo {
-    fun getAll() : MutableList<Pair<String,MutableList<info>>>
+object station {
+    fun getLine2All() : List<Pair<String,List<info>>>
     {
-        val mutableList = mutableListOf<Pair<String,MutableList<info>>>()
-        mutableList.add(Pair("본선",getStationMain()))
-        mutableList.add(Pair("성수 지선",getStationTwo()))
-        mutableList.add(Pair("신도림 지선", getStationThird()))
+        val mutableList = mutableListOf<Pair<String,List<info>>>()
+        mutableList.add(Pair("본선", stationLine2_1))
+        mutableList.add(Pair("성수 지선", stationLine2_2))
+        mutableList.add(Pair("신도림 지선", stationLine2_3))
 
         return mutableList
     }
-    private fun getStationMain() : MutableList<info> = stationMain
-    private fun getStationTwo() : MutableList<info> = stationTwo
-    private fun getStationThird() : MutableList<info> = stationThird
 
-    private val stationMain = mutableListOf(
+    fun getLine3All() : List<String> {
+        return stationLine3
+    }
+    // 2호선
+    private val stationLine2_1 = listOf(
         info("성수",211),
         info("건대입구",212),
         info("구의",213),
@@ -60,7 +61,7 @@ object stationTwo {
         info("뚝섬",210),
         info("성수",211)
     )
-    private val stationTwo = mutableListOf<info>(
+    private val stationLine2_2 = listOf<info>(
         info("성수(지선)",211),
         info("용답",244),
         info("신답",245),
@@ -68,11 +69,59 @@ object stationTwo {
         info("신설동",246)
     )
 
-    private val stationThird = mutableListOf<info>(
+    private val stationLine2_3 = listOf<info>(
         info("신도림(지선)",234),
         info("도림천",247),
         info("양천구청",248),
         info("신정네거리",249),
         info("까치산",200)
     )
+
+    // 3호선
+
+    private val stationLine3 = listOf<String>(
+            "대화",
+            "주엽",
+            "정발산",
+            "마두",
+            "백석",
+            "대곡",
+            "화정",
+            "원당",
+            "원흥",
+            "삼송",
+            "지축",
+            "구파발",
+            "연신내",
+            "불광",
+            "녹번",
+            "홍제",
+            "무악재",
+            "독립문",
+            "경복궁",
+            "안국",
+            "종로3가",
+            "을지로3가",
+            "충무로",
+            "동대입구",
+            "약수",
+            "금호",
+            "옥수",
+            "압구정",
+            "신사",
+            "잠원",
+            "고속터미널",
+            "교대",
+            "남부터미널",
+            "양재",
+            "매봉",
+            "도곡",
+            "대치",
+            "학여울",
+            "대청",
+            "일원",
+            "수서",
+            "가락시장",
+            "경찰병원",
+            "오금",)
 }
