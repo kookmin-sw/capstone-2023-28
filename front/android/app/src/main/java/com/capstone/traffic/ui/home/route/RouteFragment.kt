@@ -92,19 +92,19 @@ class RouteFragment : Fragment() {
     }
 
     fun getSeoulApi(line : Int) {
-        val retrofit = SeoulClient.getInstance()
-        val seoulService = retrofit.create(SeoulService::class.java)
-        seoulService.getInfo("http://swopenapi.seoul.go.kr/api/subway/${APIKEY.SEOUL_APIKEY}/json/realtimePosition/0/1000/${line}호선")
-            .enqueue(object : Callback<Seoul> {
-                override fun onResponse(call: Call<Seoul>, response: Response<Seoul>) {
-
-                    if (response.isSuccessful) {
-                        val data = response.body()?.realtimePositionList
-                    }
-                }
-
-                override fun onFailure(call: Call<Seoul>, t: Throwable) {
-                }
-            })
+//        val retrofit = SeoulClient.getInstance()
+//        val seoulService = retrofit.create(SeoulService::class.java)
+//        seoulService.getInfo("http://swopenapi.seoul.go.kr/api/subway/${APIKEY.SEOUL_APIKEY}/json/realtimePosition/0/1000/${line}호선")
+//            .enqueue(object : Callback<Seoul> {
+//                override fun onResponse(call: Call<Seoul>, response: Response<Seoul>) {
+//
+//                    if (response.isSuccessful) {
+//                        val data = response.body()?.realtimePositionList
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<Seoul>, t: Throwable) {
+//                }
+//            })
     }
 }
