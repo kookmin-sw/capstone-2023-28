@@ -92,217 +92,220 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
                         android:textSize="24sp"
                         android:textStyle="bold"
-                        tools:text="오늘의 토픽" />
+                        android:text="오늘의 토픽" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:layout_margin="10dp">
+<!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="80dp"-->
+<!--                        android:layout_margin="10dp">-->
 
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/topicTop1Line"
-                            android:layout_width="50sp"
-                            android:layout_height="50sp"
-                            android:layout_margin="5sp"
-                            android:text="0"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+<!--                        <androidx.appcompat.widget.AppCompatButton-->
+<!--                            android:id="@+id/topicTop1Line"-->
+<!--                            android:layout_width="50sp"-->
+<!--                            android:layout_height="50sp"-->
+<!--                            android:layout_margin="5sp"-->
+<!--                            android:text="0"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="20sp"-->
+<!--                            android:textStyle="bold"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                            app:layout_constraintTop_toTopOf="parent" />-->
 
-                        <TextView
-                            android:id="@+id/topicTop1Station"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5sp"
-                            android:text="종각역"
-                            app:layout_constraintStart_toEndOf="@+id/topicTop1Line"
-                            app:layout_constraintTop_toTopOf="parent" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/topicTop1Station"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_margin="5sp"-->
+<!--                            android:text="종각역"-->
+<!--                            app:layout_constraintStart_toEndOf="@+id/topicTop1Line"-->
+<!--                            app:layout_constraintTop_toTopOf="parent" />-->
 
-                        <TextView
-                            android:id="@+id/topicTop1Content"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="7dp"
-                            android:text="content"
-                            app:layout_constraintStart_toEndOf="@+id/topicTop1Line"
-                            app:layout_constraintTop_toBottomOf="@+id/topicTop1Station" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/topicTop1Content"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_margin="7dp"-->
+<!--                            android:text="content"-->
+<!--                            app:layout_constraintStart_toEndOf="@+id/topicTop1Line"-->
+<!--                            app:layout_constraintTop_toBottomOf="@+id/topicTop1Station" />-->
 
-                        <TextView
-                            android:id="@+id/topicTop1Heart"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="heart"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/imageView2" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/topicTop1Heart"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="heart"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintEnd_toStartOf="@+id/imageView2" />-->
 
-                        <ImageView
-                            android:id="@+id/imageView3"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/topicTop1Heart"
-                            app:srcCompat="@drawable/icon_heart" />
+<!--                        <ImageView-->
+<!--                            android:id="@+id/imageView3"-->
+<!--                            android:layout_width="20dp"-->
+<!--                            android:layout_height="20dp"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintEnd_toStartOf="@+id/topicTop1Heart"-->
+<!--                            app:srcCompat="@drawable/icon_heart" />-->
 
-                        <ImageView
-                            android:id="@+id/imageView2"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/topicTop1ViewNum"
-                            app:srcCompat="@drawable/icon_eye" />
+<!--                        <ImageView-->
+<!--                            android:id="@+id/imageView2"-->
+<!--                            android:layout_width="20dp"-->
+<!--                            android:layout_height="20dp"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintEnd_toStartOf="@+id/topicTop1ViewNum"-->
+<!--                            app:srcCompat="@drawable/icon_eye" />-->
 
-                        <TextView
-                            android:id="@+id/topicTop1ViewNum"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="view_num"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/topicTop1ViewNum"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="view_num"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent" />-->
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:layout_margin="10dp">
+<!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="80dp"-->
+<!--                        android:layout_margin="10dp">-->
 
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/topicTop2Line"
-                            android:layout_width="50sp"
-                            android:layout_height="50sp"
-                            android:layout_margin="5sp"
-                            android:text="0"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+<!--                        <androidx.appcompat.widget.AppCompatButton-->
+<!--                            android:id="@+id/topicTop2Line"-->
+<!--                            android:layout_width="50sp"-->
+<!--                            android:layout_height="50sp"-->
+<!--                            android:layout_margin="5sp"-->
+<!--                            android:text="0"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="20sp"-->
+<!--                            android:textStyle="bold"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                            app:layout_constraintTop_toTopOf="parent" />-->
 
-                        <TextView
-                            android:id="@+id/topicTop2Station"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5sp"
-                            android:text="종각역"
-                            app:layout_constraintStart_toEndOf="@+id/topicTop2Line"
-                            app:layout_constraintTop_toTopOf="parent" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/topicTop2Station"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_margin="5sp"-->
+<!--                            android:text="종각역"-->
+<!--                            app:layout_constraintStart_toEndOf="@+id/topicTop2Line"-->
+<!--                            app:layout_constraintTop_toTopOf="parent" />-->
 
-                        <TextView
-                            android:id="@+id/topicTop2Content"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="7dp"
-                            android:text="content"
-                            app:layout_constraintStart_toEndOf="@+id/topicTop2Line"
-                            app:layout_constraintTop_toBottomOf="@+id/topicTop2Station" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/topicTop2Content"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_margin="7dp"-->
+<!--                            android:text="content"-->
+<!--                            app:layout_constraintStart_toEndOf="@+id/topicTop2Line"-->
+<!--                            app:layout_constraintTop_toBottomOf="@+id/topicTop2Station" />-->
 
-                        <TextView
-                            android:id="@+id/topicTop2Heart"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="heart"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/topicTop2ViewNumIcon" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/topicTop2Heart"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="heart"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintEnd_toStartOf="@+id/topicTop2ViewNumIcon" />-->
 
-                        <ImageView
-                            android:id="@+id/topicTop2HeartIcon"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/topicTop2Heart"
-                            app:srcCompat="@drawable/icon_heart" />
+<!--                        <ImageView-->
+<!--                            android:id="@+id/topicTop2HeartIcon"-->
+<!--                            android:layout_width="20dp"-->
+<!--                            android:layout_height="20dp"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintEnd_toStartOf="@+id/topicTop2Heart"-->
+<!--                            app:srcCompat="@drawable/icon_heart" />-->
 
-                        <ImageView
-                            android:id="@+id/topicTop2ViewNumIcon"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/topicTop2ViewNum"
-                            app:srcCompat="@drawable/icon_eye" />
+<!--                        <ImageView-->
+<!--                            android:id="@+id/topicTop2ViewNumIcon"-->
+<!--                            android:layout_width="20dp"-->
+<!--                            android:layout_height="20dp"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintEnd_toStartOf="@+id/topicTop2ViewNum"-->
+<!--                            app:srcCompat="@drawable/icon_eye" />-->
 
-                        <TextView
-                            android:id="@+id/topicTop2ViewNum"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="view_num"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/topicTop2ViewNum"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="view_num"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent" />-->
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:layout_margin="10dp">
+<!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="80dp"-->
+<!--                        android:layout_margin="10dp">-->
 
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/topicTop3Line"
-                            android:layout_width="50sp"
-                            android:layout_height="50sp"
-                            android:layout_margin="5sp"
-                            android:text="0"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+<!--                        <androidx.appcompat.widget.AppCompatButton-->
+<!--                            android:id="@+id/topicTop3Line"-->
+<!--                            android:layout_width="50sp"-->
+<!--                            android:layout_height="50sp"-->
+<!--                            android:layout_margin="5sp"-->
+<!--                            android:text="0"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="20sp"-->
+<!--                            android:textStyle="bold"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                            app:layout_constraintTop_toTopOf="parent" />-->
 
-                        <TextView
-                            android:id="@+id/topicTop3Station"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5sp"
-                            android:text="종각역"
-                            app:layout_constraintStart_toEndOf="@+id/topicTop3Line"
-                            app:layout_constraintTop_toTopOf="parent" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/topicTop3Station"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_margin="5sp"-->
+<!--                            android:text="종각역"-->
+<!--                            app:layout_constraintStart_toEndOf="@+id/topicTop3Line"-->
+<!--                            app:layout_constraintTop_toTopOf="parent" />-->
 
-                        <TextView
-                            android:id="@+id/topicTop3Content"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="7dp"
-                            android:text="content"
-                            app:layout_constraintStart_toEndOf="@+id/topicTop3Line"
-                            app:layout_constraintTop_toBottomOf="@+id/topicTop3Station" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/topicTop3Content"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_margin="7dp"-->
+<!--                            android:text="content"-->
+<!--                            app:layout_constraintStart_toEndOf="@+id/topicTop3Line"-->
+<!--                            app:layout_constraintTop_toBottomOf="@+id/topicTop3Station" />-->
 
-                        <TextView
-                            android:id="@+id/topicTop3Heart"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="heart"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/topicTop3ViewNumIcon" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/topicTop3Heart"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="heart"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintEnd_toStartOf="@+id/topicTop3ViewNumIcon" />-->
 
-                        <ImageView
-                            android:id="@+id/topicTop3HeartIcon"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/topicTop3Heart"
-                            app:srcCompat="@drawable/icon_heart" />
+<!--                        <ImageView-->
+<!--                            android:id="@+id/topicTop3HeartIcon"-->
+<!--                            android:layout_width="20dp"-->
+<!--                            android:layout_height="20dp"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintEnd_toStartOf="@+id/topicTop3Heart"-->
+<!--                            app:srcCompat="@drawable/icon_heart" />-->
 
-                        <ImageView
-                            android:id="@+id/topicTop3ViewNumIcon"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/topicTop3ViewNum"
-                            app:srcCompat="@drawable/icon_eye" />
+<!--                        <ImageView-->
+<!--                            android:id="@+id/topicTop3ViewNumIcon"-->
+<!--                            android:layout_width="20dp"-->
+<!--                            android:layout_height="20dp"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintEnd_toStartOf="@+id/topicTop3ViewNum"-->
+<!--                            app:srcCompat="@drawable/icon_eye" />-->
 
-                        <TextView
-                            android:id="@+id/topicTop3ViewNum"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="view_num"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/topicTop3ViewNum"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="view_num"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent" />-->
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
+                    <include layout="@layout/topic_layout_fragment_main"/>
+                    <include layout="@layout/topic_layout_fragment_main"/>
+                    <include layout="@layout/topic_layout_fragment_main"/>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

@@ -7,8 +7,10 @@ import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.capstone.traffic.R
 import com.capstone.traffic.databinding.FragmentMainBinding
 import com.capstone.traffic.ui.home.HomeActivity
 import java.util.*
@@ -25,13 +27,14 @@ class MainFragment : Fragment() {
     //-------
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val title = requireArguments().getString("title")
-        binding.textView.text = title
+        //binding.textView.text = title
 
         // recyclerView 적용
         var subwayNowRecyclerView = binding.subwayNowRecyclerview
         subwayNowRecyclerView.layoutManager = LinearLayoutManager(homeActivity!!, LinearLayoutManager.HORIZONTAL,false)
         subwayNowRecyclerView.adapter = SubwayNowAdapter(subwayNowContent)
 
+        setTopic(topicTop3)
         return binding.root
     }
 
@@ -60,5 +63,7 @@ class MainFragment : Fragment() {
             }
         }
     }
+    private fun setTopic(topics : List<Topic>){
 
+    }
 }
