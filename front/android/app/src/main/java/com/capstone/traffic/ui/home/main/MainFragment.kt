@@ -23,7 +23,7 @@ class MainFragment : Fragment() {
     private var rankIndex = 0
     private val rankList = listOf("1호선", "2호선", "3호선", "4호선", "5호선")
     private val subwayNowContent = listOf("1호선 석계역에서 시위가 예정되어 있습니다.", "경찰청 시위 정보", "안녕하세요")
-    private val topicTop3 = listOf(Topic(1, "종각역", "여기 홍수남 ㄷㄷ", 153, 1995), Topic(1, "종각역", "여기 홍수남 ㄷㄷ", 153, 1995), Topic(1, "종각역", "여기 홍수남 ㄷㄷ", 153, 1995))
+    private val topicTop3 = listOf(Topic(1, "종각역", "여기 홍수남 ㄷㄷ", 153, 1995), Topic(2, "잠실역", "잠실역 화장실 ㅇㄷ", 35, 195), Topic(1, "종각역", "여기 홍수남 ㄷㄷ", 153, 1995))
     //-------
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val title = requireArguments().getString("title")
@@ -34,7 +34,10 @@ class MainFragment : Fragment() {
         subwayNowRecyclerView.layoutManager = LinearLayoutManager(homeActivity!!, LinearLayoutManager.HORIZONTAL,false)
         subwayNowRecyclerView.adapter = SubwayNowAdapter(subwayNowContent)
 
-        setTopic(topicTop3)
+        var topicRecyclerView = binding.topicRecyclerview
+        topicRecyclerView.layoutManager = LinearLayoutManager(homeActivity!!, LinearLayoutManager.VERTICAL, false)
+        topicRecyclerView.adapter = TopicAdapter(topicTop3)
+
         return binding.root
     }
 
@@ -62,8 +65,5 @@ class MainFragment : Fragment() {
                 putString("title", title)
             }
         }
-    }
-    private fun setTopic(topics : List<Topic>){
-
     }
 }
