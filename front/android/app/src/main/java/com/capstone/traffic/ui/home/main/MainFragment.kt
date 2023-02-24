@@ -24,6 +24,7 @@ class MainFragment : Fragment() {
     private val rankList = listOf("1호선", "2호선", "3호선", "4호선", "5호선")
     private val subwayNowContent = listOf("1호선 석계역에서 시위가 예정되어 있습니다.", "경찰청 시위 정보", "안녕하세요")
     private val topicTop3 = listOf(Topic(1, "종각역", "여기 홍수남 ㄷㄷ", 153, 1995), Topic(2, "잠실역", "잠실역 화장실 ㅇㄷ", 35, 195), Topic(1, "종각역", "여기 홍수남 ㄷㄷ", 153, 1995))
+    private var bookmarkContent: MutableMap<String, String> = mutableMapOf("1호선 게시판" to "안녕하세요", "2호선 게시판" to "2호선 입니다")
     //-------
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val title = requireArguments().getString("title")
@@ -37,6 +38,10 @@ class MainFragment : Fragment() {
         var topicRecyclerView = binding.topicRecyclerview
         topicRecyclerView.layoutManager = LinearLayoutManager(homeActivity!!, LinearLayoutManager.VERTICAL, false)
         topicRecyclerView.adapter = TopicAdapter(topicTop3)
+
+        var bookmarkRecyclerView = binding.bookmarkRecyclerview
+        bookmarkRecyclerView.layoutManager = LinearLayoutManager(homeActivity!!, LinearLayoutManager.VERTICAL, false)
+        bookmarkRecyclerView.adapter = BookmarkAdapter(bookmarkContent)
 
         return binding.root
     }
