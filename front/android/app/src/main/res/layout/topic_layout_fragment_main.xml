@@ -1,83 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <androidx.cardview.widget.CardView
-        android:layout_margin="5dp"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="5dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="15dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topicLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/topic_layout"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_margin="10dp">
+        android:layout_height="80dp"
+        android:layout_margin="10dp">
 
-            <TextView
-                android:id="@+id/topicTop1Line"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
-                android:background="@drawable/shape_circle1"
-                android:gravity="center"
-                android:text="1"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/topicLine"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:background="@drawable/shape_circle1"
+            android:gravity="center"
+            android:text="1"
+            android:textSize="25sp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/topicTop1Station"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5sp"
-                android:text="종각역"
-                app:layout_constraintStart_toEndOf="@+id/topicTop1Line"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/topicStation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:text="종각역"
+            app:layout_constraintStart_toEndOf="@+id/topicLine"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/topicTop1Content"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="7dp"
-                android:text="content"
-                app:layout_constraintStart_toEndOf="@+id/topicTop1Line"
-                app:layout_constraintTop_toBottomOf="@+id/topicTop1Station" />
+        <TextView
+            android:id="@+id/topicContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="7dp"
+            android:text="content"
+            app:layout_constraintStart_toEndOf="@+id/topicLine"
+            app:layout_constraintTop_toBottomOf="@+id/topicStation" />
 
-            <TextView
-                android:id="@+id/topicTop1Heart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="heart"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView2" />
+        <TextView
+            android:id="@+id/topicHeart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="heart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView2" />
 
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/topicTop1Heart"
-                app:srcCompat="@drawable/icon_heart" />
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/topicHeart"
+            app:srcCompat="@drawable/icon_heart" />
 
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/topicTop1ViewNum"
-                app:srcCompat="@drawable/icon_eye" />
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/topicViewNum"
+            app:srcCompat="@drawable/icon_eye" />
 
-            <TextView
-                android:id="@+id/topicTop1ViewNum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="view_num"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+        <TextView
+            android:id="@+id/topicViewNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="view_num"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-</layout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
