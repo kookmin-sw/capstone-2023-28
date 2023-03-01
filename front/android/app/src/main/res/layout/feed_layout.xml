@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_rectangle_with_border">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,13 +20,20 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
+            android:id="@+id/feed_profile_image"
             android:layout_width="50sp"
             android:layout_height="50sp"
-            android:background="@drawable/ic_launcher_background"
-            app:cardCornerRadius="10sp"
+            app:cardCornerRadius="50sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/feed_content" />
+            app:layout_constraintTop_toBottomOf="@+id/feed_content">
+
+            <ImageView
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/electronic_display"/>
+        </androidx.cardview.widget.CardView>
+
 
         <TextView
             android:id="@+id/feed_nickname"
@@ -34,7 +42,7 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="3dp"
             android:text="Nickname"
-            app:layout_constraintStart_toEndOf="@+id/cardView"
+            app:layout_constraintStart_toEndOf="@+id/feed_profile_image"
             app:layout_constraintTop_toBottomOf="@+id/feed_content" />
 
         <TextView
@@ -44,7 +52,7 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="3dp"
             android:text="#hash tag here"
-            app:layout_constraintStart_toEndOf="@+id/cardView"
+            app:layout_constraintStart_toEndOf="@+id/feed_profile_image"
             app:layout_constraintTop_toBottomOf="@+id/feed_nickname" />
 
         <LinearLayout
