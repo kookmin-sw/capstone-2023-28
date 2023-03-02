@@ -33,7 +33,11 @@ class FeedAdapter(private val dataList: List<Feed>) : RecyclerView.Adapter<FeedA
         val data = dataList[position]
         holder.feedContent.text = data.feedContent
         holder.feedNickname.text = data.feedNickname
-        holder.feedHashTag.text = data.feedHashTag.toString()
+        var hashTagText = ""
+        for(tag in data.feedHashTag){
+            hashTagText += "#" + tag + " "
+        }
+        holder.feedHashTag.text = hashTagText
         holder.feedTime.text = data.feedTime
     }
 }

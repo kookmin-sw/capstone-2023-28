@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="20dp"
@@ -11,7 +12,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="15dp">
+        android:paddingVertical="15dp"
+        android:paddingLeft="15dp">
 
         <TextView
             android:id="@+id/feed_content"
@@ -55,7 +57,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="3dp"
             android:text="#hash tag here"
             app:layout_constraintStart_toEndOf="@+id/feed_profile_image"
             app:layout_constraintTop_toBottomOf="@+id/feed_nickname" />
@@ -65,9 +66,53 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="24dp"
             android:text="feed time here"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/feed_hash_tag" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/feed_time"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageButton
+                android:id="@+id/imageButton3"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:contentDescription="좋아요 버튼"
+                android:paddingLeft="24dp"
+                android:paddingTop="24dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/icon_feed_heart" />
+
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:contentDescription="댓글 버튼"
+                android:paddingHorizontal="12dp"
+                android:paddingTop="23dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/icon_feed_comment" />
+
+            <ImageButton
+                android:id="@+id/imageButton4"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:contentDescription="북마크 버튼"
+                android:paddingTop="24dp"
+                android:paddingRight="24dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/icon_feed_bookmark" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
