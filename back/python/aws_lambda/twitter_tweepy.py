@@ -9,10 +9,10 @@ start_time = ''
 def load_tweet_api():
 
     api_key = 'xgadpZzhHTBNI1CH7HpCBpIT1'
-    api_key_secret = 'MeUSJ5k620kziOuMVSQjvFMpb7JzAPPcuthmvVs4TPx72dKcei'
-    bearer_token = 'AAAAAAAAAAAAAAAAAAAAAF2GlAEAAAAAIjpCswyJ7K2Adfh0nsm4qVrD1jc%3D6aV3vjeOYfiZKp09ScHPoQYoEM8XGHw3U0fUhBIbMGPLZaJmWi'
-    access_token = '1172226929543401472-pK6uhTDi5kpQkkx9AQHVx7urbypPM6'
-    access_token_secret = 'XtL6Wtv8CmS0wFjXplczqXi030esEA7TgW61FP3yu53IH'
+    api_key_secret = 'JzAPPcuthmvVs4TPx72dKcei'
+    bearer_token = '%3D6aV3vjeOYfiZKp09ScHPoQYoEM8XGHw3U0fUhBIbMGPLZaJmWi'
+    access_token = '11722i5kpQkkx9AQHVx7urbypPM6'
+    access_token_secret = 'XtL6Wtv8CmS0wFjW61FP3yu53IH'
 
     auth = tweepy.OAuthHandler(api_key, api_key_secret)
 
