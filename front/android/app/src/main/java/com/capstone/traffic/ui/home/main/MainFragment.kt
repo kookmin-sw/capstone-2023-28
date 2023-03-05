@@ -22,7 +22,7 @@ class MainFragment : Fragment() {
     //--임시--
     private var rankIndex = 0
     private val rankList = listOf("1호선", "2호선", "3호선", "4호선", "5호선")
-    private val feedContents = listOf(Feed("실키보이즈 돌아오기를 기다렸다 앞으로 좋은 음악 만들어주면 좋겠어요..ㅎ", null, "빠꾸", listOf("1호선", "2호선"), "1일전"),
+    private val feedContents = listOf(Feed("실키보이즈 돌아오기를 기다렸다 앞으로 좋은 음악 만들어주면 좋겠어요..ㅎ", "https://images.unsplash.com/photo-1676487897175-9f155e391613?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3132&q=80", "빠꾸", listOf("1호선", "2호선"), "1일전"),
         Feed("실키보이즈 돌아오기를 기다렸다 앞으로 좋은 음악 만들어주면 좋겠어요..ㅎ", null, "빠꾸", listOf("1호선", "2호선"), "1일전"),
         Feed("실키보이즈 돌아오기를 기다렸다 앞으로 좋은 음악 만들어주면 좋겠어요..ㅎ", null, "빠꾸", listOf("1호선", "2호선"), "1일전"),
         Feed("실키보이즈 돌아오기를 기다렸다 앞으로 좋은 음악 만들어주면 좋겠어요..ㅎ", null, "빠꾸", listOf("1호선", "2호선"), "1일전"),

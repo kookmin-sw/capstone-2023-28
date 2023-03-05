@@ -4,7 +4,7 @@ import android.media.Image
 
 data class Feed(
     val feedContent: String,
-    val feedProfileImage: Image?,
+    val feedProfileImageUrl: String?,
     val feedNickname: String,
     val feedHashTag: List<String>,
     val feedTime: String,
