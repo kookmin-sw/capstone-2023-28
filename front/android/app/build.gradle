@@ -38,7 +38,13 @@ android {
 
 dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     def lifecycle_version = "2.5.1"
+
+    // lottie
+    def lottieVersion = "6.0.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "705827717911",
+    "project_id": "trafficcommunity-7c337",
+    "storage_bucket": "trafficcommunity-7c337.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:705827717911:android:69786cafebedc5fca66d52",
+        "android_client_info": {
+          "package_name": "com.capstone.traffic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "705827717911-r0t3rd23l6h6qgj8i6jb8c84m01effnn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClrRO2GnC3fCzGCZiMBKal8s-Baz5X5iE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "705827717911-r0t3rd23l6h6qgj8i6jb8c84m01effnn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.capstone.traffic.R
 import com.capstone.traffic.ui.home.board.bulletinBoard.ArriveInformActivity
 
-class SubwayAdapter(private val context: Context, private val r : Int, private val line : String) : RecyclerView.Adapter<SubwayAdapter.ViewHolder>() {
+class SubwayExpressAdapter(private val context: Context, private val r : Int, private val line : String) : RecyclerView.Adapter<SubwayExpressAdapter.ViewHolder>() {
 
-    var datas = listOf<SubwayData>()
+    var datas = listOf<SubwayExpressData>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(r, parent,false)
         return ViewHolder(view)
@@ -30,8 +30,13 @@ class SubwayAdapter(private val context: Context, private val r : Int, private v
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         private val subWayName: TextView = itemView.findViewById(R.id.stationName)
+        private val eStartSW : AppCompatImageView = itemView.findViewById(R.id.EstartSubway)
+        private val eCenterSW : AppCompatImageView = itemView.findViewById(R.id.EcenterSubway)
+        private val eEndSW : AppCompatImageView = itemView.findViewById(R.id.EendSubway)
+        private val eRStartSW : AppCompatImageView = itemView.findViewById(R.id.EreverseStartSubway)
+        private val eRCenterSW : AppCompatImageView = itemView.findViewById(R.id.EreverseCenterSubway)
+        private val eREndSW : AppCompatImageView = itemView.findViewById(R.id.EreverseEndSubway)
         private val startSW : AppCompatImageView = itemView.findViewById(R.id.startSubway)
         private val centerSW : AppCompatImageView = itemView.findViewById(R.id.centerSubway)
         private val endSW : AppCompatImageView = itemView.findViewById(R.id.endSubway)
@@ -48,15 +53,20 @@ class SubwayAdapter(private val context: Context, private val r : Int, private v
                 }
             }
         }
-        fun bind(item: SubwayData) {
+        fun bind(item: SubwayExpressData) {
             subWayName.text = item.subwayStation
+            if(item.eStartSubway) eStartSW.visibility = View.VISIBLE
+            if(item.eCenterSubway) eCenterSW.visibility = View.VISIBLE
+            if(item.eEndSubway) eEndSW.visibility = View.VISIBLE
+            if(item.eRStartSubway) eRStartSW.visibility = View.VISIBLE
+            if(item.eRCenterSubway) eRCenterSW.visibility = View.VISIBLE
+            if(item.eREndSubway) eREndSW.visibility = View.VISIBLE
             if(item.startSubway) startSW.visibility = View.VISIBLE
             if(item.centerSubway) centerSW.visibility = View.VISIBLE
             if(item.endSubway) endSW.visibility = View.VISIBLE
             if(item.rStartSubway) rStartSW.visibility = View.VISIBLE
             if(item.rCenterSubway) rCenterSW.visibility = View.VISIBLE
             if(item.rEndSubway) rEndSW.visibility = View.VISIBLE
-
         }
     }
 }

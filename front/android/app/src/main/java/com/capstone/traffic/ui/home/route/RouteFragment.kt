@@ -13,13 +13,14 @@ import androidx.lifecycle.Observer
 import com.capstone.traffic.R
 import com.capstone.traffic.databinding.FragmentRouteBinding
 import com.capstone.traffic.global.appkey.APIKEY
-import com.capstone.traffic.model.network.seoul.Seoul
+import com.capstone.traffic.model.network.seoul.locate.Seoul
 import com.capstone.traffic.model.network.seoul.SeoulClient
-import com.capstone.traffic.model.network.seoul.SeoulService
+import com.capstone.traffic.model.network.seoul.locate.SeoulService
 import com.capstone.traffic.ui.home.HomeViewModel
 import com.capstone.traffic.ui.home.route.line.Line1Fragment
 import com.capstone.traffic.ui.home.route.line.Line2Fragment
 import com.capstone.traffic.ui.home.route.line.Line3Fragment
+import com.capstone.traffic.ui.home.route.line.LineFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -92,55 +93,55 @@ class RouteFragment : Fragment() {
                 1 -> {
                     binding.line1Btn.layoutParams = params65; ft.replace(
                         R.id.container,
-                        Line1Fragment()
+                        LineFragment("1")
                     ).commit()
                 }
                 2 -> {
                     binding.line2Btn.layoutParams = params65; ft.replace(
                         R.id.container,
-                        Line2Fragment()
+                        LineFragment("2")
                     ).commit()
                 }
                 3 -> {
                     binding.line3Btn.layoutParams = params65; ft.replace(
                         R.id.container,
-                        Line3Fragment()
+                        LineFragment("3")
                     ).commit()
                 }
                 4 -> {
                     binding.line4Btn.layoutParams = params65; ft.replace(
                         R.id.container,
-                        Line1Fragment()
+                        LineFragment("4")
                     ).commit()
                 }
                 5 -> {
                     binding.line5Btn.layoutParams = params65; ft.replace(
                         R.id.container,
-                        Line1Fragment()
+                        LineFragment("5")
                     ).commit()
                 }
                 6 -> {
                     binding.line6Btn.layoutParams = params65; ft.replace(
                         R.id.container,
-                        Line1Fragment()
+                        LineFragment("6")
                     ).commit()
                 }
                 7 -> {
                     binding.line7Btn.layoutParams = params65; ft.replace(
                         R.id.container,
-                        Line1Fragment()
+                        LineFragment("7")
                     ).commit()
                 }
                 8 -> {
                     binding.line8Btn.layoutParams = params65; ft.replace(
                         R.id.container,
-                        Line1Fragment()
+                        LineFragment("8")
                     ).commit()
                 }
                 9 -> {
                     binding.line9Btn.layoutParams = params65; ft.replace(
                         R.id.container,
-                        Line1Fragment()
+                        LineFragment("9")
                     ).commit()
                 }
             }

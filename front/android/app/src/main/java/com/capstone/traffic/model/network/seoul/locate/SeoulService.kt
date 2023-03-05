@@ -1,6 +1,7 @@
-package com.capstone.traffic.model.network.seoul
+package com.capstone.traffic.model.network.seoul.locate
 
 import com.capstone.traffic.global.appkey.APIKEY
+import com.capstone.traffic.model.network.seoul.locate.Seoul
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

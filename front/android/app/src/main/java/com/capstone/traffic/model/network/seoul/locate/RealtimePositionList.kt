@@ -1,4 +1,4 @@
-package com.capstone.traffic.model.network.seoul
+package com.capstone.traffic.model.network.seoul.locate
 
 import com.google.gson.annotations.SerializedName
 

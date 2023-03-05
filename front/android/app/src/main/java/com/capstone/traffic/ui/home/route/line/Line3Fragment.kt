@@ -12,11 +12,10 @@ import com.capstone.traffic.R
 import com.capstone.traffic.databinding.FragmentLine3Binding
 import com.capstone.traffic.global.appkey.APIKEY
 import com.capstone.traffic.global.stationInfo.station
-import com.capstone.traffic.model.network.seoul.RealtimePositionList
-import com.capstone.traffic.model.network.seoul.Seoul
+import com.capstone.traffic.model.network.seoul.locate.RealtimePositionList
+import com.capstone.traffic.model.network.seoul.locate.Seoul
 import com.capstone.traffic.model.network.seoul.SeoulClient
-import com.capstone.traffic.model.network.seoul.SeoulService
-import com.capstone.traffic.ui.home.HomeViewModel
+import com.capstone.traffic.model.network.seoul.locate.SeoulService
 import com.capstone.traffic.ui.home.route.SubwayAdapter
 import com.capstone.traffic.ui.home.route.SubwayData
 import retrofit2.Call
@@ -48,7 +47,8 @@ class Line3Fragment : Fragment() {
     private fun initRecyclerView() {
         subwayData = LinkedHashMap()
         station.getLine3All().forEach { subwayData.put(it, SubwayData(it)) }
-        subwayAdapter = SubwayAdapter(requireContext(), R.layout.subway_line_three_item)
+        subwayAdapter = SubwayAdapter(requireContext(), R.layout.subway_line_three_item,"3")
+
         binding.RVSubwayMain.layoutManager =
             LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         binding.RVSubwayMain.adapter = subwayAdapter

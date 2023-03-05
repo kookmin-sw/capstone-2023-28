@@ -1,7 +1,6 @@
-package com.capstone.traffic.model.network.seoul
+package com.capstone.traffic.model.network.seoul.locate
 
 import com.capstone.traffic.model.network.seoul.ErrorBody
-import com.capstone.traffic.model.network.seoul.RealtimePositionList
 import com.google.gson.annotations.SerializedName
 
 data class Seoul(
