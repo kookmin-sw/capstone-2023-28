@@ -15,6 +15,7 @@ import com.capstone.traffic.global.stationInfo.station
 import com.capstone.traffic.model.network.seoul.SeoulClient
 import com.capstone.traffic.model.network.seoul.arrive.RealtimeArrivalList
 import com.capstone.traffic.model.network.seoul.arrive.Seoul
+import com.capstone.traffic.ui.home.route.dataClass.NeighborLineData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,29 +26,27 @@ class ArriveInformActivity : BaseActivity<ActivityBulletinBinding>(){
     private lateinit var bulletinViewModel : BulletinViewModel
     private lateinit var beforeStation : TextView
     private lateinit var nextStation : TextView
-    private lateinit var direct : Direct
 
-    val direct1Data = mutableListOf<ArrivalInform>()
-    val direct2Data = mutableListOf<ArrivalInform>()
+    lateinit var nlData : NeighborLineData
 
     override fun initBinding() {
         bulletinViewModel = ViewModelProvider(this)[BulletinViewModel::class.java]
         binding.inform = bulletinViewModel
 
-        val name = intent.getStringExtra("name")!!
-        val line = intent.getStringExtra("line")!!
+        nlData = intent.getParcelableExtra("neighbor")!!
 
-        setBoard(name, line)
+        setBoard(nlData.center, nlData.line)
 
-        binding.ctTV.text = name
-        beforeStation = binding.bfTV
-        nextStation = binding.edTV
+        binding.ctTV.text = nlData.center
+        binding.bfTV.text = if(nlData.left != null) nlData.left else ""
+        binding.edTV.text = if(nlData.right != null) nlData.right else ""
 
         // 상단바 벡버튼 기능
         binding.backBTN.setOnClickListener {
             finish()
         }
-        getSeoulApi(name)
+
+        getSeoulApi(nlData.center)
     }
 
     // 게시판 이름 설정
@@ -71,12 +70,12 @@ class ArriveInformActivity : BaseActivity<ActivityBulletinBinding>(){
         val direct2Data = mutableListOf<ArrivalInform>()
         data.forEach { it ->
             val trainLineNm = it.trainLineNm.split(" - ")
-            when(trainLineNm[0].dropLast(1)){
-                direct.first ->{
+            when(trainLineNm[1].dropLast(2)){
+                nlData.right ->{
                     direct1Data.add(ArrivalInform(trainLineNm[1], it.arvlMsg2))
                     setInformRecyclerView(binding.dwRC, direct1Data)
                 }
-                direct.last ->{
+                nlData.left ->{
                     direct2Data.add(ArrivalInform(trainLineNm[1], it.arvlMsg2))
                     setInformRecyclerView(binding.upRC, direct2Data)
                 }
@@ -109,6 +108,4 @@ class ArriveInformActivity : BaseActivity<ActivityBulletinBinding>(){
                 }
             })
     }
-
-    data class Direct(val first : String, val last : String)
 }

@@ -1,6 +1,7 @@
 package com.capstone.traffic.ui.home.route
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -10,16 +11,15 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider.NewInstanceFactory.Companion.instance
 import com.capstone.traffic.R
 import com.capstone.traffic.databinding.FragmentRouteBinding
+import com.capstone.traffic.global.MyApplication
 import com.capstone.traffic.global.appkey.APIKEY
 import com.capstone.traffic.model.network.seoul.locate.Seoul
 import com.capstone.traffic.model.network.seoul.SeoulClient
 import com.capstone.traffic.model.network.seoul.locate.SeoulService
 import com.capstone.traffic.ui.home.HomeViewModel
-import com.capstone.traffic.ui.home.route.line.Line1Fragment
-import com.capstone.traffic.ui.home.route.line.Line2Fragment
-import com.capstone.traffic.ui.home.route.line.Line3Fragment
 import com.capstone.traffic.ui.home.route.line.LineFragment
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,7 +29,8 @@ class RouteFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
     private val binding by lazy { FragmentRouteBinding.inflate(layoutInflater) }
-
+    lateinit var param50 : LinearLayout.LayoutParams
+    lateinit var params65 : LinearLayout.LayoutParams
 
     @SuppressLint("ResourceType")
     override fun onCreateView(
@@ -48,45 +49,19 @@ class RouteFragment : Fragment() {
         val sp5 =
             TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 5f, resources.displayMetrics)
                 .toInt()
-        val param50 = LinearLayout.LayoutParams(sp50, sp50)
-        val params65 = LinearLayout.LayoutParams(sp65, sp65)
+        param50 = LinearLayout.LayoutParams(sp50, sp50)
+        params65 = LinearLayout.LayoutParams(sp65, sp65)
 
         param50.setMargins(sp5, sp5, sp5, sp5)
 
         binding.route = viewModel
 
-        viewModel.beforeSelectedLine.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                1 -> {
-                    binding.line1Btn.layoutParams = param50
-                }
-                2 -> {
-                    binding.line2Btn.layoutParams = param50
-                }
-                3 -> {
-                    binding.line3Btn.layoutParams = param50
-                }
-                4 -> {
-                    binding.line4Btn.layoutParams = param50
-                }
-                5 -> {
-                    binding.line5Btn.layoutParams = param50
-                }
-                6 -> {
-                    binding.line6Btn.layoutParams = param50
-                }
-                7 -> {
-                    binding.line7Btn.layoutParams = param50
-                }
-                8 -> {
-                    binding.line8Btn.layoutParams = param50
-                }
-                9 -> {
-                    binding.line9Btn.layoutParams = param50
-                }
-            }
-        })
         viewModel.selectedLine.observe(viewLifecycleOwner, Observer {
+            if(MyApplication.status) {
+                return@Observer
+            }
+            MyApplication.status = true
+            setImage()
             "${it}호선".also { binding.lineTV.text = it }
             val ft = childFragmentManager.beginTransaction()
             when (it) {
@@ -162,6 +137,18 @@ class RouteFragment : Fragment() {
         }
     }
 
+    fun setImage()
+    {
+        binding.line1Btn.layoutParams = param50
+        binding.line2Btn.layoutParams = param50
+        binding.line3Btn.layoutParams = param50
+        binding.line4Btn.layoutParams = param50
+        binding.line5Btn.layoutParams = param50
+        binding.line6Btn.layoutParams = param50
+        binding.line7Btn.layoutParams = param50
+        binding.line8Btn.layoutParams = param50
+        binding.line9Btn.layoutParams = param50
+    }
     fun getSeoulApi(line: Int) {
 
         val retrofit = SeoulClient.getInstance()

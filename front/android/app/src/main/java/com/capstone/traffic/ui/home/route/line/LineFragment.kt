@@ -9,23 +9,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.compose.ui.text.font.Typeface
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.traffic.R
 import com.capstone.traffic.databinding.FragmentLineBinding
-import com.capstone.traffic.global.appkey.APIKEY
-import com.capstone.traffic.global.stationInfo.station
-import com.capstone.traffic.model.network.seoul.locate.Seoul
-import com.capstone.traffic.model.network.seoul.locate.SeoulService
+import com.capstone.traffic.global.MyApplication
 import com.capstone.traffic.model.network.subway.Client
 import com.capstone.traffic.model.network.subway.ResponseList
 import com.capstone.traffic.model.network.subway.SubwayService
+import com.capstone.traffic.ui.home.route.RouteFragment
 import com.capstone.traffic.ui.home.route.SubwayAdapter
-import com.capstone.traffic.ui.home.route.SubwayData
+import com.capstone.traffic.ui.home.route.dataClass.SubwayData
 import com.capstone.traffic.ui.home.route.SubwayExpressAdapter
-import com.capstone.traffic.ui.home.route.SubwayExpressData
+import com.capstone.traffic.ui.home.route.dataClass.SubwayExpressData
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,13 +31,11 @@ import retrofit2.Response
 class LineFragment(var searchLine : String) : Fragment() {
     private val binding by lazy { FragmentLineBinding.inflate(layoutInflater) }
     private var job : Job? = null
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding.lottieLoading.visibility = View.VISIBLE
         binding.lottieLoading.playAnimation()
         binding.lottieLoading.loop(true)
         getApi()
-
         return binding.root
     }
 
@@ -58,6 +53,7 @@ class LineFragment(var searchLine : String) : Fragment() {
         binding.lottieLoading.visibility = View.INVISIBLE
         binding.lottieLoading.loop(false)
         job?.cancel()
+        MyApplication.status = false
     }
 
     // 리사이클러뷰 생성

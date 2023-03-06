@@ -1,4 +1,4 @@
-package com.capstone.traffic.ui.home.route
+package com.capstone.traffic.ui.home.route.dataClass
 
 data class SubwayData(
     val subwayStation : String,

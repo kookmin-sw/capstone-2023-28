@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id "kotlin-parcelize"
     id 'com.google.gms.google-services'
 }
 
@@ -37,6 +38,10 @@ android {
 }
 
 dependencies {
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.13.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
+
     implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     def lifecycle_version = "2.5.1"

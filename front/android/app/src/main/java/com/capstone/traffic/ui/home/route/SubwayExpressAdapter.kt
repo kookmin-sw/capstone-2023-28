@@ -10,6 +10,8 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.traffic.R
 import com.capstone.traffic.ui.home.board.bulletinBoard.ArriveInformActivity
+import com.capstone.traffic.ui.home.route.dataClass.NeighborLineData
+import com.capstone.traffic.ui.home.route.dataClass.SubwayExpressData
 
 class SubwayExpressAdapter(private val context: Context, private val r : Int, private val line : String) : RecyclerView.Adapter<SubwayExpressAdapter.ViewHolder>() {
 
@@ -47,8 +49,19 @@ class SubwayExpressAdapter(private val context: Context, private val r : Int, pr
             itemView.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     val intent = Intent(context,ArriveInformActivity::class.java)
-                    intent.putExtra("name", subWayName.text)
-                    intent.putExtra("line", line)
+                    val nlData = NeighborLineData(center = datas[adapterPosition].subwayStation, line = line)
+                    if(adapterPosition == 0){
+                        nlData.right = datas[adapterPosition + 1].subwayStation
+                    }
+                    else if(adapterPosition + 1 == datas.size) {
+                        nlData.left = datas[adapterPosition - 1].subwayStation
+                    }
+                    else {
+                        nlData.right = datas[adapterPosition + 1].subwayStation
+                        nlData.left = datas[adapterPosition - 1].subwayStation
+                    }
+
+                    intent.putExtra("neighbor", nlData)
                     context.startActivity(intent)
                 }
             }
