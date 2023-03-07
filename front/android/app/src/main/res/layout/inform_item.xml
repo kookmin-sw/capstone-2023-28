@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
-        android:textSize="15sp"
+        android:layout_gravity="center"
+        android:textSize="13sp"
         android:text="인천행"
-        android:textColor="@color/black"
         android:id="@+id/arrowTV"
         android:layout_margin="5sp"
-        android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-    <TextView
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:text="곧도착"
-        android:textColor="@color/red"
-        android:id="@+id/timeTV"
-        android:layout_margin="5sp"
-        android:layout_weight="1"
+    <androidx.cardview.widget.CardView
+        app:cardUseCompatPadding="true"
+        app:contentPaddingLeft="5dp"
+        app:contentPaddingRight="5dp"
+        app:contentPaddingTop="1dp"
+        app:contentPaddingBottom="1dp"
+        app:cardBackgroundColor="@color/gray"
+        android:layout_margin="5dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:text="곧도착"
+            android:id="@+id/timeTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </androidx.cardview.widget.CardView>
+
 </LinearLayout>
