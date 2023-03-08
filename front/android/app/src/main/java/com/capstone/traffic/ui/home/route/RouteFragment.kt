@@ -2,6 +2,7 @@ package com.capstone.traffic.ui.home.route
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -38,8 +39,6 @@ class RouteFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val title = requireArguments().getString("title")
-
         val sp50 =
             TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 50f, resources.displayMetrics)
                 .toInt()
@@ -62,7 +61,12 @@ class RouteFragment : Fragment() {
             }
             MyApplication.status = true
             setImage()
-            "${it}호선".also { binding.lineTV.text = it }
+            "${it}".also { binding.lineTV.text = it;
+                binding.lineTV.backgroundTintList = ColorStateList.valueOf(getStationColor(it));
+                binding.centerStationImageView.backgroundTintList = ColorStateList.valueOf(getStationColor(it));
+                binding.startStationImageView.setBackgroundColor(getStationColor(it))
+                binding.endStationImageView.setBackgroundColor(getStationColor(it))
+            }
             val ft = childFragmentManager.beginTransaction()
             when (it) {
                 1 -> {
@@ -128,7 +132,18 @@ class RouteFragment : Fragment() {
         return binding.root
     }
 
-
+    private fun getStationColor(line : String) : Int {
+        val color = mapOf("1" to R.color.hs1,
+            "2" to R.color.hs2,
+            "3" to R.color.hs3,
+            "4" to R.color.hs4,
+            "5" to R.color.hs5,
+            "6" to R.color.hs6,
+            "7" to R.color.hs7,
+            "8" to R.color.hs8,
+            "9" to R.color.hs9)
+        return if(color[line] != null) requireContext().resources.getColor(color[line]!!) else requireContext().resources.getColor(R.color.black)
+    }
     companion object {
         fun newInstance(title: String) = RouteFragment().apply {
             arguments = Bundle().apply {
