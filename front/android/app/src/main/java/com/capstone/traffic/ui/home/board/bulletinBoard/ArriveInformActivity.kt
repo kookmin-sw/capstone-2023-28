@@ -122,24 +122,35 @@ class ArriveInformActivity : BaseActivity<ActivityBulletinBinding>(){
                 val arrivalInform = ArrivalInform(arrow = trainLineNm[0],null,null)
                 if("100${nlData.line}" == it.subwayId){
                     val time = it.arvlMsg2.split(" ")
-                    when(time[1]){
-                        "진입" -> {
-                            arrivalInform.priority = if (time[0] == "전역") -1 else -4
-                            arrivalInform.time = it.arvlMsg2
-                        }
-                        "도착" -> {
-                            arrivalInform.priority = if (time[0] == "전역") -2 else -5
-                            arrivalInform.time = it.arvlMsg2
-                        }
-                        "전역" -> {
-                            val remain =
-                                if (time[0].length == 5) time[0].slice((1..1)) else time[0].slice((1..2))
-                            arrivalInform.time = "${remain} 전역"
-                            arrivalInform.priority = remain.toInt()
-                        }
-                        "출발" -> {
-                            arrivalInform.priority = if (time[0] == "전역") -3 else -6
-                            arrivalInform.time = it.arvlMsg2
+                    if(time.size == 1){
+                        arrivalInform.priority = -7
+                        arrivalInform.time = it.arvlMsg2
+                    }
+                    else
+                    {
+                        when(time[1]){
+                            "진입" -> {
+                                arrivalInform.priority = if (time[0] == "전역") -1 else -4
+                                arrivalInform.time = it.arvlMsg2
+                            }
+                            "도착" -> {
+                                arrivalInform.priority = if (time[0] == "전역") -2 else -5
+                                arrivalInform.time = it.arvlMsg2
+                            }
+                            "전역" -> {
+                                val remain =
+                                    if (time[0].length == 5) time[0].slice((1..1)) else time[0].slice((1..2))
+                                arrivalInform.time = "${remain} 전역"
+                                arrivalInform.priority = remain.toInt()
+                            }
+                            "출발" -> {
+                                arrivalInform.priority = if (time[0] == "전역") -3 else -6
+                                arrivalInform.time = it.arvlMsg2
+                            }
+                            else -> {
+                                arrivalInform.priority = time[0].dropLast(1).toInt()
+                                arrivalInform.time = time[0]
+                            }
                         }
                     }
                     when(trainLineNm[1].dropLast(2)){
