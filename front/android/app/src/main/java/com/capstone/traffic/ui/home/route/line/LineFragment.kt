@@ -169,7 +169,6 @@ class LineFragment(var searchLine : String) : Fragment() {
                 override fun onResponse(call: Call<com.capstone.traffic.model.network.subway.Response>, response: Response<com.capstone.traffic.model.network.subway.Response>) {
                     if(response.isSuccessful) startLoading(response.body()!!.response)
                 }
-
                 override fun onFailure(call: Call<com.capstone.traffic.model.network.subway.Response>, t: Throwable) {
                     println(call)
                 }

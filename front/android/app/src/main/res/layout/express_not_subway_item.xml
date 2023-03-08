@@ -18,23 +18,23 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:visibility="invisible"
                 android:id="@+id/startSubway"
-                android:layout_width="20sp"
+                android:layout_width="10sp"
                 android:layout_height="30sp"
-                android:background="@drawable/metro_do3" />
+                android:background="@drawable/icon_subway_bottom" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:visibility="invisible"
                 android:id="@+id/centerSubway"
-                android:layout_width="20sp"
+                android:layout_width="10sp"
                 android:layout_height="30sp"
-                android:background="@drawable/metro_do3" />
+                android:background="@drawable/icon_subway_bottom" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:visibility="invisible"
                 android:id="@+id/endSubway"
-                android:layout_width="20sp"
+                android:layout_width="10sp"
                 android:layout_height="30sp"
-                android:background="@drawable/metro_do3" />
+                android:background="@drawable/icon_subway_bottom" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -42,17 +42,20 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/line1"
                 android:layout_width="3sp"
                 android:layout_height="30sp"
                 android:layout_gravity="center"
                 android:background="@color/hs3" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/circle1"
                 android:layout_width="30sp"
                 android:layout_height="30sp"
-                android:background="@drawable/circle_d3" />
+                android:background="@drawable/icon_arrow_circle_bottom" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/line2"
                 android:layout_width="3sp"
                 android:layout_height="30sp"
                 android:layout_gravity="center"
@@ -72,18 +75,21 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/line3"
                 android:layout_width="3sp"
                 android:layout_height="30sp"
                 android:layout_gravity="center"
                 android:background="@color/hs3" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/circle2"
                 android:layout_width="30sp"
                 android:layout_height="30sp"
                 android:layout_gravity="center"
-                android:background="@drawable/circle_u3" />
+                android:background="@drawable/icon_arrow_circle_top" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/line4"
                 android:layout_width="3sp"
                 android:layout_height="30sp"
                 android:layout_gravity="center"
@@ -97,23 +103,23 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:visibility="invisible"
                 android:id="@+id/reverseStartSubway"
-                android:layout_width="20sp"
+                android:layout_width="10sp"
                 android:layout_height="30sp"
-                android:background="@drawable/metro_up3" />
+                android:background="@drawable/icon_subway_top" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:visibility="invisible"
                 android:id="@+id/reverseCenterSubway"
-                android:layout_width="20sp"
+                android:layout_width="10sp"
                 android:layout_height="30sp"
-                android:background="@drawable/metro_up3" />
+                android:background="@drawable/icon_subway_top" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:visibility="invisible"
                 android:id="@+id/reverseEndSubway"
-                android:layout_width="20sp"
+                android:layout_width="10sp"
                 android:layout_height="30sp"
-                android:background="@drawable/metro_up3" />
+                android:background="@drawable/icon_subway_top" />
         </LinearLayout>
     </LinearLayout>
 

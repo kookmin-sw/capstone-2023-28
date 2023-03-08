@@ -2,12 +2,21 @@ package com.capstone.traffic.ui.home.route
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import android.view.Display.Mode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide.init
 import com.capstone.traffic.R
 import com.capstone.traffic.ui.home.board.bulletinBoard.ArriveInformActivity
 import com.capstone.traffic.ui.home.route.dataClass.NeighborLineData
@@ -30,6 +39,18 @@ class SubwayAdapter(private val context: Context, private val r : Int, private v
     override fun getItemViewType(position: Int): Int {
         return position
     }
+    private fun getStationColor(line : String) : Int {
+        val color = mapOf("1" to R.color.hs1,
+            "2" to R.color.hs2,
+            "3" to R.color.hs3,
+            "4" to R.color.hs4,
+            "5" to R.color.hs5,
+            "6" to R.color.hs6,
+            "7" to R.color.hs7,
+            "8" to R.color.hs8,
+            "9" to R.color.hs9)
+        return if(color[line] != null) context.resources.getColor(color[line]!!) else context.resources.getColor(R.color.black)
+    }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -40,7 +61,30 @@ class SubwayAdapter(private val context: Context, private val r : Int, private v
         private val rStartSW : AppCompatImageView = itemView.findViewById(R.id.reverseStartSubway)
         private val rCenterSW : AppCompatImageView = itemView.findViewById(R.id.reverseCenterSubway)
         private val rEndSW : AppCompatImageView = itemView.findViewById(R.id.reverseEndSubway)
+
+        private val circle1 = itemView.findViewById<AppCompatImageView>(R.id.circle1)
+        private val circle2 = itemView.findViewById<AppCompatImageView>(R.id.circle2)
+        private val line1 = itemView.findViewById<AppCompatImageView>(R.id.line1)
+        private val line2 = itemView.findViewById<AppCompatImageView>(R.id.line2)
+        private val line3 = itemView.findViewById<AppCompatImageView>(R.id.line3)
+        private val line4 = itemView.findViewById<AppCompatImageView>(R.id.line4)
+
         init {
+            val mainColor = getStationColor(line)
+            circle1.backgroundTintList = ColorStateList.valueOf(mainColor)
+            circle2.backgroundTintList = ColorStateList.valueOf(mainColor)
+            startSW.backgroundTintList = ColorStateList.valueOf(mainColor)
+            centerSW.backgroundTintList = ColorStateList.valueOf(mainColor)
+            endSW.backgroundTintList = ColorStateList.valueOf(mainColor)
+            rStartSW.backgroundTintList = ColorStateList.valueOf(mainColor)
+            rCenterSW.backgroundTintList = ColorStateList.valueOf(mainColor)
+            rEndSW.backgroundTintList = ColorStateList.valueOf(mainColor)
+
+            line1.setBackgroundColor(mainColor)
+            line2.setBackgroundColor(mainColor)
+            line3.setBackgroundColor(mainColor)
+            line4.setBackgroundColor(mainColor)
+
             itemView.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     val intent = Intent(context,ArriveInformActivity::class.java)

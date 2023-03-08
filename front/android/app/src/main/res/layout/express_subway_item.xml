@@ -43,17 +43,20 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/line1"
                 android:layout_width="3sp"
                 android:layout_height="30sp"
                 android:layout_gravity="center"
                 android:background="@color/hs3" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/circle1"
                 android:layout_width="30sp"
                 android:layout_height="30sp"
-                android:background="@drawable/circle_d3" />
+                android:background="@drawable/icon_arrow_circle_bottom" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/line2"
                 android:layout_width="3sp"
                 android:layout_height="30sp"
                 android:layout_gravity="center"
@@ -73,18 +76,21 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/line3"
                 android:layout_width="3sp"
                 android:layout_height="30sp"
                 android:layout_gravity="center"
                 android:background="@color/hs3" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/circle2"
                 android:layout_width="30sp"
                 android:layout_height="30sp"
                 android:layout_gravity="center"
-                android:background="@drawable/circle_u3" />
+                android:background="@drawable/icon_arrow_circle_top" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/line4"
                 android:layout_width="3sp"
                 android:layout_height="30sp"
                 android:layout_gravity="center"
@@ -98,23 +104,23 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:visibility="invisible"
                 android:id="@+id/EreverseStartSubway"
-                android:layout_width="20sp"
+                android:layout_width="10sp"
                 android:layout_height="30sp"
-                android:background="@drawable/metro_up3" />
+                android:background="@drawable/icon_subway_top" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:visibility="invisible"
                 android:id="@+id/EreverseCenterSubway"
-                android:layout_width="20sp"
+                android:layout_width="10sp"
                 android:layout_height="30sp"
-                android:background="@drawable/metro_up3" />
+                android:background="@drawable/icon_subway_top" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:visibility="invisible"
                 android:id="@+id/EreverseEndSubway"
-                android:layout_width="20sp"
+                android:layout_width="10sp"
                 android:layout_height="30sp"
-                android:background="@drawable/metro_up3" />
+                android:background="@drawable/icon_subway_top" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -154,17 +160,20 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/line5"
                 android:layout_width="3sp"
                 android:layout_height="30sp"
                 android:layout_gravity="center"
                 android:background="@color/hs3" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/circle3"
                 android:layout_width="30sp"
                 android:layout_height="30sp"
-                android:background="@drawable/circle_d3" />
+                android:background="@drawable/icon_arrow_circle_bottom" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/line6"
                 android:layout_width="3sp"
                 android:layout_height="30sp"
                 android:layout_gravity="center"
@@ -184,18 +193,21 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/line7"
                 android:layout_width="3sp"
                 android:layout_height="30sp"
                 android:layout_gravity="center"
                 android:background="@color/hs3" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/circle4"
                 android:layout_width="30sp"
                 android:layout_height="30sp"
                 android:layout_gravity="center"
-                android:background="@drawable/circle_u3" />
+                android:background="@drawable/icon_arrow_circle_top" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/line8"
                 android:layout_width="3sp"
                 android:layout_height="30sp"
                 android:layout_gravity="center"
