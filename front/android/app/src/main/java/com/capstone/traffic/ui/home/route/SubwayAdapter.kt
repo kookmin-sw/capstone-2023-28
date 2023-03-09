@@ -10,6 +10,7 @@ import android.view.Display.Mode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
@@ -55,35 +56,32 @@ class SubwayAdapter(private val context: Context, private val r : Int, private v
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val subWayName: TextView = itemView.findViewById(R.id.stationName)
-        private val startSW : AppCompatImageView = itemView.findViewById(R.id.startSubway)
-        private val centerSW : AppCompatImageView = itemView.findViewById(R.id.centerSubway)
-        private val endSW : AppCompatImageView = itemView.findViewById(R.id.endSubway)
-        private val rStartSW : AppCompatImageView = itemView.findViewById(R.id.reverseStartSubway)
-        private val rCenterSW : AppCompatImageView = itemView.findViewById(R.id.reverseCenterSubway)
-        private val rEndSW : AppCompatImageView = itemView.findViewById(R.id.reverseEndSubway)
 
-        private val circle1 = itemView.findViewById<AppCompatImageView>(R.id.circle1)
-        private val circle2 = itemView.findViewById<AppCompatImageView>(R.id.circle2)
-        private val line1 = itemView.findViewById<AppCompatImageView>(R.id.line1)
-        private val line2 = itemView.findViewById<AppCompatImageView>(R.id.line2)
-        private val line3 = itemView.findViewById<AppCompatImageView>(R.id.line3)
-        private val line4 = itemView.findViewById<AppCompatImageView>(R.id.line4)
+        private val lineColor1 : AppCompatImageView = itemView.findViewById(R.id.lineColor1)
+        private val lineColor2 : AppCompatImageView = itemView.findViewById(R.id.lineColor2)
+
+        private val fr1 : FrameLayout = itemView.findViewById(R.id.fr1)
+        private val fr2 : FrameLayout = itemView.findViewById(R.id.fr2)
+
+        private val startIv1 : AppCompatImageView = itemView.findViewById(R.id.startIV1)
+        private val startIv2 : AppCompatImageView = itemView.findViewById(R.id.startIV2)
+
+        private val centerIv1 : AppCompatImageView = itemView.findViewById(R.id.centerIV1)
+        private val centerIv2 : AppCompatImageView = itemView.findViewById(R.id.centerIV2)
+
+        private val endIv1 : AppCompatImageView = itemView.findViewById(R.id.endIV1)
+        private val endIv2 : AppCompatImageView = itemView.findViewById(R.id.endIV2)
+
+        private val upIv : AppCompatImageView = itemView.findViewById(R.id.upIV)
+        private val downIv : AppCompatImageView = itemView.findViewById(R.id.downIV)
 
         init {
             val mainColor = getStationColor(line)
-            circle1.backgroundTintList = ColorStateList.valueOf(mainColor)
-            circle2.backgroundTintList = ColorStateList.valueOf(mainColor)
-            startSW.backgroundTintList = ColorStateList.valueOf(mainColor)
-            centerSW.backgroundTintList = ColorStateList.valueOf(mainColor)
-            endSW.backgroundTintList = ColorStateList.valueOf(mainColor)
-            rStartSW.backgroundTintList = ColorStateList.valueOf(mainColor)
-            rCenterSW.backgroundTintList = ColorStateList.valueOf(mainColor)
-            rEndSW.backgroundTintList = ColorStateList.valueOf(mainColor)
+            upIv.backgroundTintList = ColorStateList.valueOf(mainColor)
+            downIv.backgroundTintList = ColorStateList.valueOf(mainColor)
+            lineColor1.backgroundTintList = ColorStateList.valueOf(mainColor)
+            lineColor2.backgroundTintList = ColorStateList.valueOf(mainColor)
 
-            line1.setBackgroundColor(mainColor)
-            line2.setBackgroundColor(mainColor)
-            line3.setBackgroundColor(mainColor)
-            line4.setBackgroundColor(mainColor)
 
             itemView.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
@@ -106,13 +104,18 @@ class SubwayAdapter(private val context: Context, private val r : Int, private v
         }
         fun bind(item: SubwayData) {
             subWayName.text = item.subwayStation
-            if(item.startSubway) startSW.visibility = View.VISIBLE
-            if(item.centerSubway) centerSW.visibility = View.VISIBLE
-            if(item.endSubway) endSW.visibility = View.VISIBLE
-            if(item.rStartSubway) rStartSW.visibility = View.VISIBLE
-            if(item.rCenterSubway) rCenterSW.visibility = View.VISIBLE
-            if(item.rEndSubway) rEndSW.visibility = View.VISIBLE
-
+            if(item.startSubway) startIv1.visibility = View.VISIBLE
+            if(item.centerSubway) {
+                fr1.visibility = View.INVISIBLE
+                centerIv1.visibility = View.VISIBLE
+            }
+            if(item.endSubway) endIv1.visibility = View.VISIBLE
+            if(item.rStartSubway) startIv2.visibility = View.VISIBLE
+            if(item.rCenterSubway) {
+                centerIv2.visibility = View.VISIBLE
+                fr2.visibility = View.INVISIBLE
+            }
+            if(item.rEndSubway) endIv2.visibility = View.VISIBLE
         }
     }
 }
