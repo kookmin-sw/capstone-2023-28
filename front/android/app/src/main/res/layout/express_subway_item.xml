@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginStart="10sp"
+    android:layout_marginStart="30sp"
     android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/LL"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="100dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -62,6 +62,29 @@
                 android:layout_height="55dp"
                 android:layout_gravity="bottom|center"
                 android:background="@drawable/train" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:visibility="invisible"
+                android:id="@+id/startIV1r"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center|top"
+                android:background="@drawable/train_express"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:visibility="invisible"
+                android:id="@+id/centerIV1r"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:background="@drawable/train_express"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:visibility="invisible"
+                android:id="@+id/endIV1r"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="bottom|center"
+                android:background="@drawable/train_express" />
         </FrameLayout>
     </LinearLayout>
 
@@ -121,6 +144,30 @@
                 android:layout_height="55dp"
                 android:layout_gravity="bottom|center"
                 android:background="@drawable/train"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:visibility="invisible"
+                android:id="@+id/startIV2r"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center|top"
+                android:background="@drawable/train_express"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/centerIV2r"
+                android:visibility="invisible"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:background="@drawable/train_express"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:visibility="invisible"
+                android:id="@+id/endIV2r"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="bottom|center"
+                android:background="@drawable/train_express"/>
         </FrameLayout>
 
     </LinearLayout>
@@ -131,116 +178,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_gravity="center"
-                android:id="@+id/lineColor1r"
-                android:layout_width="20sp"
-                android:layout_height="120sp"
-                android:background="@color/hs2" />
-            <FrameLayout
-                android:id="@+id/fr1r"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="40sp"
-                    android:layout_height="40sp"
-                    android:backgroundTint="@color/white"
-                    android:background="@drawable/shape_circle"/>
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/downIVr"
-                    android:layout_width="40sp"
-                    android:backgroundTint="@color/hs2"
-                    android:layout_height="40sp"
-                    android:background="@drawable/icon_circle_bottom"/>
-            </FrameLayout>
-            <androidx.appcompat.widget.AppCompatImageView
-                android:visibility="invisible"
-                android:id="@+id/startIV1r"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_gravity="center|top"
-                android:background="@drawable/train"/>
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:visibility="invisible"
-                android:id="@+id/centerIV1r"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_gravity="center"
-                android:background="@drawable/train"/>
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:visibility="invisible"
-                android:id="@+id/endIV1r"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_gravity="bottom|center"
-                android:background="@drawable/train" />
-        </FrameLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_gravity="center"
-                android:id="@+id/lineColor2r"
-                android:layout_width="20sp"
-                android:layout_height="120sp"
-                android:background="@color/hs2" />
-
-            <FrameLayout
-                android:id="@+id/fr2r"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="40sp"
-                    android:layout_height="40sp"
-                    android:backgroundTint="@color/white"
-                    android:background="@drawable/shape_circle"/>
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/upIVr"
-                    android:layout_width="40sp"
-                    android:backgroundTint="@color/hs2"
-                    android:layout_height="40sp"
-                    android:background="@drawable/icon_circle_top"/>
-            </FrameLayout>
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:visibility="invisible"
-                android:id="@+id/startIV2r"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_gravity="center|top"
-                android:background="@drawable/train"/>
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/centerIV2r"
-                android:visibility="invisible"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_gravity="center"
-                android:background="@drawable/train"/>
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:visibility="invisible"
-                android:id="@+id/endIV2r"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_gravity="bottom|center"
-                android:background="@drawable/train"/>
-        </FrameLayout>
-
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

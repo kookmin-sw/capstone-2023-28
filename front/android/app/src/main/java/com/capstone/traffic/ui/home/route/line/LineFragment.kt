@@ -39,6 +39,7 @@ class LineFragment(var searchLine : String) : Fragment() {
         return binding.root
     }
     private fun addLineView(name: String, express : Boolean, sd1 : List<SubwayExpressData>?, sd2 : List<SubwayData>?){
+        val mainColor = getStationColor(searchLine)
         val subText = SubwayText(requireContext())
         val tv = subText.findViewById<TextView>(R.id.tv)
         tv.text = name
@@ -58,6 +59,7 @@ class LineFragment(var searchLine : String) : Fragment() {
         }
 
         val cv = subText.findViewById<CardView>(R.id.cv)
+        cv.backgroundTintList = ColorStateList.valueOf(mainColor);
         val iv = subText.findViewById<AppCompatImageView>(R.id.iv)
         cv.setOnClickListener {
             if(rv.visibility == View.GONE){

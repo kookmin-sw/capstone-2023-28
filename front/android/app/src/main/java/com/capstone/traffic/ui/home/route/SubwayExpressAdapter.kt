@@ -50,13 +50,9 @@ class SubwayExpressAdapter(private val context: Context, private val r : Int, pr
 
         private val lineColor1 : AppCompatImageView = itemView.findViewById(R.id.lineColor1)
         private val lineColor2 : AppCompatImageView = itemView.findViewById(R.id.lineColor2)
-        private val lineColor1r : AppCompatImageView = itemView.findViewById(R.id.lineColor1r)
-        private val lineColor2r : AppCompatImageView = itemView.findViewById(R.id.lineColor2r)
 
         private val fr1 : FrameLayout = itemView.findViewById(R.id.fr1)
         private val fr2 : FrameLayout = itemView.findViewById(R.id.fr2)
-        private val fr1r : FrameLayout = itemView.findViewById(R.id.fr1r)
-        private val fr2r : FrameLayout = itemView.findViewById(R.id.fr2r)
 
         private val startIv1 : AppCompatImageView = itemView.findViewById(R.id.startIV1)
         private val startIv2 : AppCompatImageView = itemView.findViewById(R.id.startIV2)
@@ -75,8 +71,6 @@ class SubwayExpressAdapter(private val context: Context, private val r : Int, pr
 
         private val upIv : AppCompatImageView = itemView.findViewById(R.id.upIV)
         private val downIv : AppCompatImageView = itemView.findViewById(R.id.downIV)
-        private val upIvr : AppCompatImageView = itemView.findViewById(R.id.upIVr)
-        private val downIvr : AppCompatImageView = itemView.findViewById(R.id.downIVr)
 
 
         init {
@@ -87,10 +81,6 @@ class SubwayExpressAdapter(private val context: Context, private val r : Int, pr
             lineColor1.backgroundTintList = ColorStateList.valueOf(mainColor)
             lineColor2.backgroundTintList = ColorStateList.valueOf(mainColor)
 
-            upIvr.backgroundTintList = ColorStateList.valueOf(mainColor)
-            downIvr.backgroundTintList = ColorStateList.valueOf(mainColor)
-            lineColor1r.backgroundTintList = ColorStateList.valueOf(mainColor)
-            lineColor2r.backgroundTintList = ColorStateList.valueOf(mainColor)
 
 
             itemView.setOnClickListener {
@@ -118,14 +108,12 @@ class SubwayExpressAdapter(private val context: Context, private val r : Int, pr
 
             if(item.eStartSubway) startIv1r.visibility = View.VISIBLE
             if(item.eCenterSubway) {
-                fr1r.visibility = View.INVISIBLE
                 centerIv1r.visibility = View.VISIBLE
             }
             if(item.eEndSubway) endIv1r.visibility = View.VISIBLE
             if(item.eRStartSubway) startIv2r.visibility = View.VISIBLE
             if(item.eRCenterSubway) {
                 centerIv2r.visibility = View.VISIBLE
-                fr2r.visibility = View.INVISIBLE
             }
             if(item.eREndSubway) endIv2r.visibility = View.VISIBLE
 
