@@ -7,9 +7,11 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.TranslateAnimation
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
+import androidx.compose.ui.graphics.StampedPathEffectStyle.Companion.Translate
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -65,10 +67,12 @@ class LineFragment(var searchLine : String) : Fragment() {
             if(rv.visibility == View.GONE){
                 iv.background = resources.getDrawable(R.drawable.icon_hide)
                 rv.visibility = View.VISIBLE
+
             }
             else{
                 iv.background = resources.getDrawable(R.drawable.icon_show)
                 rv.visibility = View.GONE
+
             }
         }
         binding.parent.addView(subText)
