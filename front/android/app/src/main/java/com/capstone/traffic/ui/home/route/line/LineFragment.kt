@@ -7,6 +7,8 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.view.animation.TranslateAnimation
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
@@ -35,10 +37,17 @@ class LineFragment(var searchLine : String) : Fragment() {
     private val binding by lazy { FragmentLineBinding.inflate(layoutInflater) }
     private var job : Job? = null
     private var apiAns = false
+    lateinit var animShow : Animation
+    lateinit var animHide : Animation
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        initAnimaion()
         setLottie()
         getApi()
         return binding.root
+    }
+    private fun initAnimaion() {
+        animShow = AnimationUtils.loadAnimation(requireContext(),R.anim.view_show)
+        animHide = AnimationUtils.loadAnimation(requireContext(),R.anim.view_hide)
     }
     private fun addLineView(name: String, express : Boolean, sd1 : List<SubwayExpressData>?, sd2 : List<SubwayData>?){
         val mainColor = getStationColor(searchLine)
@@ -65,13 +74,14 @@ class LineFragment(var searchLine : String) : Fragment() {
         val iv = subText.findViewById<AppCompatImageView>(R.id.iv)
         cv.setOnClickListener {
             if(rv.visibility == View.GONE){
-                iv.background = resources.getDrawable(R.drawable.icon_hide)
+                iv.animate().rotation(180f).setDuration(500).start()
                 rv.visibility = View.VISIBLE
-
+                rv.startAnimation(animShow)
             }
             else{
-                iv.background = resources.getDrawable(R.drawable.icon_show)
+                iv.animate().rotation(0f).setDuration(500).start()
                 rv.visibility = View.GONE
+                rv.startAnimation(animHide)
 
             }
         }
