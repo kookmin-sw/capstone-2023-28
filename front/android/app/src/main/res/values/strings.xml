@@ -13,5 +13,6 @@
     <string name="n7">7</string>
     <string name="n8">8</string>
     <string name="n9">9</string>
-
+    <string name="hide">▲</string>
+    <string name="show">▼</string>
 </resources>

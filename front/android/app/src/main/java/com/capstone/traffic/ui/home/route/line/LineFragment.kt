@@ -3,19 +3,13 @@ package com.capstone.traffic.ui.home.route.line
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.TypedValue
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,7 +23,6 @@ import com.capstone.traffic.ui.home.route.SubwayAdapter
 import com.capstone.traffic.ui.home.route.SubwayExpressAdapter
 import com.capstone.traffic.ui.home.route.dataClass.SubwayData
 import com.capstone.traffic.ui.home.route.dataClass.SubwayExpressData
-import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -45,13 +38,37 @@ class LineFragment(var searchLine : String) : Fragment() {
         getApi()
         return binding.root
     }
-    private fun addTextView(name: String){
-        val mainColor = getStationColor(searchLine)
+    private fun addLineView(name: String, express : Boolean, sd1 : List<SubwayExpressData>?, sd2 : List<SubwayData>?){
         val subText = SubwayText(requireContext())
-        val cv = subText.findViewById<MaterialCardView>(R.id.cv)
-        cv.backgroundTintList = ColorStateList.valueOf(mainColor)
         val tv = subText.findViewById<TextView>(R.id.tv)
         tv.text = name
+
+        val rv = subText.findViewById<RecyclerView>(R.id.rv)
+        rv.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+        rv.isNestedScrollingEnabled = false
+        if(express){
+            val subwayAdapter =  SubwayExpressAdapter(requireContext(), R.layout.express_subway_item, searchLine)
+            subwayAdapter.datas = sd1!!
+            rv.adapter = subwayAdapter
+        }
+        else{
+            val subwayAdapter = SubwayAdapter(requireContext(),R.layout.express_not_subway_item, searchLine)
+            subwayAdapter.datas = sd2!!
+            rv.adapter = subwayAdapter
+        }
+
+        val cv = subText.findViewById<CardView>(R.id.cv)
+        val iv = subText.findViewById<AppCompatImageView>(R.id.iv)
+        cv.setOnClickListener {
+            if(rv.visibility == View.GONE){
+                iv.background = resources.getDrawable(R.drawable.icon_hide)
+                rv.visibility = View.VISIBLE
+            }
+            else{
+                iv.background = resources.getDrawable(R.drawable.icon_show)
+                rv.visibility = View.GONE
+            }
+        }
         binding.parent.addView(subText)
     }
     private fun dpToPx(context: Context, dp: Float): Float {
@@ -90,38 +107,12 @@ class LineFragment(var searchLine : String) : Fragment() {
         binding.lottieLoading.loop(true)
     }
 
-    // 리사이클러뷰    생성
-    private fun addExPressRecyclerView(sd: List<SubwayExpressData>) : View
-    {
-        val recyclerView = RecyclerView(requireContext())
-        recyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-        recyclerView.isNestedScrollingEnabled = false
-        val subwayAdapter = SubwayExpressAdapter(requireContext(), R.layout.express_subway_item,searchLine)
-        subwayAdapter.datas = sd
-        recyclerView.adapter = subwayAdapter
-        return recyclerView
-
-    }
-
-    private fun addRecyclerView(sd : List<SubwayData>) : View
-    {
-        val recyclerView = RecyclerView(requireContext())
-        recyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-        recyclerView.isNestedScrollingEnabled = false
-        val subwayAdapter = SubwayAdapter(requireContext(), R.layout.express_not_subway_item, searchLine)
-        subwayAdapter.datas = sd
-        recyclerView.adapter = subwayAdapter
-        return recyclerView
-    }
-
-    // dp -> px
     private fun getDp(value : Float) : Float {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, resources.displayMetrics)
     }
 
     private fun initSubwayLineView(data : List<ResponseList>) {
         data.forEach {rl ->
-            addTextView(rl.line)
             if(rl.express == "1"){
                 val subData = ArrayList<SubwayExpressData>()
                 rl.value.forEach { vl ->
@@ -153,7 +144,7 @@ class LineFragment(var searchLine : String) : Fragment() {
                     }
                     subData.add(sed)
                 }
-                binding.parent.addView(addExPressRecyclerView(subData))
+                addLineView(rl.line, true, subData, null)
             }
             else if(rl.express == "0"){
                 val subData = ArrayList<SubwayData>()
@@ -174,7 +165,7 @@ class LineFragment(var searchLine : String) : Fragment() {
                     }
                     subData.add(sed)
                 }
-                binding.parent.addView(addRecyclerView(subData))
+                addLineView(rl.line, false, null, subData)
             }
         }
     }
