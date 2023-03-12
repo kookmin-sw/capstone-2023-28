@@ -61,11 +61,11 @@ class RouteFragment : Fragment() {
             }
             MyApplication.status = true
             setImage()
-            "${it}".also { binding.lineTV.text = it;
-                binding.lineTV.backgroundTintList = ColorStateList.valueOf(getStationColor(it));
-                binding.centerStationImageView.backgroundTintList = ColorStateList.valueOf(getStationColor(it));
-                binding.startStationImageView.setBackgroundColor(getStationColor(it))
-                binding.endStationImageView.setBackgroundColor(getStationColor(it))
+            "${it}".also { binding.tv.text = it;
+                val mainColor = getStationColor(it)
+                binding.circleCv.backgroundTintList =  ColorStateList.valueOf(mainColor);
+                binding.searchCv.backgroundTintList = ColorStateList.valueOf(mainColor);
+                binding.startStationImageView.setBackgroundColor(mainColor)
             }
             val ft = childFragmentManager.beginTransaction()
             when (it) {
