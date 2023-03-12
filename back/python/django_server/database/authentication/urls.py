@@ -1,10 +1,8 @@
 from django.urls import path, include
 from . import views
-from rest_framework import urls
-from .views import user_signup_view
+from .views import UserSignupView, UserLoginView
 
 urlpatterns = [
-    path('signup/', user_signup_view, name="user_signup_view"),
-    path('api-auth/', include('rest_framework.urls')),
-
+    path('signup/', UserSignupView.as_view(), name="user_signup_view"),
+    path('login/', UserLoginView.as_view(), name="user_login_view")
 ]

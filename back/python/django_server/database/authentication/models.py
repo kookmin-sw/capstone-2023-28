@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-
+from django.contrib.auth.hashers import make_password
 class UserManager(BaseUserManager):
     def create_user(self, user_email, password, **extra_fields):
         if password is None:
@@ -38,4 +38,9 @@ class User(AbstractBaseUser):
     REQUIRED_FIELD = ['user_nickname']
 
     objects = UserManager()
+
+    def save(self, *args, **kwargs):
+        if self.password:
+            self.password = make_password(self.password)
+        super().save(*args, **kwargs)
 
