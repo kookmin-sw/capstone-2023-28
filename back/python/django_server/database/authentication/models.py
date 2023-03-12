@@ -5,6 +5,9 @@ class UserManager(BaseUserManager):
     def create_user(self, user_email, password, **extra_fields):
         if password is None:
             raise TypeError("User must have a password")
+
+        extra_fields.setdefault("is_admin", False)
+        extra_fields.setdefault("is_staff", False)
         user = self.model(
             user_email=user_email,
             **extra_fields

@@ -38,7 +38,13 @@ class UserLoginView(APIView):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-
+class UserInfoView(APIView):
+    # Token 으로 유저의 정보를 탐색
+    def post(self, request):
+        token = request.data["token"]
+        user_id = Token.objects.filter(key=token).values().first()["user_id"]
+        user_info = User.objects.filter(id=user_id).values().first()
+        return Response(user_info)
 # @api_view(['POST',])
 # @permission_classes((permissions.AllowAny, ))
 # def user_signup_view(request):
