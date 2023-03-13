@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="search"
+            type="com.capstone.traffic.ui.inform.search.SearchViewModel" />
+    </data>
+    <LinearLayout
+        android:id="@+id/root"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_gravity="center"
+                android:id="@+id/search_iv"
+                android:background="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"/>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/search_cv"
+                app:cardElevation="10dp"
+                android:backgroundTint="@color/black"
+                app:cardCornerRadius="20dp"
+                android:layout_gravity="center|start"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+                <ImageView
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/background_station_name_in"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+                </ImageView>
+            </androidx.cardview.widget.CardView>
+        </FrameLayout>
+    </LinearLayout>
+</layout>

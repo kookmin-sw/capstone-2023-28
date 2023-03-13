@@ -1,4 +1,4 @@
-package com.capstone.traffic.ui.home.inform.ranking
+package com.capstone.traffic.ui.inform.ranking
 
 import android.content.Context
 import android.content.Intent

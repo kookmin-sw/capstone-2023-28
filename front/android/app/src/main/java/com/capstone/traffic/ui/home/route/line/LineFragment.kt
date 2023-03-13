@@ -43,6 +43,7 @@ class LineFragment(var searchLine : String) : Fragment() {
         initAnimaion()
         setLottie()
         getApi()
+
         return binding.root
     }
     private fun initAnimaion() {

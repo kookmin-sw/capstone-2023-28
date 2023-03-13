@@ -2,6 +2,7 @@ package com.capstone.traffic.ui.home.route
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.TypedValue
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -20,8 +22,10 @@ import com.capstone.traffic.global.appkey.APIKEY
 import com.capstone.traffic.model.network.seoul.locate.Seoul
 import com.capstone.traffic.model.network.seoul.SeoulClient
 import com.capstone.traffic.model.network.seoul.locate.SeoulService
+import com.capstone.traffic.ui.home.HomeActivity
 import com.capstone.traffic.ui.home.HomeViewModel
 import com.capstone.traffic.ui.home.route.line.LineFragment
+import com.capstone.traffic.ui.inform.search.SearchActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,13 +36,18 @@ class RouteFragment : Fragment() {
     private val binding by lazy { FragmentRouteBinding.inflate(layoutInflater) }
     lateinit var param50 : LinearLayout.LayoutParams
     lateinit var params65 : LinearLayout.LayoutParams
-
     @SuppressLint("ResourceType")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        binding.searchCv.setOnClickListener {
+            val intent = Intent(requireContext(), SearchActivity::class.java)
+            intent.putExtra("line", viewModel.selectedLine.value)
+            startActivity(intent)
+        }
         val sp50 =
             TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 50f, resources.displayMetrics)
                 .toInt()

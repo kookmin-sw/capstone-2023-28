@@ -1,4 +1,4 @@
-package com.capstone.traffic.ui.home.inform
+package com.capstone.traffic.ui.inform
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -15,7 +15,8 @@ import com.capstone.traffic.model.network.twitter.Client
 import com.capstone.traffic.model.network.twitter.Data
 import com.capstone.traffic.model.network.twitter.RankService
 import com.capstone.traffic.model.network.twitter.ResponseData
-import com.capstone.traffic.ui.home.inform.ranking.RankingAdapter
+import com.capstone.traffic.ui.inform.ranking.RankingAdapter
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 
@@ -23,11 +24,14 @@ import retrofit2.Callback
 class InformFragment : Fragment() {
 
     private val binding by lazy { FragmentInformBinding.inflate(layoutInflater) }
-
+    private var job : Job? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-
         // 화면 전환 on off
-        getRankApi()
+        job = GlobalScope.launch(Dispatchers.Main) {
+            withContext(Dispatchers.Main) {
+                getRankApi()
+            }
+        }
         waitTime()
         return binding.root
     }
