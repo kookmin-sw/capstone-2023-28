@@ -1,12 +1,16 @@
 package com.capstone.traffic.ui.inform.search
 
 import android.content.res.ColorStateList
+import android.widget.ArrayAdapter
+import android.widget.SearchView
+import android.widget.Toast
 
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModelProvider
 import com.capstone.traffic.R
 import com.capstone.traffic.databinding.ActivitySearchBinding
 import com.capstone.traffic.global.BaseActivity
+import com.capstone.traffic.global.MyApplication
 
 class SearchActivity() : BaseActivity<ActivitySearchBinding>() {
     override var layoutResourceId: Int = R.layout.activity_search
@@ -16,9 +20,33 @@ class SearchActivity() : BaseActivity<ActivitySearchBinding>() {
         searchViewModel = ViewModelProvider(this)[SearchViewModel::class.java]
         binding.search = searchViewModel
 
-        val mainColor = getStationColor(intent.getIntExtra("line",1).toString())
+        val mainColor = getStationColor(intent.getIntExtra("line", 1).toString())
         binding.searchCv.backgroundTintList = ColorStateList.valueOf(mainColor)
         binding.searchIv.backgroundTintList = ColorStateList.valueOf(mainColor)
+
+        val searchView = binding.lineSv
+
+        val listAdapter = ArrayAdapter<String>(
+            this,
+            android.R.layout.simple_list_item_1,
+            MyApplication.allLineData
+        )
+        binding.lineLv.adapter = listAdapter
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (MyApplication.allLineData.contains(query)) {
+                    listAdapter.filter.filter(query)
+                } else {
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                listAdapter.filter.filter(newText)
+                return false
+            }
+        })
     }
     private fun getStationColor(line : String) : Int {
         val color = mapOf("1" to R.color.hs1,
