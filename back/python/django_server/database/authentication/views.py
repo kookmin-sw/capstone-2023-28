@@ -34,7 +34,7 @@ class UserLoginView(APIView):
         user = authenticate(user_nickname=user_nickname, password=password)
         if user:
             token, created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key})
+            return Response({"token": token.key, "user_id": token.user_id})
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -45,24 +45,3 @@ class UserInfoView(APIView):
         user_id = Token.objects.filter(key=token).values().first()["user_id"]
         user_info = User.objects.filter(id=user_id).values().first()
         return Response(user_info)
-# @api_view(['POST',])
-# @permission_classes((permissions.AllowAny, ))
-# def user_signup_view(request):
-#     serializer = UserSerializer(data=request.data)
-#     data = {}
-#     if serializer.is_valid():
-#         user = serializer.save()
-#         data['user_nickname'] = serializer.data['user_nickname']
-#         #token = Token.objects.get(user=user).key
-#         #data['token'] = token
-#     else:
-#         data = serializer.errors
-#         return Response(data, status=status.HTTP_400_BAD_REQUEST)
-#     return Response(data)
-
-# @api_view(['GET',])
-# @permission_classes((permissions.AllowAny, ))
-# def user_login_view(request):
-#     data = {}
-
-# Create your views here.
