@@ -1,6 +1,7 @@
-package com.capstone.traffic.ui.inform.search
+package com.capstone.traffic.ui.home.route.search
 
 import android.content.res.ColorStateList
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.SearchView
 import android.widget.Toast
@@ -46,6 +47,11 @@ class SearchActivity() : BaseActivity<ActivitySearchBinding>() {
                 listAdapter.filter.filter(newText)
                 return false
             }
+        })
+
+        binding.lineLv.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
+            // 클릭시 엑티비티 이동
+
         })
     }
     private fun getStationColor(line : String) : Int {

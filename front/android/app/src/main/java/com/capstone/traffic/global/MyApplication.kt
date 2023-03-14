@@ -14,7 +14,7 @@ class MyApplication : Application() {
 
     override fun onCreate() {
         prefs = PreferenceUtil(applicationContext)
-        allLineData = allName.split(", ")
+        allLineData = allName.split(", ").sorted()
         super.onCreate()
     }
 }

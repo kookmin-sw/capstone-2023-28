@@ -4,7 +4,7 @@
     <data>
         <variable
             name="search"
-            type="com.capstone.traffic.ui.inform.search.SearchViewModel" />
+            type="com.capstone.traffic.ui.home.route.search.SearchViewModel" />
     </data>
     <LinearLayout
         android:id="@+id/root"

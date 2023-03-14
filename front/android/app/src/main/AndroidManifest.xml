@@ -18,7 +18,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.inform.search.SearchActivity"
+            android:name=".ui.home.route.search.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".ui.home.board.bulletinBoard.ArriveInformActivity"

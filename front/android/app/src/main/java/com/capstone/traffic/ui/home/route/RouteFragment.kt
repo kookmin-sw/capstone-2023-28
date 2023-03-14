@@ -25,7 +25,7 @@ import com.capstone.traffic.model.network.seoul.locate.SeoulService
 import com.capstone.traffic.ui.home.HomeActivity
 import com.capstone.traffic.ui.home.HomeViewModel
 import com.capstone.traffic.ui.home.route.line.LineFragment
-import com.capstone.traffic.ui.inform.search.SearchActivity
+import com.capstone.traffic.ui.home.route.search.SearchActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

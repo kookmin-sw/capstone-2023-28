@@ -1,4 +1,4 @@
-package com.capstone.traffic.ui.inform.search
+package com.capstone.traffic.ui.home.route.search
 
 import androidx.lifecycle.ViewModel
 
