@@ -1,17 +1,18 @@
 package com.capstone.traffic.ui.home.route.search
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.SearchView
-import android.widget.Toast
+import android.widget.TextView
 
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModelProvider
 import com.capstone.traffic.R
 import com.capstone.traffic.databinding.ActivitySearchBinding
 import com.capstone.traffic.global.BaseActivity
 import com.capstone.traffic.global.MyApplication
+import com.capstone.traffic.ui.home.route.search.arrivalInform.ArrivalInformActivity
 
 class SearchActivity() : BaseActivity<ActivitySearchBinding>() {
     override var layoutResourceId: Int = R.layout.activity_search
@@ -49,10 +50,13 @@ class SearchActivity() : BaseActivity<ActivitySearchBinding>() {
             }
         })
 
-        binding.lineLv.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
-            // 클릭시 엑티비티 이동
-
-        })
+        binding.lineLv.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                // 클릭시 엑티비티 이동
+                val intent = Intent(this, ArrivalInformActivity::class.java)
+                intent.putExtra("station", parent.getItemAtPosition(position).toString())
+                startActivity(intent)
+            }
     }
     private fun getStationColor(line : String) : Int {
         val color = mapOf("1" to R.color.hs1,

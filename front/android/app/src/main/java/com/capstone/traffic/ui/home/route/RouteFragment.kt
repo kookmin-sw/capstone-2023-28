@@ -24,6 +24,8 @@ import com.capstone.traffic.model.network.seoul.SeoulClient
 import com.capstone.traffic.model.network.seoul.locate.SeoulService
 import com.capstone.traffic.ui.home.HomeActivity
 import com.capstone.traffic.ui.home.HomeViewModel
+import com.capstone.traffic.ui.home.direction.DirectionActivity
+import com.capstone.traffic.ui.home.direction.DirectionViewModel
 import com.capstone.traffic.ui.home.route.line.LineFragment
 import com.capstone.traffic.ui.home.route.search.SearchActivity
 import retrofit2.Call
@@ -50,7 +52,8 @@ class RouteFragment : Fragment() {
         }
 
         binding.fab.setOnClickListener{
-            // val intent = Intent(requireContext())
+            val intent = Intent(requireContext(), DirectionActivity::class.java)
+            startActivity(intent)
         }
         val sp50 =
             TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 50f, resources.displayMetrics)
