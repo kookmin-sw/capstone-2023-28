@@ -26,18 +26,20 @@ class UserSignupView(APIView):
 
 class UserLoginView(APIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
 
     def post(self, request, *args, **kwargs):
-        user_nickname = request.data["user_nickname"]
-        password = request.data["password"]
-        user = authenticate(user_nickname=user_nickname, password=password)
-        if user:
-            token, created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key, "user_id": token.user_id})
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user_nickname = serializer.validated_data["user_nickname"]
+            password = serializer.validated_data["password"]
+            user = authenticate(user_nickname=user_nickname, password=password)
+            if user:
+                token, created = Token.objects.get_or_create(user=user)
+                return Response({"token": token.key, "user_id": token.user_id})
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-
 class UserInfoView(APIView):
     # Token 으로 유저의 정보를 탐색
     def post(self, request):

@@ -1,6 +1,5 @@
 from django.db import models
 from authentication.models import User
-
 class Feed(models.Model):
     feed_id = models.AutoField(primary_key=True)
     feed_user_id = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -11,3 +10,6 @@ class Feed(models.Model):
 
     def updated_on(self):
         return self.updated_at.date()
+class FeedHashTag(models.Model):
+    feed_id = models.ForeignKey(Feed, primary_key=True)
+    hash_tag = models.CharField(max_length=10)
