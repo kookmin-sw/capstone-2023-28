@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.capstone.traffic">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+    <meta-data android:name="com.kakao.sdk.AppKey" android:value="90c5aa96ead25791b2bcef6de5aa2604"/>
     <application
         android:name="com.capstone.traffic.global.MyApplication"
         android:allowBackup="true"

@@ -48,6 +48,10 @@ class RouteFragment : Fragment() {
             intent.putExtra("line", viewModel.selectedLine.value)
             startActivity(intent)
         }
+
+        binding.fab.setOnClickListener{
+            // val intent = Intent(requireContext())
+        }
         val sp50 =
             TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 50f, resources.displayMetrics)
                 .toInt()
