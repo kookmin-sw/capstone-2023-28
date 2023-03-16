@@ -1,4 +1,4 @@
-package com.capstone.traffic.global
+package com.capstone.traffic.ui.home.direction
 
 import android.animation.Animator
 import android.animation.AnimatorSet
@@ -12,8 +12,20 @@ import android.view.Window
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
+import android.widget.ArrayAdapter
+import android.widget.ListAdapter
+import android.widget.ListView
+import android.widget.SearchView
 import androidx.cardview.widget.CardView
 import com.capstone.traffic.R
+import com.capstone.traffic.global.MyApplication
+import com.capstone.traffic.global.appkey.APIKEY
+import com.capstone.traffic.model.network.kakao.place.Client
+import com.capstone.traffic.model.network.kakao.place.Place
+import com.capstone.traffic.model.network.kakao.place.Response
+import com.capstone.traffic.model.network.kakao.place.Service
+import retrofit2.Call
+import retrofit2.Callback
 
 open class SlideUpDialog(context: Context, builder: Builder) : Dialog(
     context,
@@ -23,11 +35,9 @@ open class SlideUpDialog(context: Context, builder: Builder) : Dialog(
     var orgY: Float = 0f
     var containerView: CardView? = null
     var backgroundView: View? = null
-
     init {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.slide_up_dialog_base)
-
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         backgroundView = findViewById<View>(R.id.background)
         backgroundView?.alpha = 0f
@@ -35,6 +45,7 @@ open class SlideUpDialog(context: Context, builder: Builder) : Dialog(
         val screenHeight = context.resources.displayMetrics.heightPixels.toFloat()
         orgY = containerView!!.y
         containerView?.y = screenHeight
+
         builder.contentView?.let {
             containerView?.addView(it)
             setOnShowListener {
@@ -57,6 +68,7 @@ open class SlideUpDialog(context: Context, builder: Builder) : Dialog(
             }
         }
     }
+
 
     override fun cancel() {
         dismissAnim()
