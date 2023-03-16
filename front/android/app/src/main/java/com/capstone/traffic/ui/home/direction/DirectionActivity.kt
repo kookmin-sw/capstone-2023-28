@@ -24,6 +24,8 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
     var listAdapter : ArrayAdapter<String>? = null
     var placeData : List<Place>? = null
     var nameData : List<String>? = null
+    var startCoor : Pair<Float, Float> = Pair(0f,0f)
+    var endCoor : Pair<Float, Float> = Pair(0f,0f)
 
     override fun initBinding() {
         directionViewModel = ViewModelProvider(this)[DirectionViewModel::class.java]
@@ -58,13 +60,17 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
         })
         contentView.findViewById<ListView>(R.id.search_lv).onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
+                val txt = parent.getItemAtPosition(position).toString()
                 if (contentView.findViewById<TextView>(R.id.name).text == "도착지 검색"){
-                    binding.endEt.text = parent.getItemAtPosition(position).toString()
+                    endCoor = findXY(txt)
+                    binding.endEt.text = txt
                 }
                 else{
-                    binding.startEt.text = parent.getItemAtPosition(position).toString()
+                    startCoor = findXY(txt)
+                    binding.startEt.text = txt
                 }
                 slideupPopup.dismissAnim()
+                searchFillCheck()
             }
         binding.endEt.setOnClickListener{
             slideupPopup.show()
@@ -88,6 +94,21 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
             }
         }
     }
+    private fun findXY(name : String) : Pair<Float, Float>{
+        placeData?.forEach {
+            if(it.place_name == name) return Pair(it.x.toFloat(), it.y.toFloat())
+        }
+        return Pair(0f,0f)
+    }
+    private fun searchFillCheck() : Boolean
+    {
+        if(binding.startEt.text == "" || binding.endEt.text == ""){
+            return false
+        }
+        Toast.makeText(this,"${startCoor.first} ${startCoor.second}",Toast.LENGTH_LONG).show()
+        return true
+    }
+
     private fun getPlaceData(datas : List<Place>)
     {
         placeData = datas
