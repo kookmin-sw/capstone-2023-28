@@ -29,7 +29,7 @@ class InformFragment : Fragment() {
         // 화면 전환 on off
         job = GlobalScope.launch(Dispatchers.Main) {
             withContext(Dispatchers.Main) {
-                getRankApi()
+                //getRankApi()
             }
         }
         waitTime()
