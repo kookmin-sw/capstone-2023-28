@@ -10,6 +10,6 @@ class Feed(models.Model):
 
     def updated_on(self):
         return self.updated_at.date()
-class FeedHashTag(models.Model):
-    feed_id = models.ForeignKey(Feed, primary_key=True)
-    hash_tag = models.CharField(max_length=10)
+# class FeedHashTag(models.Model):
+#     feed_id = models.ForeignKey(Feed, primary_key=True)
+#     hash_tag = models.CharField(max_length=10)
