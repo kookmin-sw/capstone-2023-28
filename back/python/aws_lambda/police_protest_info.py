@@ -57,36 +57,53 @@ def download(url, file_name):
 
 def lambda_handler(event, context):
     # TODO implement
-    protest_dict = {}
+    date_time = 0
+    protest_data = []
     find_data()
     time_count = 1
     for time, board in clickList:
         
         url = "https://www.smpa.go.kr/common/attachfile/attachfileDownload.do?attachNo=" + board
-        download(url,time + ".pdf")
-        
-        pdf_info = pdf_tabula(time + ".pdf")
-    
-        for i in range(1, int((pdf_info.shape[0] - 3)/3) + 1):
+        download(url, "/tmp/" + time + ".pdf")
+        date_time += 1
+        pdf_info = pdf_tabula("/tmp/" + time + ".pdf")
+        protest_dict = {}
+        protest_dict['date'] = time
 
+        
+        for i in range(1, int((pdf_info.shape[0] - 3)/3) + 2):
+            
             place = ""
 
             for j in range(0, pdf_info.loc[i * 3 - 3].size):
                 if(str(pdf_info.loc[i * 3 - 3][j]) != "nan"):
                     place += str(pdf_info.loc[i * 3 - 3][j])
             
+
             for k in range(0, pdf_info.loc[i * 3 - 1].size):
                 if(str(pdf_info.loc[i * 3 - 1][k]) != "nan"):
                     region = str(pdf_info.loc[i * 3 - 1][k])
                     break
 
-            protest_dict['date' + str(i)] = time
-            protest_dict['protest' + str(i)] = [{'place' : place}, {'region' : region}, {'time' : str(pdf_info.loc[i * 3 - 2]['집회 일시'])}, {'people': str(pdf_info.loc[i * 3 - 2]['신고 인원'])}]
-             
+            
+            
+            protest_dict['protest'] = {'place' : place, 'region' : region, 'time' : str(pdf_info.loc[i * 3 - 2]['집회 일시']), 'people': str(pdf_info.loc[i * 3 - 2]['신고 인원'])}
+            
 
+            protest_data.append(protest_dict.copy())
+
+
+
+        
+    final_data = {}
+        
+    final_data['data'] = protest_data
+
+    print(final_data)
+    
     return {
     'statusCode': 200,
-    'body': json.dumps(protest_dict, ensure_ascii=False)
+    'body': json.dumps(final_data, ensure_ascii=False)
 }
         
 
