@@ -24,8 +24,8 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
     var listAdapter : ArrayAdapter<String>? = null
     var placeData : List<Place>? = null
     var nameData : List<String>? = null
-    var startCoor : Pair<Float, Float> = Pair(0f,0f)
-    var endCoor : Pair<Float, Float> = Pair(0f,0f)
+    var startCoor : Pair<String, String> = Pair("","")
+    var endCoor : Pair<String, String> = Pair("","")
 
     override fun initBinding() {
         directionViewModel = ViewModelProvider(this)[DirectionViewModel::class.java]
@@ -94,11 +94,11 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
             }
         }
     }
-    private fun findXY(name : String) : Pair<Float, Float>{
+    private fun findXY(name : String) : Pair<String, String>{
         placeData?.forEach {
-            if(it.place_name == name) return Pair(it.x.toFloat(), it.y.toFloat())
+            if(it.place_name == name) return Pair(it.x, it.y)
         }
-        return Pair(0f,0f)
+        return Pair("","")
     }
     private fun searchFillCheck() : Boolean
     {
