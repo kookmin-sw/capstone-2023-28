@@ -18,8 +18,6 @@ from authentication.models import User
 from authentication.views import UserSignupView
 from django.contrib import admin
 from rest_framework import routers, serializers, viewsets, urls
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from rest_framework_simplejwt.views import TokenVerifyView
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -45,8 +43,5 @@ urlpatterns = [
     path('feed/', include('feed.urls')),
     # 아래 부터는 JWT
     # 차례대로 token 생성, 재생성, 확인
-    path('api/token/', TokenObtainPairView.as_view(), name='token_refresh'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify')
 
 ]

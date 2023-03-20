@@ -28,7 +28,7 @@ SECRET_KEY = secrets["SECRET_KEY"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 #퍼블릭 DNS로 호스팅하고 싶다면
 #ALLOWED_HOSTS = ["ec2-3-35-14-156.ap-northeast-2.compute.amazonaws.com"]
 

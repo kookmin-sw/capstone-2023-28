@@ -2,14 +2,13 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.hashers import make_password
 class UserManager(BaseUserManager):
-    def create_user(self, user_email, password, **extra_fields):
+    def create_user(self, password, **extra_fields):
         if password is None:
             raise TypeError("User must have a password")
 
         extra_fields.setdefault("is_admin", False)
         extra_fields.setdefault("is_staff", False)
         user = self.model(
-            user_email=user_email,
             **extra_fields
         )
         user.set_password(password)
@@ -38,7 +37,7 @@ class User(AbstractBaseUser):
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     USERNAME_FIELD = "user_nickname"
-    REQUIRED_FIELD = ['user_nickname']
+    REQUIRED_FIELD = ["user_nickname"]
 
     objects = UserManager()
 
