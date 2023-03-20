@@ -7,9 +7,9 @@
 지하철 커뮤니티 출그니에서는 다음과 같은 기능을 제공합니다. 오늘의 시위 정보, 지하철 도착 정보 및 실시간 위치 정보, 길찾기 기능, 대중교통 관련 매거진과 SNS 기능이 있습니다. 이를 통해 사용자들은 실시간 교통정보를 얻을 수 있으며, 대중교통 관련 컨텐츠를 즐기고 같은 관심사를 가진 사람들과 소통하는 기회를 가질 수 있습니다.
 
 ## 2. Abstract
-Internet community is a place where people share their interests. Recently there are many different type of communites. "Blind" is a community for office workers to share thier ideas or news, "Joonggonara" which is a place to buy or sell among user and so on. We're developing on  subway community application in order to find out what are some issues happening currently for public transportation.
+Internet community is a place where people share their interests. Recently there are many different type of communites. "Blind" is a community for office workers to share thier ideas or news, "Joonggonara" which is a place to buy or sell among user and so on. We're developing on  subway community application in order to find out what are some issues happening currently for subway.
 
-Subway community "Chulguni" provides you these features. Current protest info, subway's arrival time and current location info, geographical info, Information and SNS features about pubic transportation. With this, users could recieve current traffic informations and be in community by sharing informations relating to pubic transportation.
+Subway community "Chulguni" provides you these features. Current protest info, subway's arrival time and current location info, geographical info, Information and SNS features about subway. With this, users could recieve current traffic informations and be in community by sharing informations relating to subway.
 
 
 ## 3. 소개 영상 
