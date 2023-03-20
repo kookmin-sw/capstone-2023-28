@@ -29,6 +29,7 @@
 5. SNS 기능
     - 실시간으로 글을 작성하여 사람들과 소통할 수 있습니다.
     - 오픈채팅 기능이 있어 공통 관심사를 가진 사람들과 소통할 수 있습니다.
+
 ## 2. Abstract
 Internet community is a place where people share their interests. Recently there are many different type of communites. "Blind" is a community for office workers to share thier ideas or news, "Joonggonara" which is a place to buy or sell among user and so on. We're developing on  subway community application in order to find out what are some issues happening currently for subway.
 
