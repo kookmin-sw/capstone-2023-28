@@ -1,7 +1,6 @@
 package com.capstone.traffic.ui.home.direction
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
@@ -14,7 +13,10 @@ import com.capstone.traffic.model.network.kakao.place.Client
 import com.capstone.traffic.model.network.kakao.place.Place
 import com.capstone.traffic.model.network.kakao.place.Response
 import com.capstone.traffic.model.network.kakao.place.Service
-import com.capstone.traffic.ui.home.route.search.arrivalInform.ArrivalInformActivity
+import com.capstone.traffic.model.network.sk.direction.dataClass.objects
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 
@@ -105,6 +107,7 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
         if(binding.startEt.text == "" || binding.endEt.text == ""){
             return false
         }
+        getSkApi()
         Toast.makeText(this,"${startCoor.first} ${startCoor.second}",Toast.LENGTH_LONG).show()
         return true
     }
@@ -136,5 +139,28 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
                     print(1)
                 }
             })
+    }
+
+    private fun getSkApi(){
+        val retrofit = com.capstone.traffic.model.network.sk.direction.Client.getInstance()
+        val service = retrofit.create(com.capstone.traffic.model.network.sk.direction.Service::class.java)
+        val mediaType = "application/json".toMediaTypeOrNull()
+        val param  = RequestBody.create(mediaType,"{\"startX\":\"${startCoor.first}\",\"startY\":\"${startCoor.second}\",\"endX\":\"${endCoor.first}\",\"endY\":\"${endCoor.second}\",\"lang\":0,\"format\":\"json\",\"count\":10}")
+        service.getDirection(param = param)
+            .enqueue(object : Callback<objects>{
+                override fun onResponse(
+                    call: Call<objects>,
+                    response: retrofit2.Response<objects>
+                ) {
+                    if(response.isSuccessful){
+
+                    }
+                }
+
+                override fun onFailure(call: Call<objects>, t: Throwable) {
+                    print(1)
+                }
+            })
+
     }
 }

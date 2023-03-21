@@ -13,7 +13,6 @@ import com.capstone.traffic.R
 import com.capstone.traffic.databinding.ActivityBulletinBinding
 import com.capstone.traffic.global.BaseActivity
 import com.capstone.traffic.global.appkey.APIKEY
-import com.capstone.traffic.global.stationInfo.station
 import com.capstone.traffic.model.network.seoul.SeoulClient
 import com.capstone.traffic.model.network.seoul.arrive.RealtimeArrivalList
 import com.capstone.traffic.model.network.seoul.arrive.Seoul
