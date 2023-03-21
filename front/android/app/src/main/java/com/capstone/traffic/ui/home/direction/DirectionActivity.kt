@@ -1,9 +1,14 @@
 package com.capstone.traffic.ui.home.direction
 
+import BusFragment
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.ViewModelProvider
 import com.capstone.traffic.R
 import com.capstone.traffic.databinding.ActivityDirectionBinding
@@ -14,6 +19,11 @@ import com.capstone.traffic.model.network.kakao.place.Place
 import com.capstone.traffic.model.network.kakao.place.Response
 import com.capstone.traffic.model.network.kakao.place.Service
 import com.capstone.traffic.model.network.sk.direction.dataClass.objects
+import com.capstone.traffic.ui.home.direction.transportType.BusAndSubwayFragment
+import com.capstone.traffic.ui.home.direction.transportType.SubwayFragment
+import com.capstone.traffic.ui.home.direction.transportType.ViewPagerAdapter
+import com.google.android.material.tabs.TabLayoutMediator
+import kakao.d.o
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
@@ -29,6 +39,11 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
     var startCoor : Pair<String, String> = Pair("","")
     var endCoor : Pair<String, String> = Pair("","")
 
+    private var tabTitle = arrayOf(
+        "버스",
+        "지하철",
+        "버스 + 지하철"
+    )
     override fun initBinding() {
         directionViewModel = ViewModelProvider(this)[DirectionViewModel::class.java]
         binding.direction = directionViewModel
@@ -60,6 +75,17 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
                 return false
             }
         })
+
+        val viewPager = binding.ViewPager
+        val tabLayout = binding.tabLayout
+
+        viewPager.adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
+
+        TabLayoutMediator(tabLayout,viewPager) {tab, position ->
+            tab.text = tabTitle[position]
+        }.attach()
+
+
         contentView.findViewById<ListView>(R.id.search_lv).onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 val txt = parent.getItemAtPosition(position).toString()
@@ -140,7 +166,6 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
                 }
             })
     }
-
     private fun getSkApi(){
         val retrofit = com.capstone.traffic.model.network.sk.direction.Client.getInstance()
         val service = retrofit.create(com.capstone.traffic.model.network.sk.direction.Service::class.java)
