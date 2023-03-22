@@ -15,6 +15,11 @@ class SubwayFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val bundle = arguments
+        val data = bundle?.getSerializable("data")
+        print(data)
+        binding.text.text = data.toString()
+
         // Inflate the layout for this fragment
         return binding.root
     }

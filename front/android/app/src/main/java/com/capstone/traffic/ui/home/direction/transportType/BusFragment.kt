@@ -14,6 +14,10 @@ class BusFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val bundle = arguments
+        val data = bundle?.getSerializable("data")
+        print(data)
+        binding.text.text = data.toString()
 
 
         return binding.root

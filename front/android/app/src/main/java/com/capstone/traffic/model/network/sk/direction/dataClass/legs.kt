@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class legs(
     @SerializedName("mode") val mode : String,
     @SerializedName("sectionTime") val sectionTime : String,
-    @SerializedName("start") val start : List<name>,
-    @SerializedName("end") val end : List<name>,
+    @SerializedName("start") val start : name,
+    @SerializedName("end") val end : name,
     @SerializedName("route") val route : String
 )

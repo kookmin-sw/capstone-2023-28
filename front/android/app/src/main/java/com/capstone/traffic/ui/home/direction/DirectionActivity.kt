@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.widget.ViewPager2
 import com.capstone.traffic.R
 import com.capstone.traffic.databinding.ActivityDirectionBinding
 import com.capstone.traffic.global.BaseActivity
@@ -18,10 +19,12 @@ import com.capstone.traffic.model.network.kakao.place.Client
 import com.capstone.traffic.model.network.kakao.place.Place
 import com.capstone.traffic.model.network.kakao.place.Response
 import com.capstone.traffic.model.network.kakao.place.Service
+import com.capstone.traffic.model.network.sk.direction.dataClass.metaData
 import com.capstone.traffic.model.network.sk.direction.dataClass.objects
 import com.capstone.traffic.ui.home.direction.transportType.BusAndSubwayFragment
 import com.capstone.traffic.ui.home.direction.transportType.SubwayFragment
 import com.capstone.traffic.ui.home.direction.transportType.ViewPagerAdapter
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kakao.d.o
 import okhttp3.MediaType
@@ -38,12 +41,14 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
     var nameData : List<String>? = null
     var startCoor : Pair<String, String> = Pair("","")
     var endCoor : Pair<String, String> = Pair("","")
-
+    private lateinit var viewPager : ViewPager2
+    private lateinit var tabLayout : TabLayout
     private var tabTitle = arrayOf(
-        "버스",
-        "지하철",
-        "버스 + 지하철"
+        "버스\n",
+        "지하철\n",
+        "버스 + 지하철\n"
     )
+
     override fun initBinding() {
         directionViewModel = ViewModelProvider(this)[DirectionViewModel::class.java]
         binding.direction = directionViewModel
@@ -76,15 +81,8 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
             }
         })
 
-        val viewPager = binding.ViewPager
-        val tabLayout = binding.tabLayout
-
-        viewPager.adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
-
-        TabLayoutMediator(tabLayout,viewPager) {tab, position ->
-            tab.text = tabTitle[position]
-        }.attach()
-
+        viewPager = binding.ViewPager
+        tabLayout = binding.tabLayout
 
         contentView.findViewById<ListView>(R.id.search_lv).onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
@@ -100,6 +98,7 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
                 slideupPopup.dismissAnim()
                 searchFillCheck()
             }
+
         binding.endEt.setOnClickListener{
             slideupPopup.show()
             contentView.findViewById<TextView>(R.id.name).text = "도착지 검색"
@@ -134,7 +133,7 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
             return false
         }
         getSkApi()
-        Toast.makeText(this,"${startCoor.first} ${startCoor.second}",Toast.LENGTH_LONG).show()
+        binding.directionCv.visibility = View.VISIBLE
         return true
     }
 
@@ -179,13 +178,28 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
                 ) {
                     if(response.isSuccessful){
 
+                        tabTitle[0] = if(response.body() != null) "버스\n${response.body()!!.metaData.requestParameters.busCount}" else "버스\n"
+                        tabTitle[1] = if(response.body() != null) "지하철\n${response.body()!!.metaData.requestParameters.subwayCount}" else "지하철\n"
+                        tabTitle[2] = if(response.body() != null) "버스 + 지하철\n${response.body()!!.metaData.requestParameters.subwayBusCount}" else "버스 + 지하철\n"
+
+                        val serialObjects = serialObjects(response.body())
+
+                        viewPager.adapter = ViewPagerAdapter(supportFragmentManager, lifecycle, serialObjects)
+
+
+                        TabLayoutMediator(tabLayout,viewPager) {tab, position ->
+                            tab.text = tabTitle[position]
+                        }.attach()
+
+
                     }
+                    print(2)
                 }
 
                 override fun onFailure(call: Call<objects>, t: Throwable) {
                     print(1)
                 }
             })
-
     }
+    private data class serialObjects(val objects: objects?) : java.io.Serializable
 }
