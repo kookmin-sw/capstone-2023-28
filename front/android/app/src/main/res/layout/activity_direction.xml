@@ -68,7 +68,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/direction_cv"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="15dp"
