@@ -9,6 +9,7 @@ import com.capstone.traffic.R
 import com.capstone.traffic.databinding.FragmentBusBinding
 import com.capstone.traffic.ui.home.direction.transportType.DirectionAdapter
 import com.capstone.traffic.ui.home.direction.transportType.DirectionData
+import com.capstone.traffic.ui.home.direction.transportType.route.Route
 
 class BusFragment : Fragment() {
     private val binding by lazy { FragmentBusBinding.inflate(layoutInflater) }
@@ -24,8 +25,34 @@ class BusFragment : Fragment() {
 
         val directionAdapter = DirectionAdapter(requireContext())
         directionAdapter.datas = listOf(
-            DirectionData("2000", "10000"),
-            DirectionData("4000", "5000")
+            DirectionData("2000", "10000", listOf(
+                Route(
+                    type = "Bus",
+                    name = "153",
+                    station = "길음역",
+                    color = ""
+                ),
+                Route(
+                    type = "기차",
+                    name = "1호선",
+                    station = "노원역",
+                    color = ""
+                ),
+            )),
+            DirectionData("4000", "5000",listOf(
+                Route(
+                    type = "Bus",
+                    name = "153",
+                    station = "길음역",
+                    color = ""
+                ),
+                Route(
+                    type = "기차",
+                    name = "1호선",
+                    station = "노원역",
+                    color = ""
+                ),
+            ))
         )
 
         binding.rv.apply {

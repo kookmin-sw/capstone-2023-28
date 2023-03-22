@@ -1,17 +1,17 @@
 package com.capstone.traffic.ui.home.direction.transportType
 
 import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Path.Direction
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.traffic.R
+import com.capstone.traffic.ui.home.direction.transportType.route.RouteAdapter
 
 class DirectionAdapter(private val context: Context) : RecyclerView.Adapter<DirectionAdapter.ViewHolder>(){
     var datas = listOf<DirectionData>()
@@ -36,24 +36,32 @@ class DirectionAdapter(private val context: Context) : RecyclerView.Adapter<Dire
         var minuate = itemView.findViewById<TextView>(R.id.minuate)
         val price = itemView.findViewById<TextView>(R.id.price_tv)
         val visibleBtn = itemView.findViewById<AppCompatButton>(R.id.visible_btn)
-        val detailLl = itemView.findViewById<LinearLayout>(R.id.detail_ll)
+        val detailRv = itemView.findViewById<RecyclerView>(R.id.detail_rv)
         init {
             visibleBtn.setOnClickListener {
-                if(detailLl.visibility == View.VISIBLE) {
+                if(detailRv.visibility == View.VISIBLE) {
                     visibleBtn.setBackgroundResource(R.drawable.icon_keyboard_arrow_up)
-                    detailLl.visibility = View.GONE
+                    detailRv.visibility = View.GONE
                 }
                 else{
                     visibleBtn.setBackgroundResource(R.drawable.icon_keyboard_arrow_down)
-                    detailLl.visibility = View.VISIBLE
+                    detailRv.visibility = View.VISIBLE
                 }
             }
         }
         fun bind(item: DirectionData) {
+            val adapter = RouteAdapter(context)
+            adapter.datas = item.route
+            detailRv.apply {
+                this.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
+                this.adapter = adapter
+            }
+
             val mint : Int = item.time.toInt() / 60
+            val ma : Int = mint % 60
             val hr : Int = mint / 60
             hour.text = hr.toString()
-            minuate.text = mint.toString()
+            minuate.text = ma.toString()
             price.text = item.price
         }
     }
