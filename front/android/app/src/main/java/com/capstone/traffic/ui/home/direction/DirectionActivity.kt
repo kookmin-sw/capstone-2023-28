@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.capstone.traffic.R
@@ -89,6 +90,12 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
                 slideupPopup.dismissAnim()
                 searchFillCheck()
             }
+
+        binding.dropdown.setItemClickListener {
+            i , item ->
+            this.directionViewModel.status.value = if(item.text == "시간순") true else false
+        }
+
 
         binding.endEt.setOnClickListener{
             slideupPopup.show()

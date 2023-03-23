@@ -15,4 +15,8 @@
     <string name="n9">9</string>
     <string name="hide">▲</string>
     <string name="show">▼</string>
+    <string-array name="select_sort">
+        <item>시간순</item>
+        <item>비용순</item>
+    </string-array>
 </resources>

@@ -34,9 +34,9 @@ class RouteAdapter(private val context: Context) : RecyclerView.Adapter<RouteAda
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tpPlaceTv = itemView.findViewById<TextView>(R.id.transport_place_tv)
-        val tpNameTv = itemView.findViewById<TextView>(R.id.transport_name_tv)
-        val tpIv = itemView.findViewById<AppCompatImageView>(R.id.transport_iv)
+        private val tpPlaceTv = itemView.findViewById<TextView>(R.id.transport_place_tv)
+        private val tpNameTv = itemView.findViewById<TextView>(R.id.transport_name_tv)
+        private val tpIv = itemView.findViewById<AppCompatImageView>(R.id.transport_iv)
         init {
 
         }

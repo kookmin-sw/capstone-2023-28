@@ -19,12 +19,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <androidx.cardview.widget.CardView
+                app:cardBackgroundColor="#03A9F4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="15dp"
-                app:cardCornerRadius="10dp"
+                app:cardCornerRadius="7dp"
                 app:cardElevation="10dp">
 
                 <LinearLayout
@@ -35,7 +36,7 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+
                         android:layout_marginEnd="5dp"
                         android:layout_marginBottom="5dp"
                         android:layout_weight="1"
@@ -46,7 +47,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="50sp"
                             android:layout_marginStart="5dp"
-                            android:layout_marginTop="2dp"
+                            android:layout_marginTop="5dp"
                             android:background="@drawable/background_search"
                             android:gravity="center|start"
                             android:hint="출발지"
@@ -58,7 +59,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="50sp"
                             android:layout_marginStart="5dp"
-                            android:layout_marginTop="2dp"
+                            android:layout_marginTop="5dp"
                             android:background="@drawable/background_search"
                             android:gravity="center|start"
                             android:hint="도착지"
@@ -67,10 +68,44 @@
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_marginEnd="5dp"
+                    app:strokeWidth="2dp"
+                    app:strokeColor="@color/gray"
+                    app:cardCornerRadius="8dp"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_marginLeft="10dp"
+                        android:textSize="15sp"
+                        android:layout_gravity="center"
+                        android:text="3월 23일 11:07 기준"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </com.google.android.material.card.MaterialCardView>
+                <com.qandeelabbassi.dropsy.DropDownView
+                    android:layout_gravity="end"
+                    android:id="@+id/dropdown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:dropsyItems="@array/select_sort"
+                    app:dropsyLabel="정렬"
+                    app:dropsySelector="@color/dropsy_selector"
+                    app:dropsyLabelColor="@color/dropsy_text_color_secondary"
+                    app:dropsyValueColor="@color/dropsy_text_color" />
+            </LinearLayout>
             <androidx.cardview.widget.CardView
                 android:visibility="visible"
                 android:id="@+id/direction_cv"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
                 app:cardCornerRadius="10dp"
