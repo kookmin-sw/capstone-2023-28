@@ -31,7 +31,8 @@ object testData {
                                 end = name(
                                     name = "끝"
                                 ),
-                                route = "100번버스"
+                                route = "100번버스",
+                                routeColor = "000000"
                             ),
                             legs(
                                 mode = "bus",
@@ -42,7 +43,9 @@ object testData {
                                 end = name(
                                     name = "끝"
                                 ),
-                                route = "100번버스"
+                                route = "100번버스",
+                                routeColor = "000000"
+
                             ),legs(
                                 mode = "walk",
                                 sectionTime = "500",
@@ -52,7 +55,9 @@ object testData {
                                 end = name(
                                     name = "끝"
                                 ),
-                                route = "100번버스"
+                                route = "100번버스",
+                                routeColor = "000000"
+
                             ),
                         )
                     ),
@@ -77,7 +82,9 @@ object testData {
                                 end = name(
                                     name = "끝"
                                 ),
-                                route = "100번버스"
+                                route = "100번버스",
+                                routeColor = "000000"
+
                             ),
                             legs(
                                 mode = "bus",
@@ -88,7 +95,9 @@ object testData {
                                 end = name(
                                     name = "끝"
                                 ),
-                                route = "100번버스"
+                                route = "100번버스",
+                                routeColor = "000000"
+
                             ),legs(
                                 mode = "subway",
                                 sectionTime = "500",
@@ -98,7 +107,9 @@ object testData {
                                 end = name(
                                     name = "끝"
                                 ),
-                                route = "100번버스"
+                                route = "100번버스",
+                                routeColor = "000000"
+
                             ),
                         )
                     ),
@@ -123,7 +134,9 @@ object testData {
                                 end = name(
                                     name = "끝"
                                 ),
-                                route = "100번버스"
+                                route = "100번버스",
+                                routeColor = "000000"
+
                             ),
                             legs(
                                 mode = "subway",
@@ -134,7 +147,9 @@ object testData {
                                 end = name(
                                     name = "끝"
                                 ),
-                                route = "100번버스"
+                                route = "100번버스",
+                                routeColor = "000000"
+
                             ),
                         )
                     ),

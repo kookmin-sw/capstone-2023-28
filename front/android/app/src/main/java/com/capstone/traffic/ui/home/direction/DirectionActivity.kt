@@ -123,8 +123,9 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
         if(binding.startEt.text == "" || binding.endEt.text == ""){
             return false
         }
-        //getSkApi()
-        testAPI()
+        getSkApi()
+        ///testAPI()
+
         binding.directionCv.visibility = View.VISIBLE
         return true
     }
@@ -179,8 +180,6 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
                         TabLayoutMediator(tabLayout,viewPager) {tab, position ->
                             tab.text = tabTitle[position]
                         }.attach()
-
-
                     }
                     print(2)
                 }

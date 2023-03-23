@@ -6,16 +6,16 @@
     android:layout_height="30dp">
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/transport_iv"
-        android:background="@color/black"
+        android:background="@drawable/icon_subway_default"
         android:layout_width="30dp"
         android:layout_height="30dp"/>
     <TextView
         android:id="@+id/transport_name_tv"
         android:layout_marginStart="10dp"
-        android:gravity="center"
+        android:gravity="center|start"
         android:textSize="15sp"
         android:text="1"
-        android:layout_width="165dp"
+        android:layout_width="120dp"
         android:layout_height="match_parent"/>
     <TextView
         android:id="@+id/transport_place_tv"

@@ -26,21 +26,21 @@ class ViewPagerAdapter(fm : FragmentManager, lifecycle : Lifecycle, val data : o
             0 -> {
                 val fragment = BusFragment()
                 val bundle = Bundle()
-                bundle.putSerializable("data", setSerial(ser[1]))
+                bundle.putSerializable("data", Serial(ser[0]))
                 fragment.arguments = bundle
                 fragment
             }
             1 -> {
                 val fragment = SubwayFragment()
                 val bundle = Bundle()
-                bundle.putSerializable("data", setSerial(ser[0]))
+                bundle.putSerializable("data", Serial(ser[1]))
                 fragment.arguments = bundle
                 fragment
             }
             2 -> {
                 val fragment =  BusAndSubwayFragment()
                 val bundle = Bundle()
-                bundle.putSerializable("data", setSerial(ser[2]))
+                bundle.putSerializable("data", Serial(ser[2]))
                 fragment.arguments = bundle
                 fragment
             }
@@ -60,18 +60,17 @@ class ViewPagerAdapter(fm : FragmentManager, lifecycle : Lifecycle, val data : o
             it.legs.forEach{ legs ->
                 usingTransfort.add(legs.mode)
             }
-            if( usingTransfort.contains("subway") && usingTransfort.contains("bus")){
+            if( usingTransfort.contains("SUBWAY") && usingTransfort.contains("BUS")){
                 subAndBus.add(it)
             }
-            else if(usingTransfort.contains("subway")){
+            else if(usingTransfort.contains("SUBWAY")){
                 onlySubway.add(it)
             }
-            else if(usingTransfort.contains("bus")){
+            else if(usingTransfort.contains("BUS")){
                 onlyBus.add(it)
             }
         }
-        return listOf<List<itineraries>>(onlySubway, onlyBus, subAndBus)
+        return listOf<List<itineraries>>(onlyBus, onlySubway, subAndBus)
 
     }
-    private data class setSerial(val ser: List<itineraries>?) : java.io.Serializable
 }
