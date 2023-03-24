@@ -28,9 +28,15 @@
  * 같은 관심사를 가진 사람들과 소통할 수 있는 공간을 제공합니다.
 
 ## 2. Abstract
-Internet community is a place where people share their interests. Recently there are many different type of communites. "Blind" is a community for office workers to share thier ideas or news, "Joonggonara" which is a place to buy or sell among user and so on. We're developing on  subway community application in order to find out what are some issues happening currently for subway.
+Internet community is a place where people share their interests. Recently there are many different type of communites. "Blind" is a community for office workers to share thier ideas or news, "Joonggonara" which is a place to buy or sell among user and so on. 
 
-Subway community "Chulguni" provides you these features. Current protest info, subway's arrival time and current location info, geographical info, Information and SNS features about subway. With this, users could recieve current traffic informations and be in community by sharing informations relating to subway.
+**"Metro Community - Choolguni"** is a place where people share about subway information.
+
+**List of Problems that Choolguni Solves**
+
+ * Helps merchants  in subway to help advertisements
+ * 지하철 상권 내의 상인등리 자신의 상권을 홍보를 쉽게 할 수 있습니다.
+ * 지하철 관련 정보 얻기 찾기 위해 여러 사이트를 탐색할 필요가 없습니다.
 
 ## 3. 대표적인 기능
 
