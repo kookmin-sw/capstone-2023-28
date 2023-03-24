@@ -25,6 +25,12 @@ secret_file = os.path.join(BASE_DIR, 'database/secrets.json')
 with open(secret_file) as f:
     secrets = json.loads(f.read())
 SECRET_KEY = secrets["SECRET_KEY"]
+
+AWS_ACCESS_KEY_ID = secrets["AWS_ACCESS_KEY_ID"]
+AWS_SECRET_ACCESS_KEY = secrets["AWS_SECRET_ACCESS_KEY"]
+AWS_STORAGE_BUCKET_NAME = 'capstone28subway'
+AWS_S3_REGION_NAME = 'ap-northeast-2'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

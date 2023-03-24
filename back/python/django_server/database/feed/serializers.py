@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Feed
+
 class FeedCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feed
