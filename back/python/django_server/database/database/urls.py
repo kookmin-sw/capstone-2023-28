@@ -1,4 +1,4 @@
-"""db URL Configuration
+"""database URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
@@ -14,8 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
-from django.contrib.auth.models import User
-from rest_framework import routers, serializers, viewsets
+from authentication.models import User
+from authentication.views import UserSignupView
+from django.contrib import admin
+from rest_framework import routers, serializers, viewsets, urls
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -36,5 +38,10 @@ router.register(r'users', UserViewSet)
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('admin/', admin.site.urls),
+    path('user/', include('authentication.urls')),
+    path('feed/', include('feed.urls')),
+    # 아래 부터는 JWT
+    # 차례대로 token 생성, 재생성, 확인
+
 ]

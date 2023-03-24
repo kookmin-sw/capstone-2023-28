@@ -6,4 +6,4 @@ __pycache__
 db.sqlite3
 media
 venv
-db/db/secrets.json
+database/database/secrets.json
