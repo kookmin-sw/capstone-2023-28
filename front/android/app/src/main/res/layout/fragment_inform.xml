@@ -30,7 +30,6 @@
                         android:id="@+id/status_time_tv"
                         android:layout_margin="5dp"
                         android:textSize="12sp"
-                        android:text="2023 03 08"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <androidx.recyclerview.widget.RecyclerView
