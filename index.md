@@ -34,9 +34,17 @@ Internet community is a place where people share their interests. Recently there
 
 **List of Problems that Choolguni Solves**
 
- * Helps merchants  in subway to help advertisements
- * 지하철 상권 내의 상인등리 자신의 상권을 홍보를 쉽게 할 수 있습니다.
- * 지하철 관련 정보 얻기 찾기 위해 여러 사이트를 탐색할 필요가 없습니다.
+ * Helps merchants in subway to help advertise their own goods
+ * No need to hard work on finding websites to advertise
+
+**List of Advantages that could be gained from using Choolguni**
+
+ * Provide real-time location and navigator system.
+ * Up-to-date information about subway from community. 
+ * Get a chance to advertise your store.
+ * Access chat system and communicate your thoughts with others.
+
+
 
 ## 3. 대표적인 기능
 
