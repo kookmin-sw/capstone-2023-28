@@ -4,6 +4,6 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface DemonService {
-    @GET(".")
+    @GET("police-s3-read")
     fun getResponse(): Call<Response>
 }
