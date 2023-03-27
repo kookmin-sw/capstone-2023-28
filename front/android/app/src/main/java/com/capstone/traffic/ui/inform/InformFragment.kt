@@ -11,6 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.traffic.databinding.FragmentInformBinding
+import com.capstone.traffic.model.network.demon.DemonClient
+import com.capstone.traffic.model.network.demon.DemonService
+import com.capstone.traffic.model.network.demon.Response
 import com.capstone.traffic.model.network.twitter.Client
 import com.capstone.traffic.model.network.twitter.Data
 import com.capstone.traffic.model.network.twitter.RankService
@@ -25,8 +28,16 @@ class InformFragment : Fragment() {
 
     private val binding by lazy { FragmentInformBinding.inflate(layoutInflater) }
     private var job : Job? = null
+    private var demonJob : Job? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // 화면 전환 on off
+        demonJob = GlobalScope.launch(Dispatchers.Main){
+            withContext(Dispatchers.IO){
+            }
+            //
+        }
+        getDemonApi()
+
         job = GlobalScope.launch(Dispatchers.Main) {
             withContext(Dispatchers.Main) {
                 //getRankApi()
@@ -67,7 +78,23 @@ class InformFragment : Fragment() {
         }
         waitTime()
     }
+    private fun getDemonApi() {
+        val retrofit = DemonClient.getInstance()
+        val service = retrofit.create(DemonService::class.java)
+        service.getResponse()
+            .enqueue(object : Callback<Response>{
+                override fun onResponse(
+                    call: Call<Response>,
+                    response: retrofit2.Response<Response>
+                ) {
+                    print(1)
+                }
 
+                override fun onFailure(call: Call<Response>, t: Throwable) {
+                    print(1)
+                }
+            })
+    }
     private fun getRankApi() {
         val retrofit = Client.getInstance()
         val service = retrofit.create(RankService::class.java)
