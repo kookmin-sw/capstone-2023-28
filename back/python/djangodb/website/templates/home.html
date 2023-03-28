@@ -1,0 +1,13 @@
+<h1>Follow Unfollow</h1>
+{% for item in all_user %}
+    User ID : {{item.user_id}} Name : {{item.user_nickname}} <br/>
+    Description : {{item.user_definition}} <br/>
+    Points : {{item.user_point_number}} <br/>
+    Seller (0 = no, 1 = yes) : {{item.is_seller}}<br/>
+    <hr>
+{% endfor %}
+
+{% for follow in all_follow %}
+    User ID {{follow.follow_user_id}} is following {{follow.following_user_id}} <br/>
+    <hr>
+{% endfor %} 
