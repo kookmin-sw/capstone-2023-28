@@ -18,6 +18,9 @@ class loginActivity : BaseActivity<ActivityLoginBinding>() {
         loginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         binding.login = loginViewModel
 
+        // 바로 홈화면으로
+        goHome()
+
         if(checkLoginStatus()) {
             goHome()
         }

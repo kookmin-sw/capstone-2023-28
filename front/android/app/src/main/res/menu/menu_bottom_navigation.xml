@@ -17,4 +17,10 @@
         android:id="@+id/route"
         android:enabled="true"
         android:icon="@drawable/icon_routemap"/>
+
+    <item
+        android:title=""
+        android:id="@+id/inform"
+        android:enabled="true"
+        android:icon="@drawable/icon_inform"/>
 </menu>

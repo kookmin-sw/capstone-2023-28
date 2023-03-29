@@ -6,6 +6,7 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
+    <color name="red">#FF0000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green">#C6D14F</color>
     <color name="green2">#CEDB73</color>
@@ -19,4 +20,5 @@
     <color name="hs7">#717C04</color>
     <color name="hs8">#DE186A</color>
     <color name="hs9">#C0AF8E</color>
+    <color name="transparent">#00000000</color>
 </resources>

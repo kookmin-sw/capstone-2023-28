@@ -1,7 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id "kotlin-parcelize"
     id 'com.google.gms.google-services'
+
 }
 
 android {
@@ -37,8 +39,21 @@ android {
 }
 
 dependencies {
+    // spinner - drosby
+    implementation 'com.github.qandeelabbassi:Dropsy:1.1'
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.13.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
+
     implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     def lifecycle_version = "2.5.1"
+
+    // lottie
+    def lottieVersion = "6.0.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -57,7 +72,7 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:1.5.5"
 
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

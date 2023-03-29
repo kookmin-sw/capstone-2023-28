@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginVertical="10dp"
+    android:background="@drawable/shape_rectangle_with_border"
+    app:cardCornerRadius="25dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingVertical="15dp"
+        android:paddingLeft="15dp">
+
+        <TextView
+            android:id="@+id/feed_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="안산역에서 패싸움 났습니다. 소문 듣고 봤는데 정말 살벌 하네요.."
+            app:layout_constraintEnd_toEndOf="@+id/feed_time"
+            app:layout_constraintStart_toStartOf="@+id/feed_profile_image_cardview"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/feed_profile_image_cardview"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="50sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/feed_content">
+
+            <ImageView
+                android:id="@+id/feed_profile_image"
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                android:background="#FFFFFF"
+                android:backgroundTint="#ECECEC"
+                android:scaleType="center"
+                app:srcCompat="@android:drawable/ic_menu_recent_history" />
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:id="@+id/feed_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="Nickname"
+            app:layout_constraintStart_toEndOf="@+id/feed_profile_image_cardview"
+            app:layout_constraintTop_toTopOf="@+id/feed_profile_image_cardview" />
+
+        <TextView
+            android:id="@+id/feed_hash_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="#hash tag here"
+            app:layout_constraintStart_toEndOf="@+id/feed_profile_image_cardview"
+            app:layout_constraintTop_toBottomOf="@+id/feed_nickname" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/feed_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/feed_content">
+
+            <ImageButton
+                android:id="@+id/imageButton3"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:contentDescription="좋아요 버튼"
+                android:paddingLeft="24dp"
+                android:paddingTop="12dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/icon_feed_heart" />
+
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:contentDescription="댓글 버튼"
+                android:paddingHorizontal="12dp"
+                android:paddingTop="11dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/icon_feed_comment" />
+
+            <ImageButton
+                android:id="@+id/imageButton4"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:contentDescription="북마크 버튼"
+                android:paddingTop="12dp"
+                android:paddingRight="28dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/icon_feed_bookmark" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/feed_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="24dp"
+            android:text="feed time here"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/feed_hash_tag" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
