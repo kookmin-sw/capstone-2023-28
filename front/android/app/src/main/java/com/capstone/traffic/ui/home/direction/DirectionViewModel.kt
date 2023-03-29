@@ -5,5 +5,5 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class DirectionViewModel : ViewModel(){
-    var status = MutableLiveData<Boolean>(false)
+    var status = MutableLiveData<Boolean>(true)
 }
