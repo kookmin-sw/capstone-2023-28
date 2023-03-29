@@ -57,7 +57,7 @@ class BusFragment : Fragment() {
             val directionData = DirectionData(it.totalTime, it.fare.regular.totalFare, listOf())
             val routes = mutableListOf<Route>()
             it.legs.forEach {legs ->
-                if(legs.mode == "BUS" || legs.mode == "SUBWAY"){
+                if(legs.mode == "BUS"){
                     val route = Route(
                         type = legs.mode,
                         name = legs.route,
@@ -70,8 +70,8 @@ class BusFragment : Fragment() {
             directionData.route = routes
             datas.add(directionData)
         }
-
-        directionAdapter.datas = if(status) datas.sortedBy { it.time } else datas.sortedBy { it.price }
+        datas.sortBy { if(status) it.time else it.price }
+        directionAdapter.datas = datas
 
 
         binding.rv.apply {

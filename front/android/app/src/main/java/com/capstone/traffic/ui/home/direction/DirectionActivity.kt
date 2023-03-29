@@ -1,6 +1,7 @@
 package com.capstone.traffic.ui.home.direction
 
 import android.content.Context
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
@@ -24,6 +25,9 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
     override var layoutResourceId: Int = R.layout.activity_direction
@@ -177,7 +181,9 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
                     response: retrofit2.Response<objects>
                 ) {
                     if(response.isSuccessful){
-
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            binding.updateTimeTv.text = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM월 dd일 HH:mm 기준"))
+                        }
                         tabTitle[0] = if(response.body() != null) "버스\n${response.body()!!.metaData.requestParameters.busCount}" else "버스\n"
                         tabTitle[1] = if(response.body() != null) "지하철\n${response.body()!!.metaData.requestParameters.subwayCount}" else "지하철\n"
                         tabTitle[2] = if(response.body() != null) "버스 + 지하철\n${response.body()!!.metaData.requestParameters.subwayBusCount}" else "버스 + 지하철\n"
