@@ -1,4 +1,4 @@
-![출그니 아이콘](https://user-images.githubusercontent.com/82868004/229060165-e29027f0-683a-4631-8d58-41d820f2b342.png)
+![출그니 아이콘](https://user-images.githubusercontent.com/82868004/229061397-72780599-9d5f-4f70-8d82-0e9800f9360f.png)
 
 # 2023 캡스톤 디자인 - [2023-28] - [팀명 : 출그니]
 
