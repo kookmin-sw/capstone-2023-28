@@ -74,7 +74,7 @@ Internet community is a place where people share their interests. Recently there
   
 - 송민준
   - 학번 : ****1631
-  - 역할 : 
+  - 역할 : 백엔드 서버, 데이터베이스 개발
 
 - 서민석
   - 학번 : ****1625
