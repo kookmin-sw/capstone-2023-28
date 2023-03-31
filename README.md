@@ -1,5 +1,7 @@
 # 2023 캡스톤 디자인 - [2023-28] - [팀명 : 출그니]
 
+![AppIcon](./asset/출그니 아이콘.png)
+
 [깃허브 페이지](https://kookmin-sw.github.io/capstone-2023-28/)
 
 ## 목차
