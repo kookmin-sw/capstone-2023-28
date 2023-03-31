@@ -1,4 +1,4 @@
-![출그니 아이콘](https://user-images.githubusercontent.com/82868004/229061397-72780599-9d5f-4f70-8d82-0e9800f9360f.png)
+![출그니 아이콘](https://user-images.githubusercontent.com/82868004/229062163-f342fff0-e961-43a6-9185-0f6c0b3f9463.png)
 
 # 지하철 커뮤니티 - 출그니
 2023년 국민대학교 소프트웨어학부 캡스톤디자인 프로젝트
