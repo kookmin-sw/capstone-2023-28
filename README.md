@@ -55,3 +55,4 @@
 ## 4. 소개 영상
 
 ## 5. 구조도
+![구조도](https://user-images.githubusercontent.com/39481106/229407756-7b64011b-ba56-446b-a9d6-bde947adb2e6.png)
