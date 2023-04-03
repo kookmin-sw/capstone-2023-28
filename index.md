@@ -83,3 +83,4 @@ Internet community is a place where people share their interests. Recently there
   
 ## 6. 기타
 ### 구조도
+![구조도](https://user-images.githubusercontent.com/39481106/229407756-7b64011b-ba56-446b-a9d6-bde947adb2e6.png)
