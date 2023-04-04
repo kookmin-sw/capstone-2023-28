@@ -17,7 +17,6 @@ class UserSignupView(APIView):
         data = {}
         if serializer.is_valid():
             serializer.save()
-            data['user_nickname'] = serializer.data['user_nickname']
         else:
             data = serializer.errors
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
