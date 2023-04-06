@@ -10,15 +10,13 @@ from database import settings
 import boto3
 class UserSignupView(APIView):
     permission_classes = [AllowAny]
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         data = {}
         if serializer.is_valid():
             serializer.save()
         else:
-            data = serializer.errors
+            data = {"errors": serializer.errors}
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
         return Response(data)
 class UserUpdateView(APIView):
