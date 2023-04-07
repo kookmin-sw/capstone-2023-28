@@ -10,6 +10,7 @@
 
 ## /database/ 에 시크릿 파일 생성
 서버 운영을 위한 시크릿 키가 정의된 secrets.json을 생성한다
+<img width="281" alt="image" src="https://user-images.githubusercontent.com/39481106/230593774-b1a74378-ae3f-48fc-b188-b91be72f0eb1.png">
 
 ## 마이그레이션 후 서버 실행
 * `python manage.py makemigrations`: 정의한 models.py 대로 db 버전 관리가 가능한 마이그레이션 파일 생성
