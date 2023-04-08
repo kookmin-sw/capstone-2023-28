@@ -7,6 +7,7 @@ from .serializers import *
 from .models import User
 from rest_framework.permissions import AllowAny
 from database import settings
+from django.contrib.auth.hashers import check_password
 import boto3
 class UserSignupView(APIView):
     permission_classes = [AllowAny]
@@ -22,27 +23,29 @@ class UserSignupView(APIView):
 class UserUpdateView(APIView):
     def post(self, request):
         data = {}
-        if User.objects.filter(user_nickname=request.data["user_nickname"]):
-            user = User.objects.get(user_nickname=request.data["user_nickname"])
-            serializer = UserSerializer(user, data=request.data)
-            if serializer.is_valid():
-                user_nickname = serializer.validated_data.get("user_nickname", None)
-                password = serializer.validated_data.get("password", None)
-
-                user = User.objects.get(user_nickname=user_nickname)
-                if user.check_password(password):
-                    updated_user = serializer.save()
-                    data["user_nickname"] = serializer.validated_data["user_nickname"]
-                    return Response(data)
-                else:
-                    data["error"] = "Wrong password"
-                    return Response(data, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                data["error"] = "Wrong Request"
-                return Response(data, status=status.HTTP_400_BAD_REQUEST)
-        else:
+        try:
+            user = User.objects.get(user_email=request.data["user_email"])
+        except User.DoesNotExist:
             data["error"] = "User is not exist"
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            password = request.data["password"]
+            if user.check_password(password):
+                del request.data["password"]
+                serializer = UserSerializer(user, data=request.data, partial=True)
+                if serializer.is_valid():
+                    updated_user = serializer.save()
+                    return Response(data)
+                else:
+                    data["error"] = serializer.errors
+                    return Response(data, status=status.HTTP_400_BAD_REQUEST)
+
+            else:
+                data["error_name"] = "비밀번호 불일치"
+                data["error_id"] = 3
+                return Response(data, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class UserInfoView(APIView):
     # Token 으로 유저의 정보를 탐색

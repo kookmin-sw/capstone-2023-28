@@ -46,7 +46,8 @@ class User(AbstractBaseUser):
         if self.password:
             self.password = make_password(self.password)
         super().save(*args, **kwargs)
-
+    def save_without_password(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
 # follow unfollow
 class Follow(models.Model):
