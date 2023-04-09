@@ -4,9 +4,9 @@ from database import settings
 class UserSerializer(serializers.Serializer):
     user_nickname = serializers.CharField(max_length=10)
     user_email = serializers.CharField(max_length=30)
-    user_definition = serializers.CharField(max_length=100)
+    user_definition = serializers.CharField(max_length=100, allow_null=True)
     password = serializers.CharField()
-    user_profile_image = serializers.CharField(max_length=200)
+    user_profile_image = serializers.CharField(max_length=200, allow_null=True)
     def validate_unique_user_nickname(self, value):
         if User.objects.filter(user_nickname=value).exists():
             raise serializers.ValidationError(

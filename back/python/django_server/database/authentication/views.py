@@ -12,7 +12,7 @@ import boto3
 class UserSignupView(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
+        serializer = UserSerializer(data=request.data, partial=True)
         data = {}
         if serializer.is_valid():
             serializer.save()
@@ -46,10 +46,9 @@ class UserUpdateView(APIView):
                 return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class UserInfoView(APIView):
     # Token 으로 유저의 정보를 탐색
-    def post(self, request):
+    def get(self, request):
         user_nickname = request.data["user_nickname"]
         user_info = User.objects.filter(user_nickname=user_nickname).values().first()
         return Response(user_info)
