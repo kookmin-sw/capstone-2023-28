@@ -10,13 +10,17 @@ class UserSerializer(serializers.Serializer):
     def validate_unique_user_nickname(self, value):
         if User.objects.filter(user_nickname=value).exists():
             raise serializers.ValidationError(
-                {"error_name": "닉네임 중복", "error_id": 1}
+                {"status": "ERROR",
+                 "res": {"error_name": "닉네임 중복", "error_id": 1}
+                 }
             )
         return value
     def validate_unique_user_email(self, value):
         if User.objects.filter(user_email=value).exists():
             raise serializers.ValidationError(
-                {"error_name": "이메일 중복", "error_id": 2}
+                {"status": "ERROR",
+                 "res": {"error_name": "이메일 중복", "error_id": 2}
+                 }
             )
         return value
     def create(self, validated_data):

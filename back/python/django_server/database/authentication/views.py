@@ -15,10 +15,12 @@ class UserSignupView(APIView):
         serializer = UserSerializer(data=request.data, partial=True)
         data = {}
         if serializer.is_valid():
+            data["status"] = "OK"
+            data["res"] = {}
             serializer.save()
-            data["status"] = "ok"
         else:
-            data = {"errors": serializer.errors}
+            data["status"] = "ERROR"
+            data["res"] = serializer.errors
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
         return Response(data)
 class UserUpdateView(APIView):
@@ -27,7 +29,8 @@ class UserUpdateView(APIView):
         try:
             user = User.objects.get(user_email=request.data["user_email"])
         except User.DoesNotExist:
-            data["error"] = "User is not exist"
+            data["status"] = "ERROR"
+            data["res"] = {"error_name" : "유저가 존재하지 않음", "error_id": 4}
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
         else:
             password = request.data["password"]
@@ -36,14 +39,17 @@ class UserUpdateView(APIView):
                 serializer = UserSerializer(user, data=request.data, partial=True)
                 if serializer.is_valid():
                     updated_user = serializer.save()
+                    data["status"] = "OK"
+                    data["res"] = {}
                     return Response(data)
                 else:
-                    data["error"] = serializer.errors
+                    data["status"] = "ERROR"
+                    data["res"] = serializer.errors
                     return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
             else:
-                data["error_name"] = "비밀번호 불일치"
-                data["error_id"] = 3
+                data["status"] = "ERROR"
+                data["res"] = {"error_name" : "비밀번호 불일치", "error_id" : 3}
                 return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -64,12 +70,15 @@ class UserUploadImageView(APIView):
             serializer = UserProfileUploadSerializer(user,{"user_nickname":user_nickname, "user_profile_image":url})
             if serializer.is_valid():
                 serializer.save()
-                data["url"] = url
+                data["status"] = "OK"
+                data["res"] = {"URL": url}
                 return Response(data)
             else:
+                ""
                 data["error"] = "Wrong Request"
                 return Response(data, status=status.HTTP_400_BAD_REQUEST)
         else:
+
             data["error"] = "User is not exist"
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
