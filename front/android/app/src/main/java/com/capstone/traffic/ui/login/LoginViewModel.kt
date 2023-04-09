@@ -20,16 +20,6 @@ class LoginViewModel : ViewModel(){
 
     fun signIn()
     {
-        if(email.get() != null && password.get() != null){
-            Auth.getAuth().signInWithEmailAndPassword(email.get()!!, password.get()!!)?.addOnCompleteListener {
-                task ->
-                run {
-                    if(task.isSuccessful) {
-                        _loginStatus.value = true
-                        MyApplication.prefs.setBoolean("status",true)
-                    }
-                }
-            }
-        }
+        //if(email.get() != null && password.get() != null){ }
     }
 }

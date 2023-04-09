@@ -1,6 +1,7 @@
 package com.capstone.traffic.ui.login
 
 import android.content.Intent
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.capstone.traffic.R
@@ -19,10 +20,10 @@ class loginActivity : BaseActivity<ActivityLoginBinding>() {
         binding.login = loginViewModel
 
         // 바로 홈화면으로
-        goHome()
+        //goHome()
 
         if(checkLoginStatus()) {
-            goHome()
+            //goHome()
         }
 
         binding.createAccountButton.setOnClickListener {
@@ -42,7 +43,7 @@ class loginActivity : BaseActivity<ActivityLoginBinding>() {
         startActivity(intent)
         finish()
     }
-    fun checkLoginStatus() : Boolean {
+    private fun checkLoginStatus() : Boolean {
         return MyApplication.prefs.getBoolean("status")
     }
 }
