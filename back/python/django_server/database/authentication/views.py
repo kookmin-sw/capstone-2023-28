@@ -3,11 +3,11 @@ import uuid
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import *
 from .models import User
 from rest_framework.permissions import AllowAny
 from database import settings
-from django.contrib.auth.hashers import check_password
 import boto3
 class UserSignupView(APIView):
     permission_classes = [AllowAny]
@@ -98,3 +98,11 @@ class S3ImageUploader:
         response = s3_client.upload_fileobj(self.file, settings.AWS_STORAGE_BUCKET_NAME, i)
         return f'https://{settings.AWS_STORAGE_BUCKET_NAME}.s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{i}'
 
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        return Response({
+            "status": "OK",
+            "res": response.data
+        })

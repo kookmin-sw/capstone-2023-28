@@ -1,5 +1,7 @@
 from .models import User
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework.exceptions import ValidationError
 from database import settings
 class UserSerializer(serializers.Serializer):
     user_nickname = serializers.CharField(max_length=10)
@@ -48,3 +50,12 @@ class UserProfileUploadSerializer(serializers.ModelSerializer):
         instance.user_profile_image = validated_data["user_profile_image"]
         instance.save()
         return instance
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    default_error_messages = {
+        "no_active_account": {"status": "ERROR",
+                                   "res": {
+                                       "error_name": "No active account found with the given credentials",
+                                       "error_id": 0
+                                   }}
+    }
