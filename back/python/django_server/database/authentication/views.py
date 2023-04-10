@@ -57,7 +57,8 @@ class UserInfoView(APIView):
     # Token 으로 유저의 정보를 탐색
     def get(self, request):
         try:
-            user = User.objects.get(user_email=request.data["user_email"])
+            user = User.objects.get(user_email=request.GET["user_email"])
+
         except User.DoesNotExist:
             data = {"status": "ERROR",
                  "res": {"error_name": "이메일 없음", "error_id": 1}
