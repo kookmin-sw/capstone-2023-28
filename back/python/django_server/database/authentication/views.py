@@ -56,9 +56,18 @@ class UserUpdateView(APIView):
 class UserInfoView(APIView):
     # Token 으로 유저의 정보를 탐색
     def get(self, request):
-        user_nickname = request.data["user_nickname"]
-        user_info = User.objects.filter(user_nickname=user_nickname).values().first()
-        return Response(user_info)
+        try:
+            user = User.objects.get(user_email=request.data["user_email"])
+        except User.DoesNotExist:
+            data = {"status": "ERROR",
+                 "res": {"error_name": "이메일 없음", "error_id": 1}
+                 }
+            return Response(data, status = status.HTTP_400_BAD_REQUEST)
+        else:
+            data = {}
+            data["status"] = "OK"
+            data["res"] = {"user_email":user.user_email, "user_nickname":user.user_nickname, "user_definition":user.user_definition, "user_point_number":user.user_point_number, "user_profile_image": user.user_profile_image}
+            return Response(data, status=status.HTTP_200_OK)
 class UserUploadImageView(APIView):
     def post(self, request):
         image = request.FILES["image"]
