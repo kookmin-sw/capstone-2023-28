@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import com.capstone.traffic.R
 import com.capstone.traffic.databinding.ActivityHomeBinding
 import com.capstone.traffic.ui.home.board.BoardFragment
+import com.capstone.traffic.ui.inform.InformFragment
 import com.capstone.traffic.ui.home.main.MainFragment
 import com.capstone.traffic.ui.home.route.RouteFragment
 
@@ -50,6 +51,7 @@ class HomeActivity : AppCompatActivity() {
             "main" -> fragment = MainFragment.newInstance(pageType.title)
             "board" -> fragment =  BoardFragment.newInstance(pageType.title)
             "route" -> fragment = RouteFragment.newInstance(pageType.title)
+            "inform" -> fragment = InformFragment.newInstance(pageType.title)
         }
         return fragment
     }

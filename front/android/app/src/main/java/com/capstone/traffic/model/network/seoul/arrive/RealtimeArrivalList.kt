@@ -8,5 +8,6 @@ data class RealtimeArrivalList(
     @SerializedName("arvlMsg2") val arvlMsg2 : String,
     @SerializedName("arvlMsg3") val arvlMsg3 : String,
     @SerializedName("recptnDt") val recptnDt : String,
-    @SerializedName("trainLineNm") val trainLineNm : String
+    @SerializedName("trainLineNm") val trainLineNm : String,
+    @SerializedName("updnLine") val updnLine : String
 )

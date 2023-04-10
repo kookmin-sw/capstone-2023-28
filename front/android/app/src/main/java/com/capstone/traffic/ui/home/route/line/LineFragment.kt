@@ -1,47 +1,95 @@
 package com.capstone.traffic.ui.home.route.line
 
+import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.TypedValue
-import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.TranslateAnimation
 import android.widget.TextView
-import androidx.compose.ui.text.font.Typeface
-import androidx.core.content.ContextCompat
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.cardview.widget.CardView
+import androidx.compose.ui.graphics.StampedPathEffectStyle.Companion.Translate
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.traffic.R
 import com.capstone.traffic.databinding.FragmentLineBinding
-import com.capstone.traffic.global.appkey.APIKEY
-import com.capstone.traffic.global.stationInfo.station
-import com.capstone.traffic.model.network.seoul.locate.Seoul
-import com.capstone.traffic.model.network.seoul.locate.SeoulService
+import com.capstone.traffic.global.MyApplication
 import com.capstone.traffic.model.network.subway.Client
 import com.capstone.traffic.model.network.subway.ResponseList
 import com.capstone.traffic.model.network.subway.SubwayService
 import com.capstone.traffic.ui.home.route.SubwayAdapter
-import com.capstone.traffic.ui.home.route.SubwayData
 import com.capstone.traffic.ui.home.route.SubwayExpressAdapter
-import com.capstone.traffic.ui.home.route.SubwayExpressData
+import com.capstone.traffic.ui.home.route.dataClass.SubwayData
+import com.capstone.traffic.ui.home.route.dataClass.SubwayExpressData
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class LineFragment(var searchLine : String) : Fragment() {
     private val binding by lazy { FragmentLineBinding.inflate(layoutInflater) }
     private var job : Job? = null
-
+    private var apiAns = false
+    lateinit var animShow : Animation
+    lateinit var animHide : Animation
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding.lottieLoading.visibility = View.VISIBLE
-        binding.lottieLoading.playAnimation()
-        binding.lottieLoading.loop(true)
+        initAnimaion()
+        setLottie()
         getApi()
 
         return binding.root
+    }
+    private fun initAnimaion() {
+        animShow = AnimationUtils.loadAnimation(requireContext(),R.anim.view_show)
+        animHide = AnimationUtils.loadAnimation(requireContext(),R.anim.view_hide)
+    }
+    private fun addLineView(name: String, express : Boolean, sd1 : List<SubwayExpressData>?, sd2 : List<SubwayData>?){
+        val mainColor = getStationColor(searchLine)
+        val subText = SubwayText(requireContext())
+        val tv = subText.findViewById<TextView>(R.id.tv)
+        tv.text = name
+
+        val rv = subText.findViewById<RecyclerView>(R.id.rv)
+        rv.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+        rv.isNestedScrollingEnabled = false
+        if(express){
+            val subwayAdapter =  SubwayExpressAdapter(requireContext(), R.layout.express_subway_item, searchLine)
+            subwayAdapter.datas = sd1!!
+            rv.adapter = subwayAdapter
+        }
+        else{
+            val subwayAdapter = SubwayAdapter(requireContext(),R.layout.express_not_subway_item, searchLine)
+            subwayAdapter.datas = sd2!!
+            rv.adapter = subwayAdapter
+        }
+
+        val cv = subText.findViewById<CardView>(R.id.cv)
+        cv.backgroundTintList = ColorStateList.valueOf(mainColor);
+        val iv = subText.findViewById<AppCompatImageView>(R.id.iv)
+        cv.setOnClickListener {
+            if(rv.visibility == View.GONE){
+                iv.animate().rotation(180f).setDuration(500).start()
+                rv.visibility = View.VISIBLE
+                rv.startAnimation(animShow)
+            }
+            else{
+                iv.animate().rotation(0f).setDuration(500).start()
+                rv.visibility = View.GONE
+                rv.startAnimation(animHide)
+
+            }
+        }
+        binding.parent.addView(subText)
+    }
+    private fun dpToPx(context: Context, dp: Float): Float {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.resources.displayMetrics)
     }
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -55,59 +103,33 @@ class LineFragment(var searchLine : String) : Fragment() {
     }
     private fun endLoading() {
         //
-        binding.lottieLoading.visibility = View.INVISIBLE
-        binding.lottieLoading.loop(false)
+        if(apiAns) {
+            binding.lottieLoading.visibility = View.INVISIBLE
+            binding.lottieLoading.loop(false)
+            MyApplication.status = false
+        }else{
+            binding.lottieLoading.setAnimation(R.raw.icon_404_error)
+            binding.lottieLoading.playAnimation()
+            binding.lottieLoading.loop(true)
+            MyApplication.status = false
+        }
         job?.cancel()
     }
 
-    // 리사이클러뷰 생성
-    private fun addExPressRecyclerView(sd: List<SubwayExpressData>) : View
-    {
-        val recyclerView = RecyclerView(requireContext())
-        recyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-        recyclerView.isNestedScrollingEnabled = false
-        val subwayAdapter = SubwayExpressAdapter(requireContext(), R.layout.express_subway_item,searchLine)
-        subwayAdapter.datas = sd
-        recyclerView.adapter = subwayAdapter
-        return recyclerView
 
+    private fun setLottie() {
+        binding.lottieLoading.visibility = View.VISIBLE
+        binding.lottieLoading.setAnimation(R.raw.lottie_loading)
+        binding.lottieLoading.playAnimation()
+        binding.lottieLoading.loop(true)
     }
 
-    private fun addRecyclerView(sd : List<SubwayData>) : View
-    {
-        val recyclerView = RecyclerView(requireContext())
-        recyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-        recyclerView.isNestedScrollingEnabled = false
-        val subwayAdapter = SubwayAdapter(requireContext(), R.layout.express_not_subway_item, searchLine)
-        subwayAdapter.datas = sd
-        recyclerView.adapter = subwayAdapter
-        return recyclerView
-    }
-
-    // 텍스트 뷰 동적 생성
-    private fun addTextView(name : String) : View
-    {
-        val textView = TextView(requireContext())
-        textView.text = name
-        textView.background =  ContextCompat.getDrawable(requireContext(), R.drawable.background_subway_text)
-        textView.textSize = 12f
-        textView.gravity = Gravity.CENTER or Gravity.START
-        textView.typeface = android.graphics.Typeface.DEFAULT_BOLD
-        textView.setTextColor(resources.getColor(R.color.black))
-        textView.setPadding(15,0,0,0)
-        val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDp(20f).toInt()).apply {setMargins(15,15,15,15)}
-        textView.layoutParams = lp
-        return textView
-    }
-
-    // dp -> px
     private fun getDp(value : Float) : Float {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, resources.displayMetrics)
     }
 
     private fun initSubwayLineView(data : List<ResponseList>) {
         data.forEach {rl ->
-            binding.parent.addView(addTextView(rl.line))
             if(rl.express == "1"){
                 val subData = ArrayList<SubwayExpressData>()
                 rl.value.forEach { vl ->
@@ -139,7 +161,7 @@ class LineFragment(var searchLine : String) : Fragment() {
                     }
                     subData.add(sed)
                 }
-                binding.parent.addView(addExPressRecyclerView(subData))
+                addLineView(rl.line, true, subData, null)
             }
             else if(rl.express == "0"){
                 val subData = ArrayList<SubwayData>()
@@ -160,20 +182,37 @@ class LineFragment(var searchLine : String) : Fragment() {
                     }
                     subData.add(sed)
                 }
-                binding.parent.addView(addRecyclerView(subData))
+                addLineView(rl.line, false, null, subData)
             }
         }
     }
-
+    private fun getStationColor(line : String) : Int {
+        val color = mapOf("1" to R.color.hs1,
+            "2" to R.color.hs2,
+            "3" to R.color.hs3,
+            "4" to R.color.hs4,
+            "5" to R.color.hs5,
+            "6" to R.color.hs6,
+            "7" to R.color.hs7,
+            "8" to R.color.hs8,
+            "9" to R.color.hs9)
+        return if(color[line] != null) requireContext().resources.getColor(color[line]!!) else requireContext().resources.getColor(R.color.black)
+    }
     private fun getApi() {
         val retrofit = Client.getInstance()
         val service = retrofit.create(SubwayService::class.java)
         service.getResponse(searchLine)
             .enqueue(object : Callback<com.capstone.traffic.model.network.subway.Response> {
                 override fun onResponse(call: Call<com.capstone.traffic.model.network.subway.Response>, response: Response<com.capstone.traffic.model.network.subway.Response>) {
-                    if(response.isSuccessful) startLoading(response.body()!!.response)
+                    if(response.isSuccessful) {
+                        apiAns = true
+                        startLoading(response.body()!!.response)
+                    }
+                    else {
+                        apiAns = false
+                        endLoading()
+                    }
                 }
-
                 override fun onFailure(call: Call<com.capstone.traffic.model.network.subway.Response>, t: Throwable) {
                     println(call)
                 }

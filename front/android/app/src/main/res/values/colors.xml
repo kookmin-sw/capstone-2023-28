@@ -20,4 +20,5 @@
     <color name="hs7">#717C04</color>
     <color name="hs8">#DE186A</color>
     <color name="hs9">#C0AF8E</color>
+    <color name="transparent">#00000000</color>
 </resources>

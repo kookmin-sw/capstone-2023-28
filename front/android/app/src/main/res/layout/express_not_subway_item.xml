@@ -1,129 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginStart="30sp"
-    android:layout_marginEnd="30sp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginStart="30sp"
     android:orientation="horizontal">
+
     <LinearLayout
         android:id="@+id/LL"
-        android:layout_width="0dp"
+        android:layout_marginEnd="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
         android:orientation="horizontal">
-        <LinearLayout
-            android:orientation="vertical"
+
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatImageView
-                android:visibility="invisible"
-                android:id="@+id/startSubway"
-                android:layout_width="20sp"
-                android:layout_height="30sp"
-                android:background="@drawable/metro_do3" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:visibility="invisible"
-                android:id="@+id/centerSubway"
-                android:layout_width="20sp"
-                android:layout_height="30sp"
-                android:background="@drawable/metro_do3" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:visibility="invisible"
-                android:id="@+id/endSubway"
-                android:layout_width="20sp"
-                android:layout_height="30sp"
-                android:background="@drawable/metro_do3" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="3sp"
-                android:layout_height="30sp"
                 android:layout_gravity="center"
-                android:background="@color/hs3" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="30sp"
-                android:layout_height="30sp"
-                android:background="@drawable/circle_d3" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="3sp"
-                android:layout_height="30sp"
+                android:id="@+id/lineColor1"
+                android:layout_width="20sp"
+                android:layout_height="120sp"
+                android:background="@color/hs2" />
+            <FrameLayout
+                android:id="@+id/fr1"
                 android:layout_gravity="center"
-                android:background="@color/hs3" />
-        </LinearLayout>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="40sp"
+                    android:layout_height="40sp"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/shape_circle"/>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/downIV"
+                    android:layout_width="40sp"
+                    android:backgroundTint="@color/hs2"
+                    android:layout_height="40sp"
+                    android:background="@drawable/icon_circle_bottom"/>
+            </FrameLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:visibility="invisible"
+                android:id="@+id/startIV1"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center|top"
+                android:background="@drawable/train"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:visibility="invisible"
+                android:id="@+id/centerIV1"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:background="@drawable/train"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:visibility="invisible"
+                android:id="@+id/endIV1"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="bottom|center"
+                android:background="@drawable/train" />
+        </FrameLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
         android:orientation="horizontal">
-
-        <LinearLayout
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
+            android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="3sp"
-                android:layout_height="30sp"
                 android:layout_gravity="center"
-                android:background="@color/hs3" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="30sp"
-                android:layout_height="30sp"
-                android:layout_gravity="center"
-                android:background="@drawable/circle_u3" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="3sp"
-                android:layout_height="30sp"
-                android:layout_gravity="center"
-                android:background="@color/hs3" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-            <androidx.appcompat.widget.AppCompatImageView
-                android:visibility="invisible"
-                android:id="@+id/reverseStartSubway"
+                android:id="@+id/lineColor2"
                 android:layout_width="20sp"
-                android:layout_height="30sp"
-                android:background="@drawable/metro_up3" />
+                android:layout_height="120sp"
+                android:background="@color/hs2" />
+
+            <FrameLayout
+                android:id="@+id/fr2"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="40sp"
+                    android:layout_height="40sp"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/shape_circle"/>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/upIV"
+                    android:layout_width="40sp"
+                    android:backgroundTint="@color/hs2"
+                    android:layout_height="40sp"
+                    android:background="@drawable/icon_circle_top"/>
+            </FrameLayout>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:visibility="invisible"
-                android:id="@+id/reverseCenterSubway"
-                android:layout_width="20sp"
-                android:layout_height="30sp"
-                android:background="@drawable/metro_up3" />
+                android:id="@+id/startIV2"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center|top"
+                android:background="@drawable/train"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/centerIV2"
+                android:visibility="invisible"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:background="@drawable/train"/>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:visibility="invisible"
-                android:id="@+id/reverseEndSubway"
-                android:layout_width="20sp"
-                android:layout_height="30sp"
-                android:background="@drawable/metro_up3" />
-        </LinearLayout>
+                android:id="@+id/endIV2"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="bottom|center"
+                android:background="@drawable/train"/>
+        </FrameLayout>
+
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/stationName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start|center"
-        android:layout_weight="1"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        android:textStyle="bold" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/pr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.cardview.widget.CardView
+            app:cardCornerRadius="5dp"
+            app:cardMaxElevation="5dp"
+            android:backgroundTint="@color/gray"
+            app:layout_constraintTop_toTopOf="@+id/pr"
+            app:layout_constraintBottom_toBottomOf="@+id/pr"
+            app:layout_constraintStart_toStartOf="@+id/pr"
+            app:layout_constraintEnd_toEndOf="@+id/pr"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_margin="5dp"
+                android:text="e123"
+                android:id="@+id/stationName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

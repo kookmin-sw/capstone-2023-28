@@ -4,6 +4,9 @@
     package="com.capstone.traffic">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
 
     <application
         android:name="com.capstone.traffic.global.MyApplication"
@@ -17,6 +20,14 @@
         android:theme="@style/Theme.Traffic"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity android:name=".ui.home.route.search.arrivalInform.ArrivalInformActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ui.home.direction.DirectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.home.route.search.SearchActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.home.board.bulletinBoard.ArriveInformActivity"
             android:exported="false" />

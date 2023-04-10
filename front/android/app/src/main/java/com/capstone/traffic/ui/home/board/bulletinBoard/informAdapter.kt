@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.traffic.R
-import com.capstone.traffic.ui.home.route.SubwayData
 
 class informAdapter(private val context: Context, private val r : Int) : RecyclerView.Adapter<informAdapter.ViewHolder>() {
 
