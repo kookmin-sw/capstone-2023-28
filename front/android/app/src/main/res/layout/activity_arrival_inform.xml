@@ -7,7 +7,7 @@
 
         <variable
             name="arrival_inform"
-            type="com.capstone.traffic.ui.home.route.search.arrivalInform.ArrivalInformViewModel" />
+            type="com.capstone.traffic.ui.route.route.search.arrivalInform.ArrivalInformViewModel" />
     </data>
 
     <LinearLayout

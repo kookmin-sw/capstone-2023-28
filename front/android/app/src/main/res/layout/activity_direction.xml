@@ -6,7 +6,7 @@
     <data>
         <variable
             name="direction"
-            type="com.capstone.traffic.ui.home.direction.DirectionViewModel" />
+            type="com.capstone.traffic.ui.route.direction.DirectionViewModel" />
     </data>
 
     <LinearLayout

@@ -8,7 +8,7 @@ import com.capstone.traffic.databinding.ActivityLoginBinding
 import com.capstone.traffic.global.BaseActivity
 import com.capstone.traffic.global.MyApplication
 import com.capstone.traffic.ui.checkout.CheckOutActivity
-import com.capstone.traffic.ui.home.HomeActivity
+import com.capstone.traffic.ui.HomeActivity
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     override var layoutResourceId: Int = R.layout.activity_login

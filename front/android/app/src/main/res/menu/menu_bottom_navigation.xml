@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title=""
-        android:id="@+id/board"
+        android:title="피드"
+        android:id="@+id/feed"
         android:enabled="true"
-        android:icon="@drawable/icon_board"/>
+        android:icon="@drawable/icon_feed"/>
 
     <item
-        android:title=""
-        android:id="@+id/home"
+        android:title="매거진"
+        android:id="@+id/magazine"
         android:enabled="true"
-        android:icon="@drawable/icon_home"/>
+        android:icon="@drawable/icon_magazine"/>
 
     <item
-        android:title=""
+        android:title="노선도"
         android:id="@+id/route"
         android:enabled="true"
         android:icon="@drawable/icon_routemap"/>
 
     <item
-        android:title=""
+        android:title="오늘"
         android:id="@+id/inform"
         android:enabled="true"
         android:icon="@drawable/icon_inform"/>
+    <item
+        android:title="마이"
+        android:id="@+id/my"
+        android:enabled="true"
+        android:icon="@drawable/icon_my"/>
 </menu>
