@@ -1,7 +1,6 @@
 package com.capstone.traffic.ui.login
 
 import android.content.Intent
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.capstone.traffic.R
@@ -11,7 +10,7 @@ import com.capstone.traffic.global.MyApplication
 import com.capstone.traffic.ui.checkout.CheckOutActivity
 import com.capstone.traffic.ui.home.HomeActivity
 
-class loginActivity : BaseActivity<ActivityLoginBinding>() {
+class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     override var layoutResourceId: Int = R.layout.activity_login
     private lateinit var loginViewModel : LoginViewModel
 
