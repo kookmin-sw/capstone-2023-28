@@ -23,7 +23,7 @@ class loginActivity : BaseActivity<ActivityLoginBinding>() {
         //goHome()
 
         if(checkLoginStatus()) {
-            //goHome()
+            goHome()
         }
 
         binding.createAccountButton.setOnClickListener {
@@ -44,6 +44,7 @@ class loginActivity : BaseActivity<ActivityLoginBinding>() {
         finish()
     }
     private fun checkLoginStatus() : Boolean {
-        return MyApplication.prefs.getBoolean("status")
+        val hasToken = MyApplication.prefs.getToken() != null
+        return MyApplication.prefs.getBoolean("status") && hasToken
     }
 }

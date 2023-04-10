@@ -1,27 +1,25 @@
 package com.capstone.traffic.ui.checkout
 
+import android.annotation.SuppressLint
 import android.app.Application
-import android.content.Context
 import android.widget.Toast
 import androidx.databinding.ObservableField
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.capstone.traffic.model.network.sql.Client
 import com.capstone.traffic.model.network.sql.Service
 import com.capstone.traffic.model.network.sql.dataclass.sign.SignResSuc
 import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.BufferedReader
 
 class CheckOutViewModel(application : Application) : AndroidViewModel(application){
+    @SuppressLint("StaticFieldLeak")
     private val context = getApplication<Application>().applicationContext
 
     val email = ObservableField<String>()

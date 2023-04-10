@@ -8,14 +8,14 @@ class MyApplication : Application() {
     companion object {
         lateinit var prefs: PreferenceUtil
         lateinit var allLineData : List<String>
+        var access : String? = null
         var status = false
 
-
     }
-
     override fun onCreate() {
         prefs = PreferenceUtil(applicationContext)
         allLineData = allName.split(", ").sorted()
+        access = prefs.getToken()
         super.onCreate()
     }
 }
