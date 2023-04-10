@@ -59,3 +59,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
                                        "error_id": 0
                                    }}
     }
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token["user_email"]=user.user_email
+        return token

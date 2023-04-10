@@ -52,13 +52,27 @@ class UserUpdateView(APIView):
                 data["res"] = {"error_name" : "비밀번호 불일치", "error_id" : 3}
                 return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-
+class UserDeleteView(APIView):
+    def delete(self, request):
+        data = {}
+        payload = request.auth.payload
+        try:
+            user = User.objects.get(user_email=payload["user_email"])
+        except User.DoesNotExist:
+            data = {"status": "ERROR",
+                    "res": {"error_name": "이메일 없음", "error_id": 1}
+                    }
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            user.delete()
+            data["status"] = "OK"
+            data["res"] = {}
+            return Response(data, status=status.HTTP_200_OK)
 class UserInfoView(APIView):
     # Token 으로 유저의 정보를 탐색
     def get(self, request):
         try:
             user = User.objects.get(user_email=request.GET["user_email"])
-
         except User.DoesNotExist:
             data = {"status": "ERROR",
                  "res": {"error_name": "이메일 없음", "error_id": 1}
