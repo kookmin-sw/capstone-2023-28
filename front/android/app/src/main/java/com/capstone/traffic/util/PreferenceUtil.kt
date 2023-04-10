@@ -21,4 +21,12 @@ class PreferenceUtil(context: Context) {
     fun setToken(token : String){
         prefs.edit().putString("token", token).apply()
     }
+
+    fun getEmail() : String? {
+        return prefs.getString("email", null)
+    }
+
+    fun setEmail(email : String){
+        prefs.edit().putString("email", email).apply()
+    }
 }

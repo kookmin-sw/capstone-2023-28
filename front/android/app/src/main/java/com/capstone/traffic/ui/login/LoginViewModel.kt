@@ -52,6 +52,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application){
                     if (response.isSuccessful){
                         MyApplication.prefs.setToken(response.body()!!.res.access)
                         MyApplication.prefs.setBoolean("status",true)
+                        MyApplication.prefs.setEmail(email.get().toString())
                         _loginStatus.value = true
                         Toast.makeText(context, "로그인 완료", Toast.LENGTH_SHORT).show()
                     }
