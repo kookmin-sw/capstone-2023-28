@@ -5,9 +5,9 @@ from rest_framework.response import Response
 def custom_exception_handler(exc, context):
     if isinstance(exc, AuthenticationFailed):
         return Response({
-            'status': 'Error',
+            'status': 'ERROR',
             'res': {
-                'error_name': 'user_not_found',
+                'error_name': '[token] user_not_found',
                 'error_id': 1
             }
         }, status=401)

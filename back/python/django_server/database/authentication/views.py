@@ -26,31 +26,18 @@ class UserSignupView(APIView):
 class UserUpdateView(APIView):
     def post(self, request):
         data = {}
-        try:
-            user = User.objects.get(user_email=request.data["user_email"])
-        except User.DoesNotExist:
-            data["status"] = "ERROR"
-            data["res"] = {"error_name" : "유저가 존재하지 않음", "error_id": 4}
-            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        payload = request.auth.payload
+        user = User.objects.get(user_email=payload["user_email"])
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            updated_user = serializer.save()
+            data["status"] = "OK"
+            data["res"] = {}
+            return Response(data)
         else:
-            password = request.data["password"]
-            if user.check_password(password):
-                del request.data["password"]
-                serializer = UserSerializer(user, data=request.data, partial=True)
-                if serializer.is_valid():
-                    updated_user = serializer.save()
-                    data["status"] = "OK"
-                    data["res"] = {}
-                    return Response(data)
-                else:
-                    data["status"] = "ERROR"
-                    data["res"] = serializer.errors
-                    return Response(data, status=status.HTTP_400_BAD_REQUEST)
-
-            else:
-                data["status"] = "ERROR"
-                data["res"] = {"error_name" : "비밀번호 불일치", "error_id" : 3}
-                return Response(data, status=status.HTTP_400_BAD_REQUEST)
+            data["status"] = "ERROR"
+            data["res"] = serializer.errors
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
 class UserDeleteView(APIView):
     def delete(self, request):
@@ -85,8 +72,8 @@ class UserInfoView(APIView):
             return Response(data, status=status.HTTP_200_OK)
 class UserUploadImageView(APIView):
     def post(self, request):
+        user_nickname = request.auth.payload["user_email"]
         image = request.FILES["image"]
-        user_nickname = request.data["user_nickname"]
         data = {}
         if User.objects.filter(user_nickname=user_nickname):
             user = User.objects.get(user_nickname=user_nickname)
@@ -98,7 +85,6 @@ class UserUploadImageView(APIView):
                 data["res"] = {"URL": url}
                 return Response(data)
             else:
-                ""
                 data["error"] = "Wrong Request"
                 return Response(data, status=status.HTTP_400_BAD_REQUEST)
         else:
