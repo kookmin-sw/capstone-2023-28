@@ -72,30 +72,35 @@ class UserInfoView(APIView):
             return Response(data, status=status.HTTP_200_OK)
 class UserUploadImageView(APIView):
     def post(self, request):
-        user_nickname = request.auth.payload["user_email"]
-        image = request.FILES["image"]
         data = {}
-        if User.objects.filter(user_nickname=user_nickname):
-            user = User.objects.get(user_nickname=user_nickname)
-            url = S3ImageUploader(image).upload()
-            serializer = UserProfileUploadSerializer(user,{"user_nickname":user_nickname, "user_profile_image":url})
-            if serializer.is_valid():
-                serializer.save()
-                data["status"] = "OK"
-                data["res"] = {"URL": url}
-                return Response(data)
-            else:
-                data["error"] = "Wrong Request"
-                return Response(data, status=status.HTTP_400_BAD_REQUEST)
-        else:
+        user_email = request.auth.payload["user_email"]
+        image = request.FILES["image"]
+        user = User.objects.get(user_email=user_email)
 
-            data["error"] = "User is not exist"
+        imageUploader = S3ImageUploader(image)
+        url = imageUploader.get_url()
+        serializer = UserProfileUploadSerializer(user,{"user_email":user_email, "user_profile_image":url})
+        if serializer.is_valid():
+            imageUploader.upload()
+
+            serializer.save()
+            data["status"] = "OK"
+            data["res"] = {"URL": url}
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            data = {"status": "ERROR",
+                    "res": {"error_name": "요청 에러", "error_id": 1}
+                    }
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class S3ImageUploader:
     def __init__(self, file):
         self.file = file
+        self.file_name = str(uuid.uuid4())
+        self.url = f'https://{settings.AWS_STORAGE_BUCKET_NAME}.s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{self.file_name}'
+    def get_url(self):
+        return self.url
 
     def upload(self):
         s3_client = boto3.client(
@@ -104,9 +109,8 @@ class S3ImageUploader:
             aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
             region_name=settings.AWS_S3_REGION_NAME
         )
-        i = str(uuid.uuid4())
-        response = s3_client.upload_fileobj(self.file, settings.AWS_STORAGE_BUCKET_NAME, i)
-        return f'https://{settings.AWS_STORAGE_BUCKET_NAME}.s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{i}'
+        response = s3_client.upload_fileobj(self.file, settings.AWS_STORAGE_BUCKET_NAME, self.file_name)
+        return self.url
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer

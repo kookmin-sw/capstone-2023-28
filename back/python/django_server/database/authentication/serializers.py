@@ -45,7 +45,7 @@ class UserSerializer(serializers.Serializer):
 class UserProfileUploadSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["user_nickname", "user_profile_image"]
+        fields = ["user_profile_image"]
     def update(self, instance, validated_data):
         instance.user_profile_image = validated_data["user_profile_image"]
         instance.save()
