@@ -4,11 +4,22 @@ import json
 import time
 from abc import ABC, abstractmethod
 from dotenv import load_dotenv
+from firebase_admin import credentials, firestore, initialize_app
 from utils.key import BEARER_TOKEN
+
+import os
+print(os.getcwd())
+
+
 
 load_dotenv()  # load environment variables from .env file
 
 bearer_token = BEARER_TOKEN
+
+# Initialize Firebase
+cred = credentials.Certificate("utils/serviceAccountKey.json")
+initialize_app(cred)
+db = firestore.client()
 
 class TwitterStreamer(ABC):
     def stream_tweets(self):
@@ -70,6 +81,12 @@ class SteelohssStreamer(TwitterStreamer):
     def handle_tweet(self, tweet):
         print("New tweet from @steelohss!")
         print(tweet["data"]["text"])
+        
+        # Send data to Firebase
+        doc_ref = db.collection("tweets").document(tweet["data"]["id"])
+        doc_ref.set(tweet["data"])
+        
+        print("Data sent to Firebase")
         print()
 
 
