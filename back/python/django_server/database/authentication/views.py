@@ -12,7 +12,7 @@ import boto3
 class UserSignupView(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
-        serializer = UserSerializer(data=request.data, partial=True)
+        serializer = UserSerializer(data=request.data)
         data = {}
         if serializer.is_valid():
             data["status"] = "OK"
@@ -78,14 +78,17 @@ class UserUploadImageView(APIView):
         user = User.objects.get(user_email=user_email)
 
         imageUploader = S3ImageUploader(image)
-        url = imageUploader.get_url()
-        serializer = UserProfileUploadSerializer(user,{"user_email":user_email, "user_profile_image":url})
+        file_name = imageUploader.get_file_name()
+        serializer = UserProfileUploadSerializer(user,{"user_email":user_email, "user_profile_image":file_name})
         if serializer.is_valid():
+            # 만약 이미 프로필 이미지가 있을 시 삭제
+            if user.user_profile_image is not None:
+                imageUploader.delete(user.user_profile_image)
             imageUploader.upload()
 
             serializer.save()
             data["status"] = "OK"
-            data["res"] = {"URL": url}
+            data["res"] = {"file_name": file_name}
             return Response(data, status=status.HTTP_200_OK)
         else:
             data = {"status": "ERROR",
@@ -98,20 +101,20 @@ class S3ImageUploader:
     def __init__(self, file):
         self.file = file
         self.file_name = str(uuid.uuid4())
-        self.url = f'https://{settings.AWS_STORAGE_BUCKET_NAME}.s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{self.file_name}'
-    def get_url(self):
-        return self.url
-
-    def upload(self):
-        s3_client = boto3.client(
+        #self.url = f'https://{settings.AWS_STORAGE_BUCKET_NAME}.s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{self.file_name}'
+        self.s3_client = boto3.client(
             's3',
             aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
             aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
             region_name=settings.AWS_S3_REGION_NAME
         )
-        response = s3_client.upload_fileobj(self.file, settings.AWS_STORAGE_BUCKET_NAME, self.file_name)
-        return self.url
-
+    def get_file_name(self):
+        return self.file_name
+    def upload(self):
+        response = self.s3_client.upload_fileobj(self.file, settings.AWS_STORAGE_BUCKET_NAME, self.file_name)
+        return self.file_name
+    def delete(self, file_name):
+        self.s3_client.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=file_name)
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
     def post(self, request, *args, **kwargs):
