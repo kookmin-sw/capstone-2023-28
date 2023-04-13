@@ -76,25 +76,25 @@ class SteelohssStreamer(TwitterStreamer):
         return [
             {"value": "from:steelohss", "tag": "steelohss-tweets"}
         ]
-
+    
     def handle_tweet(self, tweet):
         print("New tweet from @steelohss!")
         print(tweet["data"]["text"])
-
+        
         # Send data to Firebase
         doc_ref = db.collection("tweets").document(tweet["data"]["id"])
         doc_ref.set(tweet["data"])
-
-        # Send push notification to mobile device
+        
+        # Send notification to mobile device
         message = messaging.Message(
-            data={
-                "title": "New tweet from @steelohss!",
-                "body": tweet["data"]["text"]
-            },
-            topic="steelohss-tweets"
+            topic="steelohss-tweets",
+            notification=messaging.Notification(
+                title="New tweet from @steelohss!",
+                body=tweet["data"]["text"]
+            )
         )
         response = messaging.send(message)
-        print("Push notification sent to mobile device")
+        print("Notification sent to mobile device")
         print()
 
 
