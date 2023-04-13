@@ -4,13 +4,11 @@ import json
 import time
 from abc import ABC, abstractmethod
 from dotenv import load_dotenv
-from firebase_admin import credentials, firestore, initialize_app
+from firebase_admin import credentials, firestore, initialize_app, messaging
 from utils.tweet_key import BEARER_TOKEN
 
 import os
 print(os.getcwd())
-
-
 
 load_dotenv()  # load environment variables from .env file
 
@@ -20,6 +18,7 @@ bearer_token = BEARER_TOKEN
 cred = credentials.Certificate("utils/serviceAccountKey.json")
 initialize_app(cred)
 db = firestore.client()
+
 
 class TwitterStreamer(ABC):
     def stream_tweets(self):
@@ -39,7 +38,7 @@ class TwitterStreamer(ABC):
                 )
                 print("Retrying in 30 seconds...")
                 time.sleep(30)
-    
+
     def _setup_stream(self):
         rules = self.get_rules()
         payload = {"add": rules}
@@ -56,15 +55,15 @@ class TwitterStreamer(ABC):
             raise Exception(
                 f"Error occurred: Cannot set up stream rules (HTTP {response.status_code}): {response.text}"
             )
-    
+
     @abstractmethod
     def get_rules(self):
         pass
-    
+
     @abstractmethod
     def handle_tweet(self, tweet):
         pass
-    
+
     @staticmethod
     def _get_stream_response():
         stream_url = "https://api.twitter.com/2/tweets/search/stream"
@@ -77,16 +76,25 @@ class SteelohssStreamer(TwitterStreamer):
         return [
             {"value": "from:steelohss", "tag": "steelohss-tweets"}
         ]
-    
+
     def handle_tweet(self, tweet):
         print("New tweet from @steelohss!")
         print(tweet["data"]["text"])
-        
+
         # Send data to Firebase
         doc_ref = db.collection("tweets").document(tweet["data"]["id"])
         doc_ref.set(tweet["data"])
-        
-        print("Data sent to Firebase")
+
+        # Send push notification to mobile device
+        message = messaging.Message(
+            data={
+                "title": "New tweet from @steelohss!",
+                "body": tweet["data"]["text"]
+            },
+            topic="steelohss-tweets"
+        )
+        response = messaging.send(message)
+        print("Push notification sent to mobile device")
         print()
 
 
