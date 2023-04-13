@@ -1,23 +1,23 @@
 package com.capstone.traffic.ui.feed
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide.init
+import com.capstone.traffic.global.viewmodel.BaseViewModel
 
-class FeedViewModel(application: Application) : AndroidViewModel(application){
-    private val _hs = MutableLiveData<hs>()
+class FeedViewModel() : BaseViewModel(){
 
-    val hs : LiveData<hs> = _hs
-    init {
-        _hs.value = hs()
+    private val _itemSelectedNum = MutableLiveData<View>()
+    val itemSelectedNum get() = _itemSelectedNum
+    companion object {
+        const val EVENT_START_FILTER_APPLY = 22212
+        const val EVENT_START_FILTER_SELECT = 22213
     }
 
-    fun selectedLineFilter(s : Int){
-        when(s)
-        {
-            1 -> _hs.value?.hs1 = if(_hs.value?.hs1!!) false else true
-        }
+    fun filterApply() = viewEvent(EVENT_START_FILTER_APPLY)
+    fun filterSelect(view : View) {
+        itemSelectedNum.value = view
+        viewEvent(EVENT_START_FILTER_SELECT)
     }
 }

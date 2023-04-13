@@ -3,7 +3,10 @@ package com.capstone.traffic.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.bumptech.glide.Glide.init
 import com.capstone.traffic.R
+import com.capstone.traffic.ui.feed.hs
+
 class HomeViewModel : ViewModel() {
 
     private val _currentPageType = MutableLiveData(PageType.PAGE1)
@@ -12,8 +15,16 @@ class HomeViewModel : ViewModel() {
     private val _selectedLine = MutableLiveData<Int>()
     val selectedLine : LiveData<Int> = _selectedLine
 
+    private val _hs1 = MutableLiveData<Boolean>()
+    val hs1 : LiveData<Boolean> get() = _hs1
+
     init {
         _selectedLine.value = 1
+        _hs1.value = false
+    }
+
+    fun clicking() {
+        _hs1.value = _hs1.value ?: false
     }
 
     fun line1() {_selectedLine.value = 1}

@@ -90,7 +90,6 @@
                                 android:layout_height="wrap_content">
                                 <androidx.appcompat.widget.AppCompatButton
                                     android:id="@+id/hs1"
-                                    android:onClick="@{()->feed.selectedLineFilter(1)}"
                                     android:textColor="@color/hs1"
                                     android:text="1호선"
                                     android:textSize="13sp"
@@ -243,13 +242,15 @@
                                 android:layout_weight="1"
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"/>
+
                             <androidx.appcompat.widget.AppCompatButton
-                                android:stateListAnimator="@null"
-                                android:background="@color/white"
-                                android:textSize="13sp"
-                                android:text="필터 적용"
+                                android:id="@+id/filter_apply_btn"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:stateListAnimator="@null"
+                                android:text="필터 적용"
+                                android:textSize="13sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
