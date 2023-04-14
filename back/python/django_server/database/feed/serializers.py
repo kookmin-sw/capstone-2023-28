@@ -1,15 +1,20 @@
 from rest_framework import serializers
-from .models import Feed
+from .models import *
+from authentication.models import User
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ["feed", "content", "created_at", "updated_at"]
 
-class FeedCreateSerializer(serializers.ModelSerializer):
+class FeedSerializer(serializers.ModelSerializer):
+    comments = CommentSerializer(many=True, read_only=True)
     class Meta:
         model = Feed
-        fields = ("feed_user_id", "feed_content")
-class FeedLoadSerializer(serializers.ModelSerializer):
-    num_of_feeds = serializers.IntegerField
-    tag_names = serializers.ListField(
-        child = serializers.CharField(max_length=10)
-    )
-    class Meta:
-        model = Feed
-        fields = ("feed_user_id", "num_of_feeds", "tag_names")
+        fields = ("content", "created_at", "updated_at", "comments")
+    def create(self, validated_data):
+        user_id = self.context.get("user_id")
+        validated_data["user_id"] = User.objects.get(id=user_id)
+        feed = Feed.objects.create(**validated_data)
+        return feed
+
+

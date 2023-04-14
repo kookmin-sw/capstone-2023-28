@@ -8,7 +8,7 @@ def custom_exception_handler(exc, context):
         return Response({
             'status': 'ERROR',
             'res': {
-                'error_name': '[token] user_not_found',
+                'error_name': 'Authentication Failed',
                 'error_id': 1
             }
         }, status=401)
