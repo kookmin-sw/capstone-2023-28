@@ -28,7 +28,7 @@ class TwitterStreamer(ABC):
     def stream_tweets(self):
         self._setup_stream()
         while True:
-            time.sleep(1)
+            time.sleep(5)
             response = self._get_stream_response()
             if response.status_code == 200:
                 self.retry_count = 0
