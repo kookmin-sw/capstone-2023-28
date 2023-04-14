@@ -7,9 +7,12 @@ from rest_framework import permissions, status
 # Create your views here.
 class FeedView(APIView):
     def get(self, request):
+        data = {}
         feeds = Feed.objects.all()
         serializers = FeedSerializer(feeds, many=True)
-        return Response(serializers.data)
+        data["status"] = "OK"
+        data["res"] = serializers.data
+        return Response(data, status=status.HTTP_200_OK)
     def post(self, request):
         payload = request.auth.payload
         serializer = FeedSerializer(data=request.data, context={"user_id":payload["user_id"]})

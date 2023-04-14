@@ -9,7 +9,8 @@ class FeedSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     class Meta:
         model = Feed
-        fields = ("content", "created_at", "updated_at", "comments")
+        fields = ("feed_id", "user_id", "content", "created_at", "updated_at", "comments")
+        extra_kwargs = {"user_id": {"required": False}}
     def create(self, validated_data):
         user_id = self.context.get("user_id")
         validated_data["user_id"] = User.objects.get(id=user_id)
