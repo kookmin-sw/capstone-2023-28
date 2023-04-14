@@ -14,7 +14,20 @@ class FeedCreateView(APIView):
             serializer.save()
             data["status"] = "OK"
             data["res"] = {}
-            return Response(data)
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            data["status"] = "ERROR"
+            data["res"] = serializer.errors
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+class CommentCreateView(APIView):
+    def post(self, request):
+        serializer = CommentSerializer(data=request.data)
+        data = {}
+        if serializer.is_valid():
+            serializer.save()
+            data["status"] = "OK"
+            data["res"] = {}
+            return Response(data, status=status.HTTP_200_OK)
         else:
             data["status"] = "ERROR"
             data["res"] = serializer.errors

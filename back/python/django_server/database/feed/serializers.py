@@ -4,8 +4,7 @@ from authentication.models import User
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ["feed", "content", "created_at", "updated_at"]
-
+        fields = ["feed_id", "content", "created_at", "updated_at"]
 class FeedSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     class Meta:
