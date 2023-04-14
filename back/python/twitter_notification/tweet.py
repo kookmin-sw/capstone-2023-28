@@ -21,17 +21,29 @@ db = firestore.client()
 
 
 class TwitterStreamer(ABC):
+    def __init__(self):
+        self.retry_time = 60
+        self.retry_count = 0
+    
     def stream_tweets(self):
         self._setup_stream()
         while True:
             time.sleep(1)
             response = self._get_stream_response()
             if response.status_code == 200:
+                self.retry_count = 0
                 for line in response.iter_lines():
                     if line:
                         tweet = json.loads(line)
                         if "data" in tweet:
                             self.handle_tweet(tweet)
+            elif response.status_code == 429:
+                self.retry_count += 1
+                print(
+                    f"Rate limit reached: {response.text}\nRetrying in {self.retry_time} seconds (attempt {self.retry_count})"
+                )
+                time.sleep(self.retry_time)
+                self.retry_time += 60
             else:
                 print(
                     f"Error occurred: Cannot stream tweets (HTTP {response.status_code}): {response.text}"
@@ -64,11 +76,11 @@ class TwitterStreamer(ABC):
     def handle_tweet(self, tweet):
         pass
 
-    @staticmethod
-    def _get_stream_response():
+    def _get_stream_response(self):
         stream_url = "https://api.twitter.com/2/tweets/search/stream"
         headers = {"Authorization": f"Bearer {bearer_token}"}
         return requests.get(stream_url, headers=headers, stream=True)
+
 
 
 class SteelohssStreamer(TwitterStreamer):
