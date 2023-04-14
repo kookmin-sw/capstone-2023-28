@@ -3,12 +3,14 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.exceptions import ValidationError
 from database import settings
+
+
 class UserSerializer(serializers.Serializer):
     user_nickname = serializers.CharField(max_length=10)
-    user_email = serializers.CharField(max_length=30)
-    user_definition = serializers.CharField(max_length=100, allow_null=True)
+    user_email = serializers.EmailField(max_length=30)
+    user_definition = serializers.CharField(max_length=100, allow_null=True, required=False)
     password = serializers.CharField()
-    user_profile_image = serializers.CharField(max_length=200, allow_null=True)
+    user_profile_image = serializers.CharField(max_length=200, allow_null=True, required=False)
     def validate_unique_user_nickname(self, value):
         if User.objects.filter(user_nickname=value).exists():
             raise serializers.ValidationError(
@@ -26,6 +28,7 @@ class UserSerializer(serializers.Serializer):
             )
         return value
     def create(self, validated_data):
+        print(validated_data)
         # 여기서 email 과 nickname validation exception 둘 다 raise 하는 방법을 모르겠음.
         self.validate_unique_user_email(validated_data.get("user_email"))
         self.validate_unique_user_nickname(validated_data.get("user_nickname"))
@@ -45,7 +48,7 @@ class UserSerializer(serializers.Serializer):
 class UserProfileUploadSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["user_nickname", "user_profile_image"]
+        fields = ["user_profile_image"]
     def update(self, instance, validated_data):
         instance.user_profile_image = validated_data["user_profile_image"]
         instance.save()
@@ -59,3 +62,10 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
                                        "error_id": 0
                                    }}
     }
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token["user_email"]=user.user_email
+        token["user_id"]=user.id
+        return token
+
