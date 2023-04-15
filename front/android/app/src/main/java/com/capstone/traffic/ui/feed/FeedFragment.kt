@@ -1,6 +1,7 @@
 package com.capstone.traffic.ui.feed
 
 import android.app.ProgressDialog.show
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
@@ -21,6 +22,7 @@ import com.capstone.traffic.R
 import com.capstone.traffic.databinding.FragmentFeedBinding
 import com.capstone.traffic.ui.feed.FeedViewModel.Companion.EVENT_START_FILTER_APPLY
 import com.capstone.traffic.ui.feed.FeedViewModel.Companion.EVENT_START_FILTER_SELECT
+import com.capstone.traffic.ui.feed.writefeed.WriteFeedActivity
 import com.capstone.traffic.ui.my.MyViewModel
 
 
@@ -28,7 +30,6 @@ class FeedFragment : Fragment() {
 
     private val binding by lazy { FragmentFeedBinding.inflate(layoutInflater) }
     private val feedViewModel by activityViewModels<FeedViewModel>()
-    private lateinit var animHide : Animation
     private lateinit var lineFilterList : List<AppCompatButton>
     private fun initData(){
         lineFilterList = listOf(
@@ -53,7 +54,6 @@ class FeedFragment : Fragment() {
     ): View? {
 
         initData()
-        initAnimaion()
 
 
         // 뷰 클릭 이벤트 적용
@@ -67,26 +67,20 @@ class FeedFragment : Fragment() {
                     feedViewModel.filterSelect(it)
                 }
             }
+            //글쓰기 버튼
+            writeBtn.setOnClickListener {
+                val intent = Intent(requireContext(),WriteFeedActivity::class.java)
+                startActivity(intent)
+            }
         }
-
 
         binding.filterBtn.setOnClickListener {
             binding.filterLl.apply {
-                if(visibility == View.GONE) {
-                    visibility = View.VISIBLE
-                    startAnimation(animHide)
-                }
-                else{
-                    visibility = View.GONE
-                }
+                visibility = if(visibility == View.GONE) View.VISIBLE else View.GONE
             }
         }
 
         return binding.root
-    }
-
-    private fun initAnimaion() {
-        animHide = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_filter_show)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

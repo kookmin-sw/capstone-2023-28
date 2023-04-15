@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-
     <application
         android:name="com.capstone.traffic.global.MyApplication"
         android:allowBackup="true"
@@ -20,8 +19,12 @@
         android:theme="@style/Theme.Traffic"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity android:name=".ui.route.route.search.arrivalInform.ArrivalInformActivity"
-            android:exported="false"/>
+        <activity
+            android:name=".ui.feed.writefeed.WriteFeedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.route.route.search.arrivalInform.ArrivalInformActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.route.direction.DirectionActivity"
             android:exported="false" />

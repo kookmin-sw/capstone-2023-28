@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="write"
+            type="com.capstone.traffic.ui.feed.writefeed.WriteFeedViewModel" />
+    </data>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_margin="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_gravity="center"
+                android:id="@+id/back_btn"
+                android:background="@drawable/icon_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp"/>
+            <TextView
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:textSize="20sp"
+                android:text="게시물 작성"
+                android:layout_toEndOf="@+id/back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <View
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"/>
+            <androidx.appcompat.widget.AppCompatButton
+
+                android:layout_gravity="center"
+                android:stateListAnimator="@null"
+                android:text="게시"
+                android:textSize="15sp"
+                android:background="@color/white"
+                android:layout_width="45dp"
+                android:layout_height="30dp"/>
+        </LinearLayout>
+        <View
+            android:background="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"/>
+    </LinearLayout>
+</layout>
