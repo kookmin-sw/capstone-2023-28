@@ -1,3 +1,11 @@
+# AWS Lambda file for ranking system of 1 - 10 metro lines. 
+#
+# Run this file in AWS Lambda for better results.
+#
+# =========================================================================
+
+
+
 import json
 import tweepy
 import os

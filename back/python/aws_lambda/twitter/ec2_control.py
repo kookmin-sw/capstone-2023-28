@@ -1,3 +1,15 @@
+# Controlling AWS EC2 instances from python.
+#
+# Must have AWS EC2 instances to run this.
+#
+# Only runs EC2 in this version.
+#
+# Requires utils folder to run this file.
+#
+# ================================================================================
+
+
+
 import boto3
 import subprocess
 import time
