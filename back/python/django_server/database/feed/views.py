@@ -4,6 +4,7 @@ from .models import Feed
 from .serializers import *
 from rest_framework.response import Response
 from rest_framework import permissions, status
+from API.s3 import S3ImageUploader
 # Create your views here.
 class FeedView(APIView):
     def get(self, request):
@@ -20,12 +21,30 @@ class FeedView(APIView):
         if serializer.is_valid():
             serializer.save()
             data["status"] = "OK"
+            data["res"] = {"feed_id": serializer.data["feed_id"]}
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            data["status"] = "ERROR"
+            data["res"] = serializer.errors
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+class FeedImageView(APIView):
+    def post(self, request):
+        data = {}
+        feed_id = request.data["feed_id"]
+        image = request.FILES["image"]
+        imageUploader = S3ImageUploader(image)
+        image_name = imageUploader.upload()
+        serializer = FeedImageSerializer(data={"feed_id":feed_id, "image": image_name})
+        if serializer.is_valid():
+            serializer.save()
+            data["status"] = "OK"
             data["res"] = {}
             return Response(data, status=status.HTTP_200_OK)
         else:
             data["status"] = "ERROR"
             data["res"] = serializer.errors
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
+
 class CommentCreateView(APIView):
     def post(self, request):
         serializer = CommentSerializer(data=request.data)

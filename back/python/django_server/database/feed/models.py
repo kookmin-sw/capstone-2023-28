@@ -16,3 +16,7 @@ class Comment(models.Model):
     content = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+class FeedImage(models.Model):
+    feed_id = models.ForeignKey(Feed, related_name='images', on_delete=models.CASCADE)
+    image = models.CharField(max_length=255)

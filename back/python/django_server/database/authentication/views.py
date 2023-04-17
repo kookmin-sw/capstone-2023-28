@@ -7,8 +7,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import *
 from .models import User
 from rest_framework.permissions import AllowAny
-from database import settings
-import boto3
+from API.s3 import S3ImageUploader
 class UserSignupView(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
@@ -84,11 +83,11 @@ class UserUploadImageView(APIView):
             # 만약 이미 프로필 이미지가 있을 시 삭제
             if user.user_profile_image is not None:
                 imageUploader.delete(user.user_profile_image)
-            imageUploader.upload()
+            image_name = imageUploader.upload()
 
             serializer.save()
             data["status"] = "OK"
-            data["res"] = {"file_name": file_name}
+            data["res"] = {}
             return Response(data, status=status.HTTP_200_OK)
         else:
             data = {"status": "ERROR",
@@ -97,24 +96,7 @@ class UserUploadImageView(APIView):
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
 
-class S3ImageUploader:
-    def __init__(self, file):
-        self.file = file
-        self.file_name = str(uuid.uuid4())
-        #self.url = f'https://{settings.AWS_STORAGE_BUCKET_NAME}.s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{self.file_name}'
-        self.s3_client = boto3.client(
-            's3',
-            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-            region_name=settings.AWS_S3_REGION_NAME
-        )
-    def get_file_name(self):
-        return self.file_name
-    def upload(self):
-        response = self.s3_client.upload_fileobj(self.file, settings.AWS_STORAGE_BUCKET_NAME, self.file_name)
-        return self.file_name
-    def delete(self, file_name):
-        self.s3_client.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=file_name)
+
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
     def post(self, request, *args, **kwargs):

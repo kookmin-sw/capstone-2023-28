@@ -28,7 +28,7 @@ SECRET_KEY = secrets["SECRET_KEY"]
 
 AWS_ACCESS_KEY_ID = secrets["AWS_ACCESS_KEY_ID"]
 AWS_SECRET_ACCESS_KEY = secrets["AWS_SECRET_ACCESS_KEY"]
-AWS_STORAGE_BUCKET_NAME = 'capstone28subway'
+AWS_STORAGE_BUCKET_NAME = 'capstone-28'
 AWS_S3_REGION_NAME = 'ap-northeast-2'
 
 # SECURITY WARNING: don't run with debug turned on in production!

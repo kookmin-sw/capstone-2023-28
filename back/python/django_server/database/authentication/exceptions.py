@@ -9,7 +9,7 @@ def custom_exception_handler(exc, context):
             'status': 'ERROR',
             'res': {
                 'error_name': 'Authentication Failed',
-                'error_id': 1
+                'error_id': 9
             }
         }, status=401)
     response = exception_handler(exc, context)
