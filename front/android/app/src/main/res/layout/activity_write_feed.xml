@@ -34,7 +34,6 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"/>
             <androidx.appcompat.widget.AppCompatButton
-
                 android:layout_gravity="center"
                 android:stateListAnimator="@null"
                 android:text="게시"
@@ -47,5 +46,50 @@
             android:background="@color/gray"
             android:layout_width="match_parent"
             android:layout_height="2dp"/>
+        <ScrollView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:gravity="top"
+                    android:padding="10dp"
+                    android:textSize="13sp"
+                    android:hint="오늘은 어떤 일이 있으셨나요?"
+                    android:background="@drawable/background_feed_text"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"/>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/take_picture_btn"
+                        android:layout_weight="1"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="5dp"
+                        android:text="사진 촬영"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/add_picture_btn"
+                        android:layout_weight="1"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="사진 가져오기"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_margin="10dp"
+                    android:id="@+id/rcv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </layout>

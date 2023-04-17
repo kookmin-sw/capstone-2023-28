@@ -24,7 +24,7 @@ object Client{
             // 10.0.2.2 -> 에뮬
             // 디바이스 -> 본인
             instance =  Retrofit.Builder()
-                .baseUrl("http://172.30.1.79:8000/user/")
+                .baseUrl("http://10.0.2.2:8000/user/")
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()

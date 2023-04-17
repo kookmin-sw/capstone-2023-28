@@ -1,4 +1,4 @@
-plugins {
+ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id "kotlin-parcelize"
@@ -10,6 +10,14 @@ android {
     compileSdk 33
 
     dataBinding {
+        enabled true
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+    
+    viewBinding {
         enabled true
     }
 
