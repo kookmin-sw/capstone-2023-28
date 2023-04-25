@@ -31,20 +31,28 @@ class FeedImageSerializer(serializers.ModelSerializer):
         ret['image'] = base64.b64encode(raw_data).decode('utf-8')
         del ret['feed_id']
         return ret
-
+class FeedHashTagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FeedHashTag
+        field = ["feed_id", "hash_tag"]
 class FeedSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     images = FeedImageSerializer(many=True, read_only=True)
+    hash_tags = FeedHashTagSerializer(many=True, read_only=True)
     user = UserSerializer(read_only=True)
     class Meta:
         model = Feed
-        fields = ("feed_id", "user_id", "content", "created_at", "updated_at", "comments", "images", "user")
+        fields = ("feed_id", "user_id", "content", "created_at", "updated_at", "comments", "images", "user", "hash_tags")
         extra_kwargs = {"user_id": {"required": False}}
     def create(self, validated_data):
         user_id = self.context.get("user_id")
+        hash_tags = self.context.get("hash_tags")
         validated_data["user_id"] = User.objects.get(id=user_id)
         feed = Feed.objects.create(**validated_data)
+        for hash_tag in hash_tags:
+            FeedHashTag.objects.create(feed_id_id=feed.feed_id ,hash_tag=hash_tag)
         return feed
+
 
 
 
