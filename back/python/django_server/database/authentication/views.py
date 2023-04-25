@@ -65,9 +65,11 @@ class UserInfoView(APIView):
                  }
             return Response(data, status = status.HTTP_400_BAD_REQUEST)
         else:
+            serializer = UserSerializer(user)
             data = {}
             data["status"] = "OK"
-            data["res"] = {"user_email":user.user_email, "user_nickname":user.user_nickname, "user_definition":user.user_definition, "user_point_number":user.user_point_number, "user_profile_image": user.user_profile_image}
+            data["res"] = serializer.data
+            #data["res"] = {"user_email":user.user_email, "user_nickname":user.user_nickname, "user_definition":user.user_definition, "user_point_number":user.user_point_number, "user_profile_image": user.user_profile_image}
             return Response(data, status=status.HTTP_200_OK)
 class UserUploadImageView(APIView):
     def post(self, request):
@@ -77,14 +79,13 @@ class UserUploadImageView(APIView):
         user = User.objects.get(user_email=user_email)
 
         imageUploader = S3ImageUploader(image)
-        file_name = imageUploader.get_file_name()
-        serializer = UserProfileUploadSerializer(user,{"user_email":user_email, "user_profile_image":file_name})
+        image_name = imageUploader.get_image_name()
+        serializer = UserProfileUploadSerializer(user,{"user_email":user_email, "user_profile_image":image_name})
         if serializer.is_valid():
             # 만약 이미 프로필 이미지가 있을 시 삭제
             if user.user_profile_image is not None:
                 imageUploader.delete(user.user_profile_image)
-            image_name = imageUploader.upload()
-
+            imageUploader.upload()
             serializer.save()
             data["status"] = "OK"
             data["res"] = {}
