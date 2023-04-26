@@ -40,7 +40,7 @@ class CheckOutViewModel(application : Application) : AndroidViewModel(applicatio
     }
 
     private fun getSignUp(){
-        val retrofit = Client.getInstance()
+        val retrofit = Client.getInstance(false)
         val signUpService = retrofit.create(Service::class.java)
         val mediaType = "application/json".toMediaTypeOrNull()
         val param  = RequestBody.create(mediaType,"{\"password\":\"${password.get()}\",\"user_email\":\"${email.get()}\",\"user_nickname\":\"${nickname.get()}\"}")

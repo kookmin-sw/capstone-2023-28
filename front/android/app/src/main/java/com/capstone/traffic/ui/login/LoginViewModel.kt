@@ -42,7 +42,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application){
     }
 
     private fun login(){
-        val retrofit = Client.getInstance()
+        val retrofit = Client.getInstance(false)
         val loginService = retrofit.create(Service::class.java)
         val mediaType = "application/json".toMediaTypeOrNull()
         val param  = RequestBody.create(mediaType,"{\"password\":\"${password.get()}\",\"user_email\":\"${email.get()}\"}")

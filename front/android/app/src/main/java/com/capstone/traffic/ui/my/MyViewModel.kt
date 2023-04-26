@@ -44,10 +44,8 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun getUserAPI(){
-        val retrofit = Client.getInstance()
+        val retrofit = Client.getInstance(true)
         val infoService = retrofit.create(Service::class.java)
-        val header = MyApplication.prefs.getEmail()
-        val token = MyApplication.prefs.getToken()
         infoService.getInfo(MyApplication.prefs.getEmail().toString()).enqueue(object : Callback<InfoRecSuc>{
             override fun onResponse(call: Call<InfoRecSuc>, response: Response<InfoRecSuc>) {
                 if(response.isSuccessful){

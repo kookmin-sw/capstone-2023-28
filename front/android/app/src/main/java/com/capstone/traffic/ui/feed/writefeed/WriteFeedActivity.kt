@@ -98,12 +98,12 @@ class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
 
     // 피드 업로드 (텍스트 만)
     private fun postingText(){
-        val retrofit = Client.getInstance()
+        val retrofit = Client.getInstance(true)
         val loginService = retrofit.create(Service::class.java)
         val mediaType = "application/json".toMediaTypeOrNull()
         val postingText = binding.postingEt.text
-        val param  = RequestBody.create(mediaType,"{\"content\":\"${postingText}\"}")
-        loginService.getPostingText(token = "Bearer ${MyApplication.prefs.getToken()}", param = param)
+        val param  = RequestBody.create(mediaType,"{\"content\":\"${postingText}\",\"hash_tags\":[]}")
+        loginService.getPostingText(param = param)
             .enqueue(object : Callback<response> {
                 override fun onResponse(call: Call<response>, response: Response<response>) {
                     if (response.isSuccessful){

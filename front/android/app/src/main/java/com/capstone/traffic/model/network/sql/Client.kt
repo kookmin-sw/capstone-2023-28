@@ -13,22 +13,39 @@ import java.io.IOException
 object Client{
     private var instance : Retrofit? = null
 
-    fun getInstance() : Retrofit {
+    fun getInstance(type : Boolean) : Retrofit {
         if(instance == null)
         {
-            val okHttpClient = OkHttpClient.Builder()
-                .addInterceptor(HeaderInterceptor())
-                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                .build()
-            // 로컬 환경 테스트
-            // 10.0.2.2 -> 에뮬
-            // 디바이스 -> 본인
-            instance =  Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8000/user/")
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
+            if(type)
+            {
+                val okHttpClient = OkHttpClient.Builder()
+                    .addInterceptor(HeaderInterceptor())
+                    .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                    .build()
+                // 로컬 환경 테스트
+                // 10.0.2.2 -> 에뮬
+                // 디바이스 -> 본인
+                instance =  Retrofit.Builder()
+                    .baseUrl("http://10.0.2.2:8000/")
+                    .client(okHttpClient)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                return instance!!
+            }
+            else {
+                val okHttpClient = OkHttpClient.Builder()
+                    .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                    .build()
+                // 로컬 환경 테스트
+                // 10.0.2.2 -> 에뮬
+                // 디바이스 -> 본인
+                instance =  Retrofit.Builder()
+                    .baseUrl("http://10.0.2.2:8000/")
+                    .client(okHttpClient)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                return instance!!
+            }
         }
         return instance!!
     }

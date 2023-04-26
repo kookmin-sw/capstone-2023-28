@@ -21,4 +21,5 @@
     <color name="hs8">#DE186A</color>
     <color name="hs9">#C0AF8E</color>
     <color name="transparent">#00000000</color>
+    <color name="backgroundWhite">#E8E8EA</color>
 </resources>

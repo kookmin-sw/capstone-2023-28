@@ -10,6 +10,7 @@
     </data>
 
     <LinearLayout
+        android:background="@color/backgroundWhite"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -330,7 +331,10 @@
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/feed_rc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
             </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>

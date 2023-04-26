@@ -1,12 +1,9 @@
 package com.capstone.traffic.ui
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.activity.viewModels
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.capstone.traffic.R
 import com.capstone.traffic.databinding.ActivityHomeBinding
 import com.capstone.traffic.ui.route.board.BoardFragment

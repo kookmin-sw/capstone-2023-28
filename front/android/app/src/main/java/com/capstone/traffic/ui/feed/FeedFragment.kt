@@ -1,30 +1,35 @@
 package com.capstone.traffic.ui.feed
 
-import android.app.ProgressDialog.show
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
-import androidx.compose.runtime.snapshots.Snapshot.Companion.observe
-import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.capstone.traffic.R
 import com.capstone.traffic.databinding.FragmentFeedBinding
+import com.capstone.traffic.model.network.sk.direction.dataClass.testData.data
+import com.capstone.traffic.model.network.sql.Client
+import com.capstone.traffic.model.network.sql.Service
+import com.capstone.traffic.model.network.sql.dataclass.getfeed.FeedResSuc
 import com.capstone.traffic.ui.feed.FeedViewModel.Companion.EVENT_START_FILTER_APPLY
 import com.capstone.traffic.ui.feed.FeedViewModel.Companion.EVENT_START_FILTER_SELECT
+import com.capstone.traffic.ui.feed.feedRC.Feed
+import com.capstone.traffic.ui.feed.feedRC.FeedAdapter
 import com.capstone.traffic.ui.feed.writefeed.WriteFeedActivity
-import com.capstone.traffic.ui.my.MyViewModel
 import com.google.android.material.card.MaterialCardView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class FeedFragment : Fragment() {
@@ -32,6 +37,7 @@ class FeedFragment : Fragment() {
     private val binding by lazy { FragmentFeedBinding.inflate(layoutInflater) }
     private val feedViewModel by activityViewModels<FeedViewModel>()
     private lateinit var lineFilterList : List<AppCompatButton>
+    private lateinit var feedAdapter : FeedAdapter
     private fun initData(){
         lineFilterList = listOf(
             binding.hs1,
@@ -55,7 +61,7 @@ class FeedFragment : Fragment() {
     ): View? {
 
         initData()
-
+        feedAdapter = FeedAdapter(requireContext())
         // 뷰 클릭 이벤트 적용
         binding.run {
             filterApplyBtn.setOnClickListener {
@@ -68,7 +74,7 @@ class FeedFragment : Fragment() {
             }
             // 스크롤시 새로고침
             refreshLayout.setOnRefreshListener {
-                Toast.makeText(requireContext(), "새로고침중", Toast.LENGTH_SHORT).show()
+                retrofitFeed()
                 refreshLayout.isRefreshing = false
             }
 
@@ -95,6 +101,8 @@ class FeedFragment : Fragment() {
             }
         }
 
+        retrofitFeed()
+
         return binding.root
     }
 
@@ -109,6 +117,43 @@ class FeedFragment : Fragment() {
                 lineBtn?.backgroundTintList = ColorStateList.valueOf(requireContext().resources.getColor(R.color.white))
             }
         }
+    }
+
+    // sql 피드 불러오기
+    private fun retrofitFeed(){
+        val retrofit = Client.getInstance(true)
+        val service = retrofit.create(Service::class.java)
+        service.getFeed().enqueue(object : Callback<FeedResSuc>{
+            override fun onResponse(call: Call<FeedResSuc>, response: Response<FeedResSuc>) {
+                if(response.isSuccessful)
+                {
+                    val feedData = mutableListOf<Feed>()
+                    val data = response.body()?.res
+                    data?.forEach {
+                        feedData.add(Feed(it.userId, it.createdAt, it.content))
+                    }
+                    setFeedRecyclerView(feedData)
+                }
+            }
+            override fun onFailure(call: Call<FeedResSuc>, t: Throwable) {
+                print(2)
+            }
+        }
+        )
+    }
+
+    // recyclerView
+    @SuppressLint("NotifyDataSetChanged")
+    private fun setFeedRecyclerView(feed : MutableList<Feed>)
+    {
+        feedAdapter.apply {
+            datas = feed
+        }
+        binding.feedRc.apply {
+            this.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL,false)
+            this.adapter = feedAdapter
+        }
+        feedAdapter.notifyDataSetChanged()
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
