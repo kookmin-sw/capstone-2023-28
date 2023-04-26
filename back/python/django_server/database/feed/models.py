@@ -12,6 +12,7 @@ class Feed(models.Model):
 #     hash_tag = models.CharField(max_length=10)
 
 class Comment(models.Model):
+    user_id = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
     feed_id = models.ForeignKey(Feed, related_name='comments', on_delete=models.CASCADE)
     content = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -44,15 +44,18 @@ class UserSerializer(serializers.Serializer):
         return instance
     def to_representation(self, instance):
         ret = super().to_representation(instance)
-        s3_client = boto3.client(
-            's3',
-            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-            region_name=settings.AWS_S3_REGION_NAME
-        )
-        body = s3_client.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=ret['user_profile_image'])["Body"]
-        raw_data = body.read()
-        ret['user_profile_image'] = base64.b64encode(raw_data).decode('utf-8')
+        if ret['user_profile_image'] is not None:
+            s3_client = boto3.client(
+                's3',
+                aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                region_name=settings.AWS_S3_REGION_NAME
+            )
+            body = s3_client.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=ret['user_profile_image'])["Body"]
+            raw_data = body.read()
+            ret['user_profile_image'] = base64.b64encode(raw_data).decode('utf-8')
+        else:
+            ret['user_profile_image'] = None
         del ret['password']
         return ret
 

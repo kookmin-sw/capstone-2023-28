@@ -7,13 +7,20 @@ from database import settings
 import boto3
 import base64
 class CommentSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
     class Meta:
         model = Comment
-        fields = ["feed_id", "content", "created_at", "updated_at"]
+        fields = ["user_id", "feed_id", "content", "created_at", "updated_at", "user"]
+        extra_kwargs = {"user_id": {"required": False}}
     def to_representation(self, instance):
         ret = super().to_representation(instance)
         del ret['feed_id']
         return ret
+    def create(self, validated_data):
+        user_id = self.context.get("user_id")
+        validated_data["user_id"] = User.objects.get(id=user_id)
+        comment = Comment.objects.create(**validated_data)
+        return comment
 class FeedImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = FeedImage
@@ -35,16 +42,20 @@ class FeedImageSerializer(serializers.ModelSerializer):
 class FeedSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     images = FeedImageSerializer(many=True, read_only=True)
-    user = UserSerializer(read_only=True)
     class Meta:
         model = Feed
-        fields = ("feed_id", "user_id", "content", "created_at", "updated_at", "comments", "images", "user")
+        fields = ("feed_id", "user_id", "content", "created_at", "updated_at", "comments", "images")
         extra_kwargs = {"user_id": {"required": False}}
     def create(self, validated_data):
         user_id = self.context.get("user_id")
         validated_data["user_id"] = User.objects.get(id=user_id)
         feed = Feed.objects.create(**validated_data)
         return feed
-
+    def to_representation(self, instance):
+        ref = super().to_representation(instance)
+        #ref["user"] = instance.user_id.user_email
+        print(UserSerializer(instance.user_id).data)
+        ref["user"] = UserSerializer(instance.user_id).data
+        return ref
 
 
