@@ -19,7 +19,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         binding.login = loginViewModel
 
         // 바로 홈화면으로
-        //goHome()
+        goHome()
 
         if(checkLoginStatus()) {
             goHome()

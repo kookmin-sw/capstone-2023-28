@@ -34,6 +34,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"/>
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/post_btn"
                 android:layout_gravity="center"
                 android:stateListAnimator="@null"
                 android:text="게시"
@@ -55,6 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
+                    android:id="@+id/posting_et"
                     android:gravity="top"
                     android:padding="10dp"
                     android:textSize="13sp"

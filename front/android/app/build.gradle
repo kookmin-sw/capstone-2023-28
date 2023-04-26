@@ -47,6 +47,11 @@ android {
 }
 
 dependencies {
+    // ted permission
+    implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
+    // scroll
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
     // spinner - drosby
     implementation 'com.github.qandeelabbassi:Dropsy:1.1'
 

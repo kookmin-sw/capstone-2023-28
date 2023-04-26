@@ -24,6 +24,7 @@ import com.capstone.traffic.ui.feed.FeedViewModel.Companion.EVENT_START_FILTER_A
 import com.capstone.traffic.ui.feed.FeedViewModel.Companion.EVENT_START_FILTER_SELECT
 import com.capstone.traffic.ui.feed.writefeed.WriteFeedActivity
 import com.capstone.traffic.ui.my.MyViewModel
+import com.google.android.material.card.MaterialCardView
 
 
 class FeedFragment : Fragment() {
@@ -55,9 +56,7 @@ class FeedFragment : Fragment() {
 
         initData()
 
-
         // 뷰 클릭 이벤트 적용
-
         binding.run {
             filterApplyBtn.setOnClickListener {
                 feedViewModel.filterApply()
@@ -67,11 +66,27 @@ class FeedFragment : Fragment() {
                     feedViewModel.filterSelect(it)
                 }
             }
+            // 스크롤시 새로고침
+            refreshLayout.setOnRefreshListener {
+                Toast.makeText(requireContext(), "새로고침중", Toast.LENGTH_SHORT).show()
+                refreshLayout.isRefreshing = false
+            }
+
+            // 필터 적용 버튼
+            filterApplyBtn.setOnClickListener {
+                filterLl.apply { visibility = View.GONE }
+            }
+
+            // 필터 초기화
+            filterClearBtn.setOnClickListener {
+                filterClear()
+            }
             //글쓰기 버튼
             writeBtn.setOnClickListener {
                 val intent = Intent(requireContext(),WriteFeedActivity::class.java)
                 startActivity(intent)
             }
+
         }
 
         binding.filterBtn.setOnClickListener {
@@ -83,6 +98,18 @@ class FeedFragment : Fragment() {
         return binding.root
     }
 
+    // 필터 클리어
+    private fun filterClear()
+    {
+        val count = binding.filterGridLayout.childCount
+        for(i in 0 until count-1){
+            val childView = binding.filterGridLayout.getChildAt(i)
+            if(childView is MaterialCardView){
+                val lineBtn = childView.getChildAt(0)
+                lineBtn?.backgroundTintList = ColorStateList.valueOf(requireContext().resources.getColor(R.color.white))
+            }
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -91,12 +118,10 @@ class FeedFragment : Fragment() {
                 when (event) {
                     // 필터 적용 버튼 클릭
                     EVENT_START_FILTER_APPLY -> {
-
                         Toast.makeText(context, "click", Toast.LENGTH_SHORT).show()
                     }
                     // 호선 별 필터 버튼 클릭시
                     EVENT_START_FILTER_SELECT -> {
-
                         //Toast.makeText(context, "select", Toast.LENGTH_SHORT).show()
                     }
                 }
