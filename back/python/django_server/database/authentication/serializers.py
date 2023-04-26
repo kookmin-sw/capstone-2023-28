@@ -4,6 +4,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.exceptions import ValidationError
 from database import settings
 import boto3
+import base64
 
 class UserSerializer(serializers.Serializer):
     user_nickname = serializers.CharField(max_length=10)
@@ -49,14 +50,9 @@ class UserSerializer(serializers.Serializer):
             aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
             region_name=settings.AWS_S3_REGION_NAME
         )
-        url = s3_client.generate_presigned_url(
-            'get_object',
-            Params={
-                'Bucket': settings.AWS_STORAGE_BUCKET_NAME,
-                'Key': ret['user_profile_image'],
-            }
-        )
-        ret['user_profile_image'] = url
+        body = s3_client.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=ret['user_profile_image'])["Body"]
+        raw_data = body.read()
+        ret['user_profile_image'] = base64.b64encode(raw_data).decode('utf-8')
         del ret['password']
         return ret
 
