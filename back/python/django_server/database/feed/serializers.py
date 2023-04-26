@@ -7,14 +7,18 @@ from database import settings
 import boto3
 import base64
 class CommentSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
     class Meta:
         model = Comment
-        fields = ["user_id", "feed_id", "content", "created_at", "updated_at", "user"]
+        fields = ["user_id", "feed_id", "content", "created_at", "updated_at"]
         extra_kwargs = {"user_id": {"required": False}}
     def to_representation(self, instance):
         ret = super().to_representation(instance)
+        user = UserSerializer(instance.user_id).data
+        ret["user_email"] = user["user_email"]
+        ret["user_profile_image"] = user["user_profile_image"]
+        ret["user_nickname"] = user["user_nickname"]
         del ret['feed_id']
+        del ret['user_id']
         return ret
     def create(self, validated_data):
         user_id = self.context.get("user_id")
@@ -46,10 +50,9 @@ class FeedSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     images = FeedImageSerializer(many=True, read_only=True)
     hash_tags = FeedHashTagSerializer(many=True, read_only=True)
-    user = UserSerializer(read_only=True)
     class Meta:
         model = Feed
-        fields = ("feed_id", "user_id", "content", "created_at", "updated_at", "comments", "images", "user", "hash_tags")
+        fields = ("feed_id", "user_id", "content", "created_at", "updated_at", "comments", "images", "hash_tags")
         extra_kwargs = {"user_id": {"required": False}}
     def create(self, validated_data):
         user_id = self.context.get("user_id")
@@ -61,8 +64,6 @@ class FeedSerializer(serializers.ModelSerializer):
         return feed
     def to_representation(self, instance):
         ref = super().to_representation(instance)
-        #ref["user"] = instance.user_id.user_email
-        print(UserSerializer(instance.user_id).data)
         ref["user"] = UserSerializer(instance.user_id).data
         return ref
 
