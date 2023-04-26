@@ -16,7 +16,7 @@ class FeedView(APIView):
         return Response(data, status=status.HTTP_200_OK)
     def post(self, request):
         payload = request.auth.payload
-        serializer = FeedSerializer(data=request.data, context={"user_id":payload["user_id"]})
+        serializer = FeedSerializer(data=request.data, context={"user_id":payload["user_id"], "hash_tags":request.data["hash_tags"]})
         data = {}
         if serializer.is_valid():
             serializer.save()

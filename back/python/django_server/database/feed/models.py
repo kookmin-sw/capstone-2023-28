@@ -7,9 +7,9 @@ class Feed(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-# class FeedHashTag(models.Model):
-#     feed_id = models.ForeignKey(Feed, primary_key=True)
-#     hash_tag = models.CharField(max_length=10)
+class FeedHashTag(models.Model):
+    feed_id = models.ForeignKey(Feed, primary_key=True, related_name="hashTags", on_delete=models.CASCADE)
+    hash_tag = models.CharField(max_length=10)
 
 class Comment(models.Model):
     user_id = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
