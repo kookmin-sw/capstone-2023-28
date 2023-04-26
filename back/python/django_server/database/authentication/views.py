@@ -55,7 +55,7 @@ class UserDeleteView(APIView):
             data["res"] = {}
             return Response(data, status=status.HTTP_200_OK)
 class UserInfoView(APIView):
-    # Token 으로 유저의 정보를 탐색
+    permission_classes = [AllowAny]
     def get(self, request):
         try:
             user = User.objects.get(user_email=request.GET["user_email"])
