@@ -47,7 +47,9 @@ class FeedImageView(APIView):
 
 class CommentCreateView(APIView):
     def post(self, request):
-        serializer = CommentSerializer(data=request.data)
+        payload = request.auth.payload
+
+        serializer = CommentSerializer(data=request.data, context={"user_id":payload["user_id"]})
         data = {}
         if serializer.is_valid():
             serializer.save()
