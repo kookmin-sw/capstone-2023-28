@@ -45,7 +45,7 @@ class FeedImageSerializer(serializers.ModelSerializer):
 class FeedHashTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = FeedHashTag
-        field = ["feed_id", "hash_tag"]
+        fields = ["hash_tag"]
 class FeedSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     images = FeedImageSerializer(many=True, read_only=True)
