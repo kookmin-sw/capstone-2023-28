@@ -1,7 +1,7 @@
 import requests
 import time
 from typing import List
-
+from utils.key import CLIENT_ID, CLIENT_SECRET
 class Observer:
     def update(self, *args, **kwargs):
         pass
@@ -34,8 +34,8 @@ class NaverSearchAPI:
         while True:
             url = "https://openapi.naver.com/v1/search/news.json"
             headers = {
-                "X-Naver-Client-Id": "<YOUR_CLIENT_ID>",
-                "X-Naver-Client-Secret": "<YOUR_CLIENT_SECRET>"
+                "X-Naver-Client-Id": CLIENT_ID,
+                "X-Naver-Client-Secret": CLIENT_SECRET
             }
             params = {"query": self.keyword}
             response = requests.get(url, headers=headers, params=params)
