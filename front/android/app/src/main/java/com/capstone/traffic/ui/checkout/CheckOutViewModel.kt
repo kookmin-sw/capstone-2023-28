@@ -7,6 +7,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.capstone.traffic.model.network.sql.AuthClient
 import com.capstone.traffic.model.network.sql.Client
 import com.capstone.traffic.model.network.sql.Service
 import com.capstone.traffic.model.network.sql.dataclass.sign.SignResSuc
@@ -40,7 +41,7 @@ class CheckOutViewModel(application : Application) : AndroidViewModel(applicatio
     }
 
     private fun getSignUp(){
-        val retrofit = Client.getInstance(false)
+        val retrofit = AuthClient.getInstance()
         val signUpService = retrofit.create(Service::class.java)
         val mediaType = "application/json".toMediaTypeOrNull()
         val param  = RequestBody.create(mediaType,"{\"password\":\"${password.get()}\",\"user_email\":\"${email.get()}\",\"user_nickname\":\"${nickname.get()}\"}")

@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.capstone.traffic.global.MyApplication
+import com.capstone.traffic.model.network.sql.AuthClient
 import com.capstone.traffic.model.network.sql.Client
 import com.capstone.traffic.model.network.sql.Service
 import com.capstone.traffic.model.network.sql.dataclass.login.LoginResFail
@@ -42,7 +43,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application){
     }
 
     private fun login(){
-        val retrofit = Client.getInstance(false)
+        val retrofit = AuthClient.getInstance()
         val loginService = retrofit.create(Service::class.java)
         val mediaType = "application/json".toMediaTypeOrNull()
         val param  = RequestBody.create(mediaType,"{\"password\":\"${password.get()}\",\"user_email\":\"${email.get()}\"}")
@@ -67,7 +68,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application){
                             }
                         }
                         val a = Gson().fromJson(content.toString(), LoginResFail::class.java)
-                        if(response.errorBody() != null) Toast.makeText(context, "로그인 실패 : ${a.res.errorName}", Toast.LENGTH_SHORT).show()
+                        if(response.errorBody() != null) Toast.makeText(context, "로그인 실패 : ${a?.res?.errorName}", Toast.LENGTH_SHORT).show()
                     }
                 }
                 override fun onFailure(call: Call<LoginResSuc>, t: Throwable) {

@@ -7,22 +7,19 @@ import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOError
-import java.io.IOException
 
-object Client {
+object AuthClient {
     private var instance: Retrofit? = null
 
     fun getInstance(): Retrofit {
         if (instance == null) {
             val okHttpClient = OkHttpClient.Builder()
-                .addInterceptor(HeaderInterceptor())
                 .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .build()
             // 로컬 환경 테스트
             // 10.0.2.2 -> 에뮬
             // 디바이스 -> 본인
-            instance = Retrofit.Builder()
+            instance =  Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8000/")
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -30,14 +27,5 @@ object Client {
             return instance!!
         }
         return instance!!
-    }
-
-    class HeaderInterceptor constructor() : Interceptor {
-        @Throws(IOException::class)
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val token = "Bearer ${MyApplication.prefs.getToken()}"
-            val newRequest = chain.request().newBuilder().addHeader("Authorization", token).build()
-            return chain.proceed(newRequest)
-        }
     }
 }

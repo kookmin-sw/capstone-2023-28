@@ -121,7 +121,7 @@ class FeedFragment : Fragment() {
 
     // sql 피드 불러오기
     private fun retrofitFeed(){
-        val retrofit = Client.getInstance(true)
+        val retrofit = Client.getInstance()
         val service = retrofit.create(Service::class.java)
         service.getFeed().enqueue(object : Callback<FeedResSuc>{
             override fun onResponse(call: Call<FeedResSuc>, response: Response<FeedResSuc>) {

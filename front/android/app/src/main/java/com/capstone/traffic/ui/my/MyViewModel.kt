@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.capstone.traffic.global.MyApplication
+import com.capstone.traffic.model.network.sql.AuthClient
 import com.capstone.traffic.model.network.sql.Client
 import com.capstone.traffic.model.network.sql.Service
 import com.capstone.traffic.model.network.sql.dataclass.info.InfoRecSuc
@@ -44,7 +45,7 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun getUserAPI(){
-        val retrofit = Client.getInstance(true)
+        val retrofit = AuthClient.getInstance()
         val infoService = retrofit.create(Service::class.java)
         infoService.getInfo(MyApplication.prefs.getEmail().toString()).enqueue(object : Callback<InfoRecSuc>{
             override fun onResponse(call: Call<InfoRecSuc>, response: Response<InfoRecSuc>) {

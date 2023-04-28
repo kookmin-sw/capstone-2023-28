@@ -9,6 +9,7 @@ import com.capstone.traffic.ui.feed.hs
 
 class HomeViewModel : ViewModel() {
 
+
     private val _currentPageType = MutableLiveData(PageType.PAGE1)
     val currentPageType: LiveData<PageType> = _currentPageType
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="write"
@@ -47,7 +47,9 @@
             android:background="@color/gray"
             android:layout_width="match_parent"
             android:layout_height="2dp"/>
+
         <ScrollView
+            android:background="@color/backgroundWhite"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp">
@@ -55,6 +57,169 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <GridLayout
+                    android:id="@+id/filter_grid_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:columnCount="5"
+                    android:rowCount="2">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        app:strokeColor="@color/hs1"
+                        app:strokeWidth="2dp">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/hs1"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp"
+                            android:background="@color/white"
+                            android:text="1호선"
+                            android:textColor="@color/hs1"
+                            android:textSize="13sp" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        app:strokeColor="@color/hs2"
+                        app:strokeWidth="2dp">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/hs2"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp"
+                            android:background="@color/white"
+                            android:text="2호선"
+                            android:textColor="@color/hs2"
+                            android:textSize="13sp" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        app:strokeColor="@color/hs3"
+                        app:strokeWidth="2dp">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/hs3"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp"
+                            android:background="@color/white"
+                            android:text="3호선"
+                            android:textColor="@color/hs3"
+                            android:textSize="13sp" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        app:strokeColor="@color/hs4"
+                        app:strokeWidth="2dp">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/hs4"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp"
+                            android:background="@color/white"
+                            android:text="4호선"
+                            android:textColor="@color/hs4"
+                            android:textSize="13sp" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        app:strokeColor="@color/hs5"
+                        app:strokeWidth="2dp">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/hs5"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp"
+                            android:background="@color/white"
+                            android:text="5호선"
+                            android:textColor="@color/hs5"
+                            android:textSize="13sp" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        app:strokeColor="@color/hs6"
+                        app:strokeWidth="2dp">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/hs6"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp"
+                            android:background="@color/white"
+                            android:text="6호선"
+                            android:textColor="@color/hs6"
+                            android:textSize="13sp" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        app:strokeColor="@color/hs7"
+                        app:strokeWidth="2dp">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/hs7"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp"
+                            android:background="@color/white"
+                            android:text="7호선"
+                            android:textColor="@color/hs7"
+                            android:textSize="13sp" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        app:strokeColor="@color/hs8"
+                        app:strokeWidth="2dp">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/hs8"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp"
+                            android:background="@color/white"
+                            android:text="8호선"
+                            android:textColor="@color/hs8"
+                            android:textSize="13sp" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        app:strokeColor="@color/hs9"
+                        app:strokeWidth="2dp">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/hs9"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp"
+                            android:background="@color/white"
+                            android:text="9호선"
+                            android:textColor="@color/hs9"
+                            android:textSize="13sp" />
+                    </com.google.android.material.card.MaterialCardView>
+                </GridLayout>
                 <EditText
                     android:id="@+id/posting_et"
                     android:gravity="top"
@@ -70,22 +235,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <androidx.appcompat.widget.AppCompatButton
+                        android:backgroundTint="@color/white"
+                        android:textAlignment="textStart"
                         android:id="@+id/take_picture_btn"
                         android:layout_weight="1"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="5dp"
-                        android:text="사진 촬영"
+                        android:text="@string/emo_take_photo"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
                     <androidx.appcompat.widget.AppCompatButton
+                        android:backgroundTint="@color/white"
+                        android:textAlignment="textStart"
                         android:id="@+id/add_picture_btn"
                         android:layout_weight="1"
                         android:layout_marginStart="5dp"
-                        android:layout_marginEnd="10dp"
-                        android:text="사진 가져오기"
+                        android:layout_marginEnd="5dp"
+                        android:text="@string/emo_photo"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_margin="10dp"
                     android:id="@+id/rcv"
