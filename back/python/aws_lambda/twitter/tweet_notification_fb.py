@@ -14,7 +14,7 @@ import time
 from abc import ABC, abstractmethod
 from dotenv import load_dotenv
 from firebase_admin import credentials, firestore, initialize_app, messaging
-from utils.tweet_key import BEARER_TOKEN
+from utils.key import BEARER_TOKEN
 
 import os
 print(os.getcwd())
