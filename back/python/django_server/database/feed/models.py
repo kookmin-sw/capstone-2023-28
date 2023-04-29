@@ -8,7 +8,7 @@ class Feed(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class FeedHashTag(models.Model):
-    feed_id = models.ForeignKey(Feed, primary_key=True, related_name="hashTags", on_delete=models.CASCADE)
+    feed_id = models.ForeignKey(Feed, related_name="hash_tags", on_delete=models.CASCADE)
     hash_tag = models.CharField(max_length=10)
 
 class Comment(models.Model):
