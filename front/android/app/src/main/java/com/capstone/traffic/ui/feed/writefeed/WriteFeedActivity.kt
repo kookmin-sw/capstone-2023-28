@@ -4,12 +4,15 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.provider.OpenableColumns
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -20,10 +23,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.capstone.traffic.R
 import com.capstone.traffic.databinding.ActivityWriteFeedBinding
+import com.capstone.traffic.global.Auth
 import com.capstone.traffic.global.BaseActivity
 import com.capstone.traffic.global.MyApplication
+import com.capstone.traffic.model.e.API
+import com.capstone.traffic.model.e.RetrofitInstance
 import com.capstone.traffic.model.network.sk.direction.dataClass.name
 import com.capstone.traffic.model.network.sk.direction.dataClass.testData.data
+import com.capstone.traffic.model.network.sql.AuthClient
 import com.capstone.traffic.model.network.sql.Client
 import com.capstone.traffic.model.network.sql.Service
 import com.capstone.traffic.model.network.sql.dataclass.ImageUpload
@@ -41,11 +48,14 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okio.BufferedSink
 import okio.source
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.awaitResponse
+import java.io.File
 
 class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
     override var layoutResourceId: Int = R.layout.activity_write_feed
@@ -97,30 +107,79 @@ class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
 
     }
 
-    private fun uploadingPhoto() {
-        val retrofit = Client.getInstance()
-        val photoService = retrofit.create(Service::class.java)
-        val data = photoList[0].uri?.asMultipart(contentResolver)
-        val userIdBody = RequestBody.create("text/plain".toMediaTypeOrNull(),userId.toString())
-        if (data != null) {
-            photoService.uploadImage(userIdBody,data).enqueue(object : Callback<ImageUpload> {
-                override fun onResponse(call: Call<ImageUpload>, response: Response<ImageUpload>) {
-                    print(1)
-                }
+    private fun String?.toPlainRequestBody() =
+        requireNotNull(this).toRequestBody("text/plain".toMediaTypeOrNull())
 
-                override fun onFailure(call: Call<ImageUpload>, t: Throwable) {
-                    print(2)
-                    TODO("Not yet implemented")
-                }
+    /*
+    private fun up()
+    {
+        val retrofit = AuthClient.getInstance()
+        val photoService = retrofit.create(Service::class.java)
+        val hashMap = HashMap<String, RequestBody>()
+        hashMap["image"] = "1".toRequestBody()
+        hashMap["feed_id"] = userId.toString().toRequestBody()
+        val data = photoList[0].uri?.asMultipart(contentResolver)
+        val Auth = "Bearer ${MyApplication.prefs.getToken()}"
+        photoService.uploadImage(Auth, userId.toString(),data!!).enqueue(object : Callback<ImageUpload> {
+            override fun onResponse(call: Call<ImageUpload>, response: Response<ImageUpload>) {
+                print(1)
             }
-            )
+
+            override fun onFailure(call: Call<ImageUpload>, t: Throwable) {
+                print(2)
+                TODO("Not yet implemented")
+            }
         }
+        )
+    }
+*/
+
+    // 절대경로 변환
+    fun absolutelyPath(path: Uri?, context : Context): String {
+        var proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
+        var c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
+        var index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        c?.moveToFirst()
+
+        var result = c?.getString(index!!)
+
+        return result!!
     }
 
+    private fun uploadingPhoto() {
+
+        val file = File(absolutelyPath(photoList[0].uri, this))
+        val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), file)
+        val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
+
+
+        val retrofit = Client.getInstance()
+        val service = retrofit.create(Service::class.java)
+
+        val hashMap = HashMap<String, RequestBody>()
+        hashMap["feed_id"] = userId.toString().toRequestBody()
+        service.uploadImage(hashMap, body).enqueue(object : Callback<ImageUpload> {
+            override fun onResponse(call: Call<ImageUpload>, response: Response<ImageUpload>) {
+                if(response.isSuccessful){
+                    print(1)
+
+                    Log.d("fd","fdsa")
+
+                }
+            }
+
+            override fun onFailure(call: Call<ImageUpload>, t: Throwable) {
+                Log.d("fd","fdsa")
+            }
+        }
+        )
+    }
+
+    @SuppressLint("Range")
     fun Uri.asMultipart(contentResolver: ContentResolver): MultipartBody.Part? {
         return contentResolver.query(this, null, null, null, null)?.let {
             if (it.moveToNext()) {
-                val displayName = "feed.jpg"
+                val displayName = it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                 val requestBody = object : RequestBody() {
                     override fun contentType(): MediaType? {
                         return contentResolver.getType(this@asMultipart)?.toMediaType()
@@ -130,6 +189,7 @@ class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
                         sink.writeAll(contentResolver.openInputStream(this@asMultipart)?.source()!!)
                     }
                 }
+
                 it.close()
                 MultipartBody.Part.createFormData("image", displayName, requestBody)
             } else {
@@ -148,10 +208,9 @@ class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
         // 사진이 없는 경우 -> 글만 업로드
         if (photoList.size == 0) {
             postingText()
-        }
-        else{
+        } else {
             postingText()
-            uploadingPhoto()
+            //uploadingPhoto()
         }
         cancelPosting()
     }
@@ -170,6 +229,7 @@ class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
                     if (response.isSuccessful) {
                         Toast.makeText(this@WriteFeedActivity, "업로드 완료", Toast.LENGTH_SHORT).show()
                         userId = response.body()?.res?.feedid?.toInt() ?: -1
+                        uploadingPhoto()
                     }
                 }
 

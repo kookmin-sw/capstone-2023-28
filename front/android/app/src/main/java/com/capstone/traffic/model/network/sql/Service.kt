@@ -32,5 +32,6 @@ interface Service {
 
     @Multipart
     @POST("feed/image/")
-    fun uploadImage(@Part("feed_id") feed_id : RequestBody, @Part image : MultipartBody.Part) : Call<ImageUpload>
+    fun uploadImage(@PartMap feed_id : HashMap<String, RequestBody>, @Part image : MultipartBody.Part) : Call<ImageUpload>
+
 }
