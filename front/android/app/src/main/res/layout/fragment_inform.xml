@@ -3,61 +3,82 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <ScrollView
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/backgroundWhite"
+        android:orientation="vertical">
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <TextView
                 android:layout_margin="10dp"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                android:text="오늘의 시위 정보"
+                android:text="서울 교통 공사 트위터"
                 android:textSize="15sp"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <androidx.cardview.widget.CardView
-                android:layout_margin="10dp"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/seoul_traffic_rc"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:orientation="vertical"
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="오늘의 시위 정보"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/status_time_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/demon_rc"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/status_time_tv"
-                        android:layout_margin="5dp"
-                        android:textSize="12sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/demon_rc"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
             <TextView
-                android:layout_margin="10dp"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:text="실시간 열차 트래픽"
-                android:textSize="15sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <FrameLayout
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:text="실시간 열차 트래픽"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp">
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/iv2"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/iv1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
             </FrameLayout>
         </LinearLayout>
     </ScrollView>

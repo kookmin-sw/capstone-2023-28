@@ -1,11 +1,14 @@
 package com.capstone.traffic.ui.feed.feedRC
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide.init
 import com.capstone.traffic.R
 
 class FeedAdapter(private val context: Context) : RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
@@ -29,12 +32,24 @@ class FeedAdapter(private val context: Context) : RecyclerView.Adapter<FeedAdapt
         private val userNickname = itemView.findViewById<TextView>(R.id.userNickname)
         private val writeTime = itemView.findViewById<TextView>(R.id.writeTime)
         private val contents = itemView.findViewById<TextView>(R.id.contents)
+        private val innerRc = itemView.findViewById<RecyclerView>(R.id.inner_rc)
         init {
         }
+        @SuppressLint("NotifyDataSetChanged")
         fun bind(item : Feed){
             userNickname.text = item.name
             writeTime.text = item.time
             contents.text = item.content
+            if(item.image != null)
+            {
+                val adapter = InnerFeedAdapter(context)
+                adapter.datas = item.image
+                innerRc.apply {
+                    this.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+                    this.adapter = adapter
+                }
+                adapter.notifyDataSetChanged()
+            }
         }
     }
 }

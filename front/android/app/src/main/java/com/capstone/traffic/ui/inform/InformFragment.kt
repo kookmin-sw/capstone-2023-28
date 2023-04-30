@@ -13,6 +13,8 @@ import com.capstone.traffic.databinding.FragmentInformBinding
 import com.capstone.traffic.model.network.demon.DemonClient
 import com.capstone.traffic.model.network.demon.DemonService
 import com.capstone.traffic.model.network.demon.Response
+import com.capstone.traffic.model.network.seoulMetro.Res
+import com.capstone.traffic.model.network.seoulMetro.Service
 import com.capstone.traffic.model.network.twitter.Client
 import com.capstone.traffic.model.network.twitter.Data
 import com.capstone.traffic.model.network.twitter.RankService
@@ -20,6 +22,7 @@ import com.capstone.traffic.model.network.twitter.ResponseData
 import com.capstone.traffic.ui.inform.demon.Demon
 import com.capstone.traffic.ui.inform.demon.DemonAdapter
 import com.capstone.traffic.ui.inform.ranking.RankingAdapter
+import com.capstone.traffic.ui.inform.twitter.TwitAdapter
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,18 +41,53 @@ class InformFragment : Fragment() {
     ): View {
         DemonData = mutableListOf()
         demonAdapter = DemonAdapter(requireContext())
-        // 화면 전환 on off
 
+        binding.apply {
+            getTwitApi()
+        }
+
+        // 화면 전환 on off
         job = GlobalScope.launch(Dispatchers.Main) {
             withContext(Dispatchers.Main) {
                 getDemonApi()
-                //getRankApi()
+                getRankApi()
             }
         }
         waitTime()
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    private fun setTwit(data : List<com.capstone.traffic.model.network.seoulMetro.Data>)
+    {
+        val twitAdapter = TwitAdapter(requireContext())
+        twitAdapter.apply {
+            datas = data
+        }
+        binding.seoulTrafficRc.apply {
+            this.layoutManager = LinearLayoutManager(activity,RecyclerView.HORIZONTAL, false)
+            adapter = twitAdapter
+        }
+        twitAdapter.notifyDataSetChanged()
+    }
+
+    private fun getTwitApi()
+    {
+        val retrofit = com.capstone.traffic.model.network.seoulMetro.Client.getInstance()
+        val service = retrofit.create(Service::class.java)
+
+        service.getTwit().enqueue(object : Callback<Res>{
+            override fun onResponse(call: Call<Res>, response: retrofit2.Response<Res>) {
+                if(response.isSuccessful){
+                    if(response.body() != null) setTwit(response.body()!!.data)
+                }
+            }
+
+            override fun onFailure(call: Call<Res>, t: Throwable) {
+            }
+        })
+    }
+    @SuppressLint("NotifyDataSetChanged")
     private fun setDemonRecyclerView()
     {
         if (DemonData.isNotEmpty()) {

@@ -130,7 +130,7 @@ class FeedFragment : Fragment() {
                     val feedData = mutableListOf<Feed>()
                     val data = response.body()?.res
                     data?.forEach {
-                        feedData.add(Feed(it.userId, it.createdAt, it.content))
+                        feedData.add(Feed(it.userId, it.createdAt, it.content, it.images))
                     }
                     setFeedRecyclerView(feedData)
                 }

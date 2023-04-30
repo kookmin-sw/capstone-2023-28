@@ -110,29 +110,6 @@ class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
     private fun String?.toPlainRequestBody() =
         requireNotNull(this).toRequestBody("text/plain".toMediaTypeOrNull())
 
-    /*
-    private fun up()
-    {
-        val retrofit = AuthClient.getInstance()
-        val photoService = retrofit.create(Service::class.java)
-        val hashMap = HashMap<String, RequestBody>()
-        hashMap["image"] = "1".toRequestBody()
-        hashMap["feed_id"] = userId.toString().toRequestBody()
-        val data = photoList[0].uri?.asMultipart(contentResolver)
-        val Auth = "Bearer ${MyApplication.prefs.getToken()}"
-        photoService.uploadImage(Auth, userId.toString(),data!!).enqueue(object : Callback<ImageUpload> {
-            override fun onResponse(call: Call<ImageUpload>, response: Response<ImageUpload>) {
-                print(1)
-            }
-
-            override fun onFailure(call: Call<ImageUpload>, t: Throwable) {
-                print(2)
-                TODO("Not yet implemented")
-            }
-        }
-        )
-    }
-*/
 
     // 절대경로 변환
     fun absolutelyPath(path: Uri?, context : Context): String {
