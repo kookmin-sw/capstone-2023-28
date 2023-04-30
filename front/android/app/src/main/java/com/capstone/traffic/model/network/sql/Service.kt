@@ -1,5 +1,6 @@
 package com.capstone.traffic.model.network.sql
 
+import com.capstone.traffic.model.network.sql.dataclass.DefaultRes
 import com.capstone.traffic.model.network.sql.dataclass.getfeed.FeedResSuc
 import com.capstone.traffic.model.network.sql.dataclass.ImageUpload
 import com.capstone.traffic.model.network.sql.dataclass.info.InfoRecSuc
@@ -30,6 +31,12 @@ interface Service {
     @GET("feed/")
     fun getFeed() : Call<FeedResSuc>
 
+    // 프로필 이미지 업데이트
+    @Multipart
+    @POST("user/update/profile/")
+    fun updateProfile(@Part image : MultipartBody.Part) : Call<DefaultRes>
+
+    // 이미지 업로드
     @Multipart
     @POST("feed/image/")
     fun uploadImage(@PartMap feed_id : HashMap<String, RequestBody>, @Part image : MultipartBody.Part) : Call<ImageUpload>
