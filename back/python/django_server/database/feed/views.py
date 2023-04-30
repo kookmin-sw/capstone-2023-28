@@ -2,18 +2,34 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from .models import Feed
 from .serializers import *
+from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
-from rest_framework import permissions, status
+from rest_framework import permissions, status, generics
 from API.s3 import S3ImageUploader
 # Create your views here.
-class FeedView(APIView):
-    def get(self, request):
+class FeedView(generics.ListAPIView):
+    serializer_class = FeedSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['user_id__exact', 'feedhashtag__hash_tag__exact']
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
         data = {}
-        feeds = Feed.objects.all()
-        serializers = FeedSerializer(feeds, many=True)
         data["status"] = "OK"
-        data["res"] = serializers.data
+        data["res"] = serializer.data
         return Response(data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        queryset = Feed.objects.all()
+        user_id = self.request.query_params.get('user_id', None)
+        hash_tags = self.request.query_params.get('hash_tags', None)
+        if user_id is not None:
+            queryset = queryset.filter(user_id=user_id)
+        if hash_tags is not None:
+            hash_tag_list = hash_tags.split(',')
+            for hash_tag in hash_tag_list:
+                hash_tag_feeds = FeedHashTag.objects.filter(hash_tag=hash_tag)
+                queryset = queryset.filter(feed_id__in=map(lambda x: x.feed_id_id, hash_tag_feeds))
+        return queryset
     def post(self, request):
         payload = request.auth.payload
         serializer = FeedSerializer(data=request.data, context={"user_id":payload["user_id"], "hash_tags":request.data["hash_tags"]})
