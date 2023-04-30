@@ -47,6 +47,8 @@ android {
 }
 
 dependencies {
+    // image crop
+    implementation "com.theartofdev.edmodo:android-image-cropper:2.8.0"
     // ted permission
     implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
     // scroll

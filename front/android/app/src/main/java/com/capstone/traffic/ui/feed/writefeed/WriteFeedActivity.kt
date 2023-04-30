@@ -15,11 +15,13 @@ import android.provider.OpenableColumns
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.graphics.StrokeCap.Companion.Square
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.capstone.traffic.R
 import com.capstone.traffic.databinding.ActivityWriteFeedBinding
@@ -43,6 +45,9 @@ import com.capstone.traffic.ui.feed.writefeed.addImage.Status
 import com.google.gson.Gson
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
+import kotlinx.coroutines.NonCancellable.start
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -55,6 +60,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.awaitResponse
+import retrofit2.http.Url
 import java.io.File
 
 class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
@@ -106,7 +112,6 @@ class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
         }
 
     }
-
     private fun String?.toPlainRequestBody() =
         requireNotNull(this).toRequestBody("text/plain".toMediaTypeOrNull())
 
@@ -245,12 +250,15 @@ class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
     ) { result ->
         if (result.resultCode == RESULT_OK) {
             // 이미지를 받으면 ImageView에 적용한다
-            if (result.data?.data == null) photoList.add(Image(camUri))
-            else photoList.add(Image(result.data?.data))
+            if (result.data?.data == null) {
+                photoList.add(Image(camUri))
+            }
+            else {
+                photoList.add(Image(result.data?.data))
+            }
             binding.rcv.adapter?.notifyDataSetChanged()
         }
     }
-
     private fun requestPermission(requestPermission: Int) {
         when (requestPermission) {
             CAMERA_PERMISSION -> {
