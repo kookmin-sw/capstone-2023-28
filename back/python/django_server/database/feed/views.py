@@ -43,6 +43,21 @@ class FeedView(generics.ListAPIView):
             data["status"] = "ERROR"
             data["res"] = serializer.errors
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request):
+        data = {}
+        try:
+            feed = Feed.objects.get(feed_id=request.data["feed_id"])
+        except Feed.DoesNotExist:
+            data["status"] = "ERROR"
+            data["res"] = {"error_name": "존재하지 않는 필드", "error_id": 1}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            feed.delete()
+            data["status"] = "OK"
+            data["res"] = {}
+            return Response(data, status=status.HTTP_200_OK)
+
+
 class FeedImageView(APIView):
     def post(self, request):
         data = {}
