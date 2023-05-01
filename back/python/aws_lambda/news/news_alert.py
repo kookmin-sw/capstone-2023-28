@@ -1,116 +1,81 @@
 import requests
+import json
 import time
 from typing import List
-from utils.key import CLIENT_SECRET, CLIENT_ID
-import threading
+from utils.key import CLIENT_ID, CLIENT_SECRET
+from datetime import datetime, timedelta
 
-class Observer:
-    def update(self, *args, **kwargs):
+class News:
+    def __init__(self):
+        self.subscribers = set()
+
+    def subscribe(self, subscriber):
+        self.subscribers.add(subscriber)
+
+    def unsubscribe(self, subscriber):
+        self.subscribers.discard(subscriber)
+
+    def notify(self, message):
+        for subscriber in self.subscribers:
+            subscriber.update(message)
+
+
+class Subscriber:
+    def update(self, message):
         pass
 
-class NaverNewsObserver(Observer):
+
+class NaverNewsAPI:
     def __init__(self):
-        self.last_news = None
-    
-    def update(self, news):
-        if news != self.last_news:
-            print(f"New news article found: {news['title']} - {news['originallink']}")
-            self.last_news = news
+        self.url = "https://openapi.naver.com/v1/search/news.json"
+        self.headers = {"X-Naver-Client-Id": CLIENT_ID, "X-Naver-Client-Secret": CLIENT_SECRET}
 
-class NaverBlogObserver(Observer):
-    def __init__(self):
-        self.last_blog = None
-    
-    def update(self, blog):
-        if blog != self.last_blog:
-            print(f"New blog article found: {blog['title']} - {blog['link']}")
-            self.last_blog = blog
+    def search_news(self, query: str) -> List[dict]:
+        end_date = datetime.now().strftime('%Y-%m-%d')
+        start_date = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
+        params = {"query": query, "display": 3, "sort": "date", "start_date": start_date, "end_date": end_date}
+        res = requests.get(self.url, headers=self.headers, params=params)
+        if res.status_code == 200:
+            data = json.loads(res.text)
+            if "items" in data:
+                return data["items"]
+        return []
 
-class NaverCafeObserver(Observer):
-    def __init__(self):
-        self.last_cafe = None
-    
-    def update(self, cafe):
-        if cafe != self.last_cafe:
-            print(f"New cafe article found: {cafe['title']} - {cafe['link']}")
-            self.last_cafe = cafe
 
-class NaverSearchAPI:
-    def __init__(self, keyword: str):
-        self.observers = []
-        self.keyword = keyword
-    
-    def attach(self, observer: Observer):
-        self.observers.append(observer)
-    
-    def detach(self, observer: Observer):
-        self.observers.remove(observer)
-    
-    def notify_observers(self, article, article_type):
-        for observer in self.observers:
-            if article_type == "news":
-                observer.update(article)
-            elif article_type == "blog":
-                observer.update(article)
-            elif article_type == "cafe":
-                observer.update(article)
-    
-    def search_news(self):
-        while True:
-            url = "https://openapi.naver.com/v1/search/news.json"
-            headers = {
-                "X-Naver-Client-Id": CLIENT_ID,
-                "X-Naver-Client-Secret": CLIENT_SECRET
-            }
-            params = {"query": self.keyword}
-            response = requests.get(url, headers=headers, params=params)
-            if response.status_code == 200:
-                for article in response.json()["items"]:
-                    if "호선" in article["title"]:
-                        self.notify_observers(article, "news")
-            time.sleep(10)
-    
-    def search_blog(self):
-        while True:
-            url = "https://openapi.naver.com/v1/search/blog.json"
-            headers = {
-                "X-Naver-Client-Id": CLIENT_ID,
-                "X-Naver-Client-Secret": CLIENT_SECRET
-            }
-            params = {"query": self.keyword}
-            response = requests.get(url, headers=headers, params=params)
-            if response.status_code == 200:
-                for article in response.json()["items"]:
-                    if "호선" in article["title"]:
-                        self.notify_observers(article, "blog")
-            time.sleep(10)
-    
-    def search_cafe(self):
-        while True:
-            url = "https://openapi.naver.com/v1/search/cafearticle.json"
-            headers = {
-                "X-Naver-Client-Id": CLIENT_ID,
-                "X-Naver-Client-Secret": CLIENT_SECRET
-            }
-            params = {"query": self.keyword}
-            response = requests.get(url, headers=headers, params=params)
-            if response.status_code == 200:
-                for article in response.json()["items"]:
-                    if "호선" in article["title"]:
-                        self.notify_observers(article, "cafe")
-            time.sleep(10)
+class NewsWatcher(Subscriber):
+    def update(self, message):
+        for item in message:
+            print(f"New News Found: {item['title']} ({item['link']})")
 
-if __name__ == "__main__":
-    observer1 = NaverNewsObserver()
-    observer2 = NaverBlogObserver()
-    observer3 = NaverCafeObserver()
-    naver_api = NaverSearchAPI("호선")
-    naver_api.attach(observer1)
-    naver_api.attach(observer2)
-    naver_api.attach(observer3)
-    thread_news = threading.Thread(target=naver_api.search_news)
-    thread_blog = threading.Thread(target=naver_api.search_blog)
-    thread_cafe = threading.Thread(target=naver_api.search_cafe)
-    thread_news.start()
-    thread_blog.start()
-    thread_cafe.start()
+
+def main():
+    news = News()
+    api = NaverNewsAPI()
+    watcher = NewsWatcher()
+    news.subscribe(watcher)
+
+    while True:
+        items = api.search_news("")
+        news.notify(items)
+        time.sleep(60)
+
+
+
+
+def main2():
+    news = News()
+    api = NaverNewsAPI()
+    watchers = [NewsWatcher("호선"), NewsWatcher("지하철")]
+    for watcher in watchers:
+        news.subscribe(watcher)
+
+    while True:
+        for watcher in watchers:
+            items = api.search_news(watcher.keyword)
+            news.notify(items)
+
+        time.sleep(60)
+
+
+if __name__ == '__main__':
+    main()
