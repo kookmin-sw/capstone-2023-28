@@ -44,8 +44,10 @@ class NewsWatcher(Subscriber):
         self.keyword = keyword
 
     def update(self, message):
+        
         for item in message:
             print(f"New News Found: {item['title']} ({item['link']})")
+            print("\n")
 
 
 def main():
