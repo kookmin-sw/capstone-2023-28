@@ -8,6 +8,7 @@ from utils.key import CLIENT_ID, CLIENT_SECRET
 class News:
     def __init__(self):
         self.subscribers = set()
+        self.notified_items = set()
 
     def subscribe(self, subscriber):
         self.subscribers.add(subscriber)
@@ -16,8 +17,14 @@ class News:
         self.subscribers.discard(subscriber)
 
     def notify(self, message):
+        new_items = []
+        for item in message:
+            if item['title'] not in self.notified_items:
+                new_items.append(item)
+                self.notified_items.add(item['title'])
+        
         for subscriber in self.subscribers:
-            subscriber.update(message)
+            subscriber.update(new_items)
 
 
 class Subscriber:
@@ -44,7 +51,6 @@ class NewsWatcher(Subscriber):
         self.keyword = keyword
 
     def update(self, message):
-        
         for item in message:
             print(f"New News Found: {item['title']} ({item['link']})")
             print("\n")
@@ -67,14 +73,19 @@ def main():
         news.subscribe(watcher)
 
     while True:
+        new_items = []
         for watcher in watchers:
-            query = {"query": watcher.keyword, "display": 1, "sort": "date"}
+            query = {"query": watcher.keyword, "display": 3, "sort": "date"}
             items = api.search_news(query)
-            news.notify(items)
-
-        print("Wainting for 60 seconds... \n")
-        time.sleep(60)
+            new_items += [item for item in items if item not in new_items]
         
+        if new_items:
+            news.notify(new_items)
+
+        print("Waiting for 60 seconds... \n")
+        time.sleep(60)
+
+
 
 if __name__ == '__main__':
     main()
