@@ -29,7 +29,14 @@ class FeedView(generics.ListAPIView):
             for hash_tag in hash_tag_list:
                 hash_tag_feeds = FeedHashTag.objects.filter(hash_tag=hash_tag)
                 queryset = queryset.filter(feed_id__in=map(lambda x: x.feed_id_id, hash_tag_feeds))
-        return queryset.order_by("-created_at")
+
+        page_index = int(self.request.query_params.get('page_index', 0))
+        page_num = int(self.request.query_params.get('page_num', 20))
+
+        offset = page_num * page_index
+        limit = offset + page_num
+        print(offset, limit)
+        return queryset.order_by("-created_at")[offset:limit]
     def post(self, request):
         payload = request.auth.payload
         serializer = FeedSerializer(data=request.data, context={"user_id":payload["user_id"], "hash_tags":request.data["hash_tags"]})
