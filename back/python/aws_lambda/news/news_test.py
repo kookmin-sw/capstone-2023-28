@@ -1,8 +1,8 @@
 import requests
 import json
 import time
-from typing import List
 from datetime import datetime, timedelta
+from typing import List
 from utils.key import CLIENT_ID, CLIENT_SECRET
 
 class News:
@@ -31,18 +31,7 @@ class NaverNewsAPI:
         self.headers = {"X-Naver-Client-Id": CLIENT_ID, "X-Naver-Client-Secret": CLIENT_SECRET}
 
     def search_news(self, query: str) -> List[dict]:
-        end_time = datetime.now()
-        start_time = end_time - timedelta(hours=24)
-        params = {
-            "query": query,
-            "display": 3,
-            "sort": "sim",
-            "start": 1,
-            "news_office_checked": "true",
-            "start_date": start_time.strftime('%Y-%m-%d'),
-            "end_date": end_time.strftime('%Y-%m-%d'),
-        }
-        res = requests.get(self.url, headers=self.headers, params=params)
+        res = requests.get(self.url, headers=self.headers, params=query)
         if res.status_code == 200:
             data = json.loads(res.text)
             if "items" in data:
@@ -51,6 +40,9 @@ class NaverNewsAPI:
 
 
 class NewsWatcher(Subscriber):
+    def __init__(self, keyword):
+        self.keyword = keyword
+
     def update(self, message):
         for item in message:
             print(f"New News Found: {item['title']} ({item['link']})")
@@ -59,14 +51,28 @@ class NewsWatcher(Subscriber):
 def main():
     news = News()
     api = NaverNewsAPI()
-    watcher = NewsWatcher()
-    news.subscribe(watcher)
+
+    # Get latest 3 articles from last 24 hours
+    now = datetime.now()
+    query = {"query": "", "display": 100, "sort": "date"}
+    query["query"] = f"datetime:{(now - timedelta(days=1)).strftime('%Y-%m-%d')}:{now.strftime('%Y-%m-%d')}"
+    items = api.search_news(query)[:3]
+    news.notify(items)
+
+    # Watch for new articles
+    watchers = [NewsWatcher("호선"), NewsWatcher("지하철")]
+    for watcher in watchers:
+        news.subscribe(watcher)
 
     while True:
-        items = api.search_news("")
-        news.notify(items)
-        time.sleep(60)
+        for watcher in watchers:
+            query = {"query": watcher.keyword, "display": 1, "sort": "date"}
+            items = api.search_news(query)
+            news.notify(items)
 
+        print("Wainting for 60 seconds... \n")
+        time.sleep(60)
+        
 
 if __name__ == '__main__':
     main()
