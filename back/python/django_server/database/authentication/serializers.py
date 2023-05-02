@@ -67,7 +67,7 @@ class UserProfileUploadSerializer(serializers.ModelSerializer):
         fields = ["user_profile_image"]
     def update(self, instance, validated_data):
         instance.user_profile_image = validated_data["user_profile_image"]
-        instance.save()
+        instance.save_without_password()
         return instance
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
