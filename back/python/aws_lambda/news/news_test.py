@@ -30,8 +30,18 @@ class NaverNewsAPI:
         self.url = "https://openapi.naver.com/v1/search/news.json"
         self.headers = {"X-Naver-Client-Id": CLIENT_ID, "X-Naver-Client-Secret": CLIENT_SECRET}
 
-    def search_news(self, query: str, start_date: str, end_date: str) -> List[dict]:
-        params = {"query": query, "display": 100, "sort": "date", "start": 1, "start_date": start_date, "end_date": end_date}
+    def search_news(self, query: str) -> List[dict]:
+        end_time = datetime.now()
+        start_time = end_time - timedelta(hours=24)
+        params = {
+            "query": query,
+            "display": 3,
+            "sort": "sim",
+            "start": 1,
+            "news_office_checked": "true",
+            "start_date": start_time.strftime('%Y-%m-%d'),
+            "end_date": end_time.strftime('%Y-%m-%d'),
+        }
         res = requests.get(self.url, headers=self.headers, params=params)
         if res.status_code == 200:
             data = json.loads(res.text)
@@ -41,9 +51,6 @@ class NaverNewsAPI:
 
 
 class NewsWatcher(Subscriber):
-    def __init__(self, keyword):
-        self.keyword = keyword
-
     def update(self, message):
         for item in message:
             print(f"New News Found: {item['title']} ({item['link']})")
@@ -52,19 +59,13 @@ class NewsWatcher(Subscriber):
 def main():
     news = News()
     api = NaverNewsAPI()
-    watchers = [NewsWatcher("호선"), NewsWatcher("지하철")]
-    for watcher in watchers:
-        news.subscribe(watcher)
+    watcher = NewsWatcher()
+    news.subscribe(watcher)
 
     while True:
-        end_date = datetime.now().strftime('%Y-%m-%d')
-        start_date = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
-        for watcher in watchers:
-            items = api.search_news(watcher.keyword, start_date, end_date)[:3] # get only 3 recent news
-            news.notify(items)
-        print("Waiting 60 seconds...")
+        items = api.search_news("")
+        news.notify(items)
         time.sleep(60)
-        
 
 
 if __name__ == '__main__':
