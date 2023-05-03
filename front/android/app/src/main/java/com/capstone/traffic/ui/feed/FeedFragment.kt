@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.traffic.R
 import com.capstone.traffic.databinding.FragmentFeedBinding
+import com.capstone.traffic.global.MyApplication
 import com.capstone.traffic.model.network.sk.direction.dataClass.testData.data
 import com.capstone.traffic.model.network.sql.Client
 import com.capstone.traffic.model.network.sql.Service
@@ -59,6 +61,11 @@ class FeedFragment : Fragment() {
             binding.hs8,
             binding.hs9,
         )
+
+        val profileData = MyApplication.prefs.getUserProfile()
+        binding.myProfileIv.apply {
+            if(profileData != null) setBackgroundDrawable(BitmapDrawable(profileData))
+        }
     }
 
     private var hsList = hs()
@@ -70,6 +77,7 @@ class FeedFragment : Fragment() {
     ): View? {
 
         initData()
+
 
         // slideview 동적 추가
         contentView = (requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.dialog_comment,null)

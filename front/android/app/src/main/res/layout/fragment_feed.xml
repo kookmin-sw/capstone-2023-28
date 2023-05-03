@@ -299,11 +299,17 @@
                 android:layout_margin="10dp"
                 android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/shape_circle" />
+                <androidx.cardview.widget.CardView
+                    app:cardCornerRadius="100dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/my_profile_iv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/shape_circle" />
+                </androidx.cardview.widget.CardView>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/write_btn"
