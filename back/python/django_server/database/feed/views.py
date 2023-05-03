@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from .models import Feed
 from .serializers import *
+from authentication.models import User
 from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
 from rest_framework import permissions, status, generics
@@ -21,21 +22,36 @@ class FeedView(generics.ListAPIView):
     def get_queryset(self):
         queryset = Feed.objects.all()
         user_id = self.request.query_params.get('user_id', None)
+        user_nickname = self.request.query_params.get('user_nickname', None)
         hash_tags = self.request.query_params.get('hash_tags', None)
         if user_id is not None:
             queryset = queryset.filter(user_id=user_id)
+        if user_nickname is not None:
+            try:
+                user = User.objects.get(user_nickname=user_nickname)
+            except User.DoesNotExist:
+                data = {"status": "ERROR",
+                        "res": {"error_name": "이메일 없음", "error_id": 1}
+                        }
+                return Response(data, status=status.HTTP_400_BAD_REQUEST)
+            queryset = queryset.filter(user_id = user.id)
         if hash_tags is not None:
             hash_tag_list = hash_tags.split(',')
-            for hash_tag in hash_tag_list:
-                hash_tag_feeds = FeedHashTag.objects.filter(hash_tag=hash_tag)
-                queryset = queryset.filter(feed_id__in=map(lambda x: x.feed_id_id, hash_tag_feeds))
+            try:
+                for hash_tag in hash_tag_list:
+                    hash_tag_feeds = FeedHashTag.objects.filter(hash_tag=hash_tag)
+                    queryset = queryset.filter(feed_id__in=map(lambda x: x.feed_id_id, hash_tag_feeds))
+            except FeedHashTag.DoesNotExist:
+                data = {"status": "ERROR",
+                        "res": {"error_name": "해당하는 해시태그 없음", "error_id": 2}
+                        }
+                return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
         page_index = int(self.request.query_params.get('page_index', 0))
-        page_num = int(self.request.query_params.get('page_num', 20))
+        page_num = int(self.request.query_params.get('page_num', 3))
 
         offset = page_num * page_index
         limit = offset + page_num
-        print(offset, limit)
         return queryset.order_by("-created_at")[offset:limit]
     def post(self, request):
         payload = request.auth.payload

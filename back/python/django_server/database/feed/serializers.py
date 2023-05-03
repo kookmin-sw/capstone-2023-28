@@ -6,6 +6,7 @@ from API.s3 import S3ImageUploader
 from database import settings
 import boto3
 import base64
+import time
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
@@ -38,8 +39,10 @@ class FeedImageSerializer(serializers.ModelSerializer):
             region_name=settings.AWS_S3_REGION_NAME
         )
         body = s3_client.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME ,Key=ret['image'])["Body"]
+        start_time = time.time()
         raw_data = body.read()
         ret['image'] = base64.b64encode(raw_data).decode('utf-8')
+        print(time.time() - start_time)
         del ret['feed_id']
         return ret
 class FeedHashTagSerializer(serializers.ModelSerializer):
