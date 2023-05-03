@@ -46,7 +46,6 @@ class FeedView(generics.ListAPIView):
                         "res": {"error_name": "해당하는 해시태그 없음", "error_id": 2}
                         }
                 return Response(data, status=status.HTTP_400_BAD_REQUEST)
-
         page_index = int(self.request.query_params.get('page_index', 0))
         page_num = int(self.request.query_params.get('page_num', 3))
 

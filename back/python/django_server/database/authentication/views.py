@@ -58,7 +58,17 @@ class UserInfoView(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         try:
-            user = User.objects.get(user_email=request.GET["user_email"])
+            user_nickname = request.query_params.get('user_nickname', None)
+            user_email = request.query_params.get('user_email', None)
+            if user_email is not None:
+                user = User.objects.get(user_email=user_email)
+            elif user_nickname is not None:
+                user = User.objects.get(user_nickname=user_nickname)
+            else:
+                data = {"status": "ERROR",
+                 "res": {"error_name": "파라미터 없음", "error_id": 3}
+                 }
+                return Response(data, status = status.HTTP_400_BAD_REQUEST)
         except User.DoesNotExist:
             data = {"status": "ERROR",
                  "res": {"error_name": "이메일 없음", "error_id": 1}
@@ -69,7 +79,6 @@ class UserInfoView(APIView):
             data = {}
             data["status"] = "OK"
             data["res"] = serializer.data
-            #data["res"] = {"user_email":user.user_email, "user_nickname":user.user_nickname, "user_definition":user.user_definition, "user_point_number":user.user_point_number, "user_profile_image": user.user_profile_image}
             return Response(data, status=status.HTTP_200_OK)
 class UserUploadImageView(APIView):
     def post(self, request):
