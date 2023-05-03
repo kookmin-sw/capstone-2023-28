@@ -9,6 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOError
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 object Client {
     private var instance: Retrofit? = null
@@ -16,6 +17,9 @@ object Client {
     fun getInstance(): Retrofit {
         if (instance == null) {
             val okHttpClient = OkHttpClient.Builder()
+                .connectTimeout(100, TimeUnit.SECONDS)
+                .readTimeout(100,TimeUnit.SECONDS)
+                .writeTimeout(100,TimeUnit.SECONDS)
                 .addInterceptor(HeaderInterceptor())
                 .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .build()

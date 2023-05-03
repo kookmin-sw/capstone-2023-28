@@ -1,15 +1,20 @@
 package com.capstone.traffic.ui.feed
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -21,11 +26,13 @@ import com.capstone.traffic.model.network.sk.direction.dataClass.testData.data
 import com.capstone.traffic.model.network.sql.Client
 import com.capstone.traffic.model.network.sql.Service
 import com.capstone.traffic.model.network.sql.dataclass.getfeed.FeedResSuc
+import com.capstone.traffic.model.network.sql.dataclass.getfeed.Res
 import com.capstone.traffic.ui.feed.FeedViewModel.Companion.EVENT_START_FILTER_APPLY
 import com.capstone.traffic.ui.feed.FeedViewModel.Companion.EVENT_START_FILTER_SELECT
 import com.capstone.traffic.ui.feed.feedRC.Feed
 import com.capstone.traffic.ui.feed.feedRC.FeedAdapter
 import com.capstone.traffic.ui.feed.writefeed.WriteFeedActivity
+import com.capstone.traffic.ui.route.direction.SlideUpDialog
 import com.google.android.material.card.MaterialCardView
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,6 +45,8 @@ class FeedFragment : Fragment() {
     private val feedViewModel by activityViewModels<FeedViewModel>()
     private lateinit var lineFilterList : List<AppCompatButton>
     private lateinit var feedAdapter : FeedAdapter
+    private lateinit var contentView : View
+    private lateinit var slideUpPopup : SlideUpDialog
     private fun initData(){
         lineFilterList = listOf(
             binding.hs1,
@@ -61,7 +70,19 @@ class FeedFragment : Fragment() {
     ): View? {
 
         initData()
-        feedAdapter = FeedAdapter(requireContext())
+
+        // slideview 동적 추가
+        contentView = (requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.dialog_comment,null)
+        slideUpPopup = SlideUpDialog.Builder(requireContext())
+            .setContentView(contentView)
+            .create()
+
+        // 피드 어뎁터 (클릭 이벤트 추가)
+        setFeedAdapter()
+
+        initSlider()
+
+
         // 뷰 클릭 이벤트 적용
         binding.run {
             filterApplyBtn.setOnClickListener {
@@ -106,6 +127,27 @@ class FeedFragment : Fragment() {
         return binding.root
     }
 
+
+    private fun initSlider()
+    {
+        // slider 관련 이벤트 정리
+        val cancelBtn = contentView.findViewById<AppCompatImageButton>(R.id.cancle_btn)
+        // 삭제 버튼 클릭시 사라지기
+        cancelBtn.setOnClickListener {
+            slideUpPopup.dismissAnim()
+        }
+
+
+    }
+    // 피드 어뎁터 설정
+    private fun setFeedAdapter()
+    {
+        feedAdapter = FeedAdapter(requireContext()){
+                item -> Toast.makeText(requireContext(), "${item.user.userNickname}", Toast.LENGTH_SHORT).show()
+            slideUpPopup.show()
+
+        }
+    }
     // 필터 클리어
     private fun filterClear()
     {
@@ -127,12 +169,8 @@ class FeedFragment : Fragment() {
             override fun onResponse(call: Call<FeedResSuc>, response: Response<FeedResSuc>) {
                 if(response.isSuccessful)
                 {
-                    val feedData = mutableListOf<Feed>()
                     val data = response.body()?.res
-                    data?.forEach {
-                        feedData.add(Feed(it.userId, it.createdAt, it.content, it.images))
-                    }
-                    setFeedRecyclerView(feedData)
+                    if(data != null)setFeedRecyclerView(data)
                 }
             }
             override fun onFailure(call: Call<FeedResSuc>, t: Throwable) {
@@ -144,11 +182,12 @@ class FeedFragment : Fragment() {
 
     // recyclerView
     @SuppressLint("NotifyDataSetChanged")
-    private fun setFeedRecyclerView(feed : MutableList<Feed>)
+    private fun setFeedRecyclerView(feed : List<Res>)
     {
         feedAdapter.apply {
             datas = feed
         }
+
         binding.feedRc.apply {
             this.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL,false)
             this.adapter = feedAdapter

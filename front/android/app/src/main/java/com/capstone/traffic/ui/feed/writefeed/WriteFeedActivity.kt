@@ -28,8 +28,6 @@ import com.capstone.traffic.databinding.ActivityWriteFeedBinding
 import com.capstone.traffic.global.Auth
 import com.capstone.traffic.global.BaseActivity
 import com.capstone.traffic.global.MyApplication
-import com.capstone.traffic.model.e.API
-import com.capstone.traffic.model.e.RetrofitInstance
 import com.capstone.traffic.model.network.sk.direction.dataClass.name
 import com.capstone.traffic.model.network.sk.direction.dataClass.testData.data
 import com.capstone.traffic.model.network.sql.AuthClient
