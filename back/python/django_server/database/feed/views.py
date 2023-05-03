@@ -98,7 +98,15 @@ class FeedImageView(APIView):
             data["res"] = serializer.errors
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-class CommentCreateView(APIView):
+class CommentView(APIView):
+    def get(self, request):
+        data = {}
+        queryset = Comment.objects.filter(feed_id=request.query_params["feed_id"])
+        serializer = CommentSerializer(queryset, many=True)
+        data["status"] = "OK"
+        data["res"] = serializer.data
+        return Response(data, status=status.HTTP_200_OK)
+
     def post(self, request):
         payload = request.auth.payload
 

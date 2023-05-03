@@ -15,11 +15,13 @@ class CommentSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         ret = super().to_representation(instance)
         user = UserSerializer(instance.user_id).data
-        ret["user_email"] = user["user_email"]
-        ret["user_profile_image"] = user["user_profile_image"]
-        ret["user_nickname"] = user["user_nickname"]
-        del ret['feed_id']
-        del ret['user_id']
+        user_dict = {}
+        user_dict["user_id"] = ret["user_id"]
+        user_dict["user_email"] = user["user_email"]
+        user_dict["user_profile_image"] = user["user_profile_image"]
+        user_dict["user_nickname"] = user["user_nickname"]
+        ret["user"] = user_dict
+        del ret["user_id"]
         return ret
     def create(self, validated_data):
         user_id = self.context.get("user_id")
@@ -50,12 +52,13 @@ class FeedHashTagSerializer(serializers.ModelSerializer):
         model = FeedHashTag
         fields = ["hash_tag"]
 class FeedSerializer(serializers.ModelSerializer):
-    comments = CommentSerializer(many=True, read_only=True)
+    #comments = CommentSerializer(many=True, read_only=True)
     images = FeedImageSerializer(many=True, read_only=True)
     hash_tags = FeedHashTagSerializer(many=True, read_only=True)
+    comments_num = serializers.SerializerMethodField()
     class Meta:
         model = Feed
-        fields = ("feed_id", "user_id", "content", "created_at", "updated_at", "comments", "images", "hash_tags")
+        fields = ("feed_id", "user_id", "content", "created_at", "updated_at", "comments_num", "images", "hash_tags")
         extra_kwargs = {"user_id": {"required": False}}
     def create(self, validated_data):
         user_id = self.context.get("user_id")
@@ -65,10 +68,9 @@ class FeedSerializer(serializers.ModelSerializer):
         for hash_tag in hash_tags:
             FeedHashTag.objects.create(feed_id_id=feed.feed_id ,hash_tag=hash_tag)
         return feed
+    def get_comments_num(self, obj):
+        return obj.comments.count()
     def to_representation(self, instance):
         ref = super().to_representation(instance)
         ref["user"] = UserSerializer(instance.user_id).data
         return ref
-
-
-
