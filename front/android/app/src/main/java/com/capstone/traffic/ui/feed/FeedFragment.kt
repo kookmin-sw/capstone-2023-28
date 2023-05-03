@@ -6,9 +6,12 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.renderscript.ScriptGroup.Input
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -140,12 +143,41 @@ class FeedFragment : Fragment() {
     {
         // slider 관련 이벤트 정리
         val cancelBtn = contentView.findViewById<AppCompatImageButton>(R.id.cancle_btn)
+        val addCommentBtn = contentView.findViewById<AppCompatButton>(R.id.add_comment_btn)
+        val inputLL = contentView.findViewById<LinearLayout>(R.id.inputLL)
+        val inputTextBtn = contentView.findViewById<EditText>(R.id.input_text_btn)
+        val sendBtn = contentView.findViewById<AppCompatButton>(R.id.send_btn)
+
         // 삭제 버튼 클릭시 사라지기
         cancelBtn.setOnClickListener {
             slideUpPopup.dismissAnim()
         }
 
+        addCommentBtn.setOnClickListener {
+            inputLL.visibility = View.VISIBLE
+            inputTextBtn.requestFocus()
+            keyboardUp()
+        }
 
+        sendBtn.setOnClickListener{
+            keyboardDown()
+        }
+
+
+
+    }
+    // 키보드 올리기
+    private fun keyboardUp()
+    {
+        val imm : InputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+    }
+
+    // 키보드 내리기
+    private fun keyboardDown()
+    {
+        val imm : InputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
     }
     // 피드 어뎁터 설정
     private fun setFeedAdapter()

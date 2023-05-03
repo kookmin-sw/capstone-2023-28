@@ -17,6 +17,5 @@ class CommentsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_comments)
 
 
-
     }
 }

@@ -53,6 +53,7 @@
             android:name=".ui.checkout.CheckOutActivity"
             android:exported="false" />
         <activity
+            android:windowSoftInputMode="adjustResize"
             android:name=".ui.HomeActivity"
             android:exported="false" />
         <activity
