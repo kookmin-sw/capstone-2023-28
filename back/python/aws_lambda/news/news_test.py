@@ -1,3 +1,8 @@
+#작성된 뉴스 회사 표현
+#
+
+
+
 import requests
 import json
 import time
@@ -51,9 +56,11 @@ class NewsWatcher(Subscriber):
         self.keyword = keyword
 
     def update(self, message):
-        for item in message:
-            print(f"New News Found: {item['title']} ({item['link']})")
-            print("\n")
+        relevant_items = [item for item in message if self.keyword in item['title']]
+        for item in relevant_items:
+            print(f"New News Found: {item['title']}  ({item['link']})")
+        print("\n")
+
 
 
 def main():
@@ -68,7 +75,7 @@ def main():
     news.notify(items)
 
     # Watch for new articles
-    watchers = [NewsWatcher("호선"), NewsWatcher("지하철")]
+    watchers = [NewsWatcher("호선"), NewsWatcher("지하철 호선 지연"), NewsWatcher("열차 지연"), ]
     for watcher in watchers:
         news.subscribe(watcher)
 
@@ -82,8 +89,9 @@ def main():
         if new_items:
             news.notify(new_items)
 
-        print("Waiting for 60 seconds... \n")
-        time.sleep(60)
+        break
+        #print("Waiting for 60 seconds... \n")
+        #time.sleep(60)
 
 
 
