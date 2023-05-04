@@ -7,6 +7,17 @@ from database import settings
 import boto3
 import base64
 import time
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = ["feed_id"]
+    def create(self, validated_data):
+        user_id = self.context.get("user_id")
+        validated_data["user_id"] = User.objects.get(id=user_id)
+        like = Like.objects.create(**validated_data)
+        return like
+
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
@@ -15,11 +26,13 @@ class CommentSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         ret = super().to_representation(instance)
         user = UserSerializer(instance.user_id).data
+
         user_dict = {}
         user_dict["user_id"] = ret["user_id"]
         user_dict["user_email"] = user["user_email"]
         user_dict["user_profile_image"] = user["user_profile_image"]
         user_dict["user_nickname"] = user["user_nickname"]
+
         ret["user"] = user_dict
         del ret["user_id"]
         return ret
@@ -52,7 +65,6 @@ class FeedHashTagSerializer(serializers.ModelSerializer):
         model = FeedHashTag
         fields = ["hash_tag"]
 class FeedSerializer(serializers.ModelSerializer):
-    #comments = CommentSerializer(many=True, read_only=True)
     images = FeedImageSerializer(many=True, read_only=True)
     hash_tags = FeedHashTagSerializer(many=True, read_only=True)
     comments_num = serializers.SerializerMethodField()

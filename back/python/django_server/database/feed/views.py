@@ -122,3 +122,17 @@ class CommentView(APIView):
             data["res"] = serializer.errors
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
+class LikeView(generics.ListAPIView):
+    def post(self, request):
+        payload = request.auth.payload
+        serializer = LikeSerializer(data=request.data, context={"user_id" : payload["user_id"]})
+        data = {}
+        if serializer.is_valid():
+            serializer.save()
+            data["status"] = "OK"
+            data["res"] = {}
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            data["status"] = "ERROR"
+            data["res"] = serializer.errors
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
