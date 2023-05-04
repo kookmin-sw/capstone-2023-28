@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat.getColorStateList
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -98,21 +99,36 @@ class FeedFragment : Fragment() {
         binding.run {
             filterApplyBtn.setOnClickListener {
                 feedViewModel.filterApply()
+
+
+
             }
             lineFilterList.forEach {
                 it.setOnClickListener {
                     feedViewModel.filterSelect(it)
                 }
             }
+
             // 스크롤시 새로고침
             refreshLayout.setOnRefreshListener {
-                retrofitFeed()
+                retrofitFeed(null, null)
                 refreshLayout.isRefreshing = false
             }
 
             // 필터 적용 버튼
             filterApplyBtn.setOnClickListener {
                 filterLl.apply { visibility = View.GONE }
+
+                val filterDataList = mutableListOf<Int>()
+                // 필터 적용
+                lineFilterList.forEachIndexed { index,  it ->
+                    if(it.backgroundTintList != null && it.backgroundTintList!!.equals(ColorStateList.valueOf(requireContext().resources.getColor(R.color.gray)))){
+                        filterDataList.add(index + 1)
+                    }
+                }
+                val filterString = filterDataList.joinToString(",")
+                retrofitFeed(hashTag = filterString, userId = null)
+
             }
 
             // 필터 초기화
@@ -128,12 +144,13 @@ class FeedFragment : Fragment() {
         }
 
         binding.filterBtn.setOnClickListener {
+
             binding.filterLl.apply {
                 visibility = if(visibility == View.GONE) View.VISIBLE else View.GONE
             }
         }
 
-        retrofitFeed()
+        retrofitFeed(null, null)
 
         return binding.root
     }
@@ -202,15 +219,15 @@ class FeedFragment : Fragment() {
     }
 
     // sql 피드 불러오기
-    private fun retrofitFeed(){
+    private fun retrofitFeed(hashTag : String?, userId : String?){
         val retrofit = Client.getInstance()
         val service = retrofit.create(Service::class.java)
-        service.getFeed().enqueue(object : Callback<FeedResSuc>{
+        service.getFeed(hashTag, userId).enqueue(object : Callback<FeedResSuc>{
             override fun onResponse(call: Call<FeedResSuc>, response: Response<FeedResSuc>) {
                 if(response.isSuccessful)
                 {
                     val data = response.body()?.res
-                    if(data != null)setFeedRecyclerView(data)
+                    if(data != null) setFeedRecyclerView(data)
                 }
             }
             override fun onFailure(call: Call<FeedResSuc>, t: Throwable) {

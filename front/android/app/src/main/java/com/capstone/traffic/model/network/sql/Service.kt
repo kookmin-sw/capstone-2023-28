@@ -29,7 +29,15 @@ interface Service {
     
     // 피드 전체 불러오기
     @GET("feed/")
-    fun getFeed() : Call<FeedResSuc>
+    fun getFeed(@Query("hash_tags", encoded = true) hashTag : String?, @Query("user_id", encoded = true) userId : String?) : Call<FeedResSuc>
+
+    // 피드 필터링 (해시 태그) 해서 가져오기
+    @GET("feed/")
+    fun getFeedByHashTag(@Query("hash_tags", encoded = true) hashTag : String) : Call<FeedResSuc>
+
+    // 유저 정보를 통해 피드 가져오기
+    @GET("feed/")
+    fun getFeedByUserId(@Query("user_id", encoded = true) userId : String) : Call<FeedResSuc>
 
     // 프로필 이미지 업데이트
     @Multipart
