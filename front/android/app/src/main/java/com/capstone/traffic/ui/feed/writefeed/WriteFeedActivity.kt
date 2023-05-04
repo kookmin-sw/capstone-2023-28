@@ -2,11 +2,13 @@ package com.capstone.traffic.ui.feed.writefeed
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ContentProvider
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
@@ -15,8 +17,10 @@ import android.provider.OpenableColumns
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.AppCompatButton
 import androidx.compose.ui.graphics.StrokeCap.Companion.Square
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -65,8 +69,36 @@ class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
     override var layoutResourceId: Int = R.layout.activity_write_feed
     private lateinit var writeFeedViewModel: WriteFeedViewModel
     private var userId = -1
+    private lateinit var lineFilterList : List<AppCompatButton>
+    private fun initFilterBtn()
+    {
+        lineFilterList = listOf(
+            binding.hs1,
+            binding.hs2,
+            binding.hs3,
+            binding.hs4,
+            binding.hs5,
+            binding.hs6,
+            binding.hs7,
+            binding.hs8,
+            binding.hs9,
+        )
+        lineFilterList.forEach {
+            it.setOnClickListener {
+                if(it.backgroundTintList != null && it.backgroundTintList!!.equals(ColorStateList.valueOf(
+                        this.resources.getColor(R.color.gray)))){
+                    it.backgroundTintList = ColorStateList.valueOf(this.resources.getColor(R.color.white))
+                }
+                else it.backgroundTintList = ColorStateList.valueOf(this.resources.getColor(R.color.gray))
+            }
+        }
+    }
+
 
     override fun initBinding() {
+
+        // 필터 버튼 초기화
+        initFilterBtn()
 
         writeFeedViewModel = ViewModelProvider(this)[WriteFeedViewModel::class.java]
         binding.write = writeFeedViewModel
@@ -187,35 +219,48 @@ class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
     private fun posting() {
         // 사진이 없는 경우 -> 글만 업로드
         if (photoList.size == 0) {
-            postingText()
+            postingText(false)
         } else {
-            postingText()
+            postingText(true)
             //uploadingPhoto()
         }
         cancelPosting()
     }
 
     // 피드 업로드 (텍스트 만)
-    private fun postingText() {
+    private fun postingText(upload: Boolean) {
         val retrofit = Client.getInstance()
         val loginService = retrofit.create(Service::class.java)
         val mediaType = "application/json".toMediaTypeOrNull()
         val postingText = binding.postingEt.text
+        val filterString = getFilterString()
         val param =
-            RequestBody.create(mediaType, "{\"content\":\"${postingText}\",\"hash_tags\":[]}")
+            RequestBody.create(mediaType, "{\"content\":\"${postingText}\",\"hash_tags\":[${filterString}]}")
         loginService.getPostingText(param = param)
             .enqueue(object : Callback<response> {
                 override fun onResponse(call: Call<response>, response: Response<response>) {
                     if (response.isSuccessful) {
                         Toast.makeText(this@WriteFeedActivity, "업로드 완료", Toast.LENGTH_SHORT).show()
                         userId = response.body()?.res?.feedid?.toInt() ?: -1
-                        uploadingPhoto()
+                        if(upload) uploadingPhoto()
                     }
                 }
 
                 override fun onFailure(call: Call<response>, t: Throwable) {
                 }
             })
+    }
+
+    private fun getFilterString() : String{
+        val filterDataList = mutableListOf<Int>()
+        // 필터 적용
+        lineFilterList.forEachIndexed { index,  it ->
+            if(it.backgroundTintList != null && it.backgroundTintList!!.equals(ColorStateList.valueOf(this.resources.getColor(R.color.gray)))){
+                filterDataList.add(index + 1)
+            }
+        }
+        val filterString = filterDataList.joinToString(",")
+        return filterString
     }
 
     @SuppressLint("NotifyDataSetChanged")
