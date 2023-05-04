@@ -1,13 +1,21 @@
+#This code is for AWS Lambda service.
+#
+#
+
+
+
 import requests
 import json
 import time
 from datetime import datetime, timedelta
 from typing import List
-from utils.key import CLIENT_ID, CLIENT_SECRET
+import os
+
 
 class News:
     def __init__(self):
         self.subscribers = set()
+        self.notified_items = set()
 
     def subscribe(self, subscriber):
         self.subscribers.add(subscriber)
@@ -16,8 +24,14 @@ class News:
         self.subscribers.discard(subscriber)
 
     def notify(self, message):
+        new_items = []
+        for item in message:
+            if item['title'] not in self.notified_items:
+                new_items.append(item)
+                self.notified_items.add(item['title'])
+        
         for subscriber in self.subscribers:
-            subscriber.update(message)
+            subscriber.update(new_items)
 
 
 class Subscriber:
@@ -28,7 +42,7 @@ class Subscriber:
 class NaverNewsAPI:
     def __init__(self):
         self.url = "https://openapi.naver.com/v1/search/news.json"
-        self.headers = {"X-Naver-Client-Id": CLIENT_ID, "X-Naver-Client-Secret": CLIENT_SECRET}
+        self.headers = {"X-Naver-Client-Id": os.getenv('CLIENT_ID'), "X-Naver-Client-Secret": os.getenv('CLIENT_SECRET')}
 
     def search_news(self, query: str) -> List[dict]:
         res = requests.get(self.url, headers=self.headers, params=query)
@@ -44,11 +58,13 @@ class NewsWatcher(Subscriber):
         self.keyword = keyword
 
     def update(self, message):
-        for item in message:
-            print(f"New News Found: {item['title']} ({item['link']})")
+        relevant_items = [item for item in message if self.keyword in item['title']]
+        for item in relevant_items:
+            print(f"New News Found: {item['title']}  ({item['link']})")
+        print("\n")
 
 
-def main():
+def lambda_handler(event, context):
     news = News()
     api = NaverNewsAPI()
 
@@ -60,19 +76,20 @@ def main():
     news.notify(items)
 
     # Watch for new articles
-    watchers = [NewsWatcher("호선"), NewsWatcher("지하철")]
+    watchers = [NewsWatcher("호선"), NewsWatcher("지하철 호선 지연"), NewsWatcher("열차 지연"), ]
     for watcher in watchers:
         news.subscribe(watcher)
 
     while True:
+        new_items = []
         for watcher in watchers:
-            query = {"query": watcher.keyword, "display": 1, "sort": "date"}
+            query = {"query": watcher.keyword, "display": 3, "sort": "date"}
             items = api.search_news(query)
-            news.notify(items)
-
-        print("Wainting for 60 seconds... \n")
-        time.sleep(60)
+            new_items += [item for item in items if item not in new_items]
         
+        if new_items:
+            news.notify(new_items)
 
-if __name__ == '__main__':
-    main()
+        break
+        #print("Waiting for 60 seconds... \n")
+        #time.sleep(60)
