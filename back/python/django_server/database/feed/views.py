@@ -13,8 +13,9 @@ class FeedView(generics.ListAPIView):
     filter_backends = [SearchFilter]
     search_fields = ['user_id__exact', 'feedhashtag__hash_tag__exact']
     def list(self, request, *args, **kwargs):
+        payload = request.auth.payload
         queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
+        serializer = self.get_serializer(queryset, many=True,  context={"user_id":payload["user_id"]} )
         data = {}
         data["status"] = "OK"
         data["res"] = serializer.data
@@ -47,7 +48,7 @@ class FeedView(generics.ListAPIView):
                         }
                 return Response(data, status=status.HTTP_400_BAD_REQUEST)
         page_index = int(self.request.query_params.get('page_index', 0))
-        page_num = int(self.request.query_params.get('page_num', 3))
+        page_num = int(self.request.query_params.get('page_num', 4))
 
         offset = page_num * page_index
         limit = offset + page_num

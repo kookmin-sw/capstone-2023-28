@@ -68,9 +68,11 @@ class FeedSerializer(serializers.ModelSerializer):
     images = FeedImageSerializer(many=True, read_only=True)
     hash_tags = FeedHashTagSerializer(many=True, read_only=True)
     comments_num = serializers.SerializerMethodField()
+    likes_num = serializers.SerializerMethodField()
+    is_liked = serializers.SerializerMethodField()
     class Meta:
         model = Feed
-        fields = ("feed_id", "user_id", "content", "created_at", "updated_at", "comments_num", "images", "hash_tags")
+        fields = ("feed_id", "user_id", "content", "created_at", "updated_at", "comments_num", "likes_num", "is_liked", "images", "hash_tags")
         extra_kwargs = {"user_id": {"required": False}}
     def create(self, validated_data):
         user_id = self.context.get("user_id")
@@ -82,6 +84,14 @@ class FeedSerializer(serializers.ModelSerializer):
         return feed
     def get_comments_num(self, obj):
         return obj.comments.count()
+    def get_likes_num(self, obj):
+        return obj.like_feed.count()
+    def get_is_liked(self, obj):
+        user_id = self.context.get("user_id")
+        print(user_id)
+        is_liked = obj.like_feed.filter(user_id=user_id).exists()
+        return is_liked
+
     def to_representation(self, instance):
         ref = super().to_representation(instance)
         ref["user"] = UserSerializer(instance.user_id).data
