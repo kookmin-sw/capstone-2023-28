@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class ComResSuc(
     @SerializedName("status") val status : String,
-    @SerializedName("res") val res : Res
+    @SerializedName("res") val res : List<Res>
 )

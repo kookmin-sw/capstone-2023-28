@@ -53,8 +53,11 @@ class FeedAdapter(private val context: Context, private val onClickListener : (R
             userNickname.text = item.user.userNickname
             writeTime.text = item.createdAt.parseTime()
             contents.text = item.content
-            commentBtn.setOnClickListener {
-                onClickListener(datas[position])
+            commentBtn.apply {
+                this.setOnClickListener {
+                    onClickListener(datas[position])
+                }
+                this.text = item.comments
             }
 
             profileIv.apply {

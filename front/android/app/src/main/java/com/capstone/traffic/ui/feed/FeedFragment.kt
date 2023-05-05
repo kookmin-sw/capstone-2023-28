@@ -20,6 +20,7 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat.getColorStateList
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.text.set
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -37,6 +38,7 @@ import com.capstone.traffic.model.network.sql.dataclass.getfeed.FeedResSuc
 import com.capstone.traffic.model.network.sql.dataclass.getfeed.Res
 import com.capstone.traffic.ui.feed.FeedViewModel.Companion.EVENT_START_FILTER_APPLY
 import com.capstone.traffic.ui.feed.FeedViewModel.Companion.EVENT_START_FILTER_SELECT
+import com.capstone.traffic.ui.feed.comment.CommentAdapter
 import com.capstone.traffic.ui.feed.feedRC.Feed
 import com.capstone.traffic.ui.feed.feedRC.FeedAdapter
 import com.capstone.traffic.ui.feed.writefeed.WriteFeedActivity
@@ -59,6 +61,7 @@ class FeedFragment : Fragment() {
     private lateinit var contentView : View
     private lateinit var slideUpPopup : SlideUpDialog
     private lateinit var selectedFeedId : String
+    private lateinit var commentAdapter: CommentAdapter
     private fun initData(){
         lineFilterList = listOf(
             binding.hs1,
@@ -168,22 +171,17 @@ class FeedFragment : Fragment() {
     }
 
 
-    private fun newSlider()
-    {
-        contentView.apply {
-            findViewById<EditText>(R.id.input_text_btn).setText("")
-        }
-
-    }
-
     private fun initSlider()
     {
+        commentAdapter = CommentAdapter(requireContext())
+
         // slider 관련 이벤트 정리
         val cancelBtn = contentView.findViewById<AppCompatImageButton>(R.id.cancle_btn)
         val addCommentBtn = contentView.findViewById<AppCompatButton>(R.id.add_comment_btn)
         val inputLL = contentView.findViewById<LinearLayout>(R.id.inputLL)
         val inputTextBtn = contentView.findViewById<EditText>(R.id.input_text_btn)
         val sendBtn = contentView.findViewById<AppCompatButton>(R.id.send_btn)
+        val rc = contentView.findViewById<RecyclerView>(R.id.comment_rc)
 
         // 삭제 버튼 클릭시 사라지기
         cancelBtn.setOnClickListener {
@@ -205,6 +203,12 @@ class FeedFragment : Fragment() {
                 writeComments(inputTextBtn.text.toString(), selectedFeedId)
             }
         }
+
+        rc.apply {
+            this.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL,false)
+            this.adapter = commentAdapter
+        }
+
     }
 
     // 댓글 달기
@@ -219,6 +223,7 @@ class FeedFragment : Fragment() {
             override fun onResponse(call: Call<ImageUpload>, response: Response<ImageUpload>) {
                 if(response.isSuccessful){
                     Toast.makeText(requireContext(), "댓글을 작성하였습니다.", Toast.LENGTH_SHORT).show()
+                    getComments(selectedFeedId)
                 }
                 else{
                     Toast.makeText(requireContext(), "댓글을 작성실패.", Toast.LENGTH_SHORT).show()
@@ -249,9 +254,11 @@ class FeedFragment : Fragment() {
     {
         val service = Client.getInstance().create(Service::class.java)
         service.getComments(feedId).enqueue(object :Callback<ComResSuc>{
+            @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(call: Call<ComResSuc>, response: Response<ComResSuc>) {
-                if (response.isSuccessful){
-                    Toast.makeText(requireContext(), "댓글 가져오기 성공", Toast.LENGTH_SHORT).show()
+                if (response.isSuccessful && response.body() != null){
+                    commentAdapter.datas = response.body()!!.res
+                    commentAdapter.notifyDataSetChanged()
                 }
             }
 
@@ -278,8 +285,11 @@ class FeedFragment : Fragment() {
     {
         feedAdapter = FeedAdapter(requireContext()){
                 item -> Toast.makeText(requireContext(), "${item.user.userNickname}", Toast.LENGTH_SHORT).show()
-            slideUpPopup.show()
             selectedFeedId = item.feedId
+            getComments(selectedFeedId)
+            contentView.findViewById<EditText>(R.id.input_text_btn).setText("")
+            keyboardDown()
+            slideUpPopup.show()
         }
     }
     // 필터 클리어

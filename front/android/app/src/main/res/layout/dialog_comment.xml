@@ -75,7 +75,14 @@
             android:background="@color/gray"
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
-
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/comment_rc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
     <LinearLayout
         android:visibility="gone"
