@@ -2,7 +2,6 @@ from rest_framework import serializers
 from .models import *
 from authentication.models import User
 from authentication.serializers import UserSerializer
-from API.s3 import S3ImageUploader
 from database import settings
 import boto3
 import base64

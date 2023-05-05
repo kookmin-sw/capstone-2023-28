@@ -1,6 +1,4 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
-from .models import Feed
 from .serializers import *
 from authentication.models import User
 from rest_framework.filters import SearchFilter

@@ -1,7 +1,6 @@
 from .models import User
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework.exceptions import ValidationError
 from database import settings
 import boto3
 import base64
