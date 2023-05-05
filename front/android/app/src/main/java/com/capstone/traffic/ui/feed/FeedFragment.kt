@@ -31,6 +31,8 @@ import com.capstone.traffic.global.MyApplication
 import com.capstone.traffic.model.network.sk.direction.dataClass.testData.data
 import com.capstone.traffic.model.network.sql.Client
 import com.capstone.traffic.model.network.sql.Service
+import com.capstone.traffic.model.network.sql.dataclass.ImageUpload
+import com.capstone.traffic.model.network.sql.dataclass.comment.ComResSuc
 import com.capstone.traffic.model.network.sql.dataclass.getfeed.FeedResSuc
 import com.capstone.traffic.model.network.sql.dataclass.getfeed.Res
 import com.capstone.traffic.ui.feed.FeedViewModel.Companion.EVENT_START_FILTER_APPLY
@@ -40,9 +42,12 @@ import com.capstone.traffic.ui.feed.feedRC.FeedAdapter
 import com.capstone.traffic.ui.feed.writefeed.WriteFeedActivity
 import com.capstone.traffic.ui.route.direction.SlideUpDialog
 import com.google.android.material.card.MaterialCardView
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
 
 
 class FeedFragment : Fragment() {
@@ -53,6 +58,7 @@ class FeedFragment : Fragment() {
     private lateinit var feedAdapter : FeedAdapter
     private lateinit var contentView : View
     private lateinit var slideUpPopup : SlideUpDialog
+    private lateinit var selectedFeedId : String
     private fun initData(){
         lineFilterList = listOf(
             binding.hs1,
@@ -97,12 +103,11 @@ class FeedFragment : Fragment() {
 
         // 뷰 클릭 이벤트 적용
         binding.run {
+
             filterApplyBtn.setOnClickListener {
                 feedViewModel.filterApply()
-
-
-
             }
+
             lineFilterList.forEach {
                 it.setOnClickListener {
                     feedViewModel.filterSelect(it)
@@ -127,7 +132,12 @@ class FeedFragment : Fragment() {
                     }
                 }
                 val filterString = filterDataList.joinToString(",")
-                retrofitFeed(hashTag = filterString, userId = null)
+                if(filterString.isNotEmpty()){
+                    retrofitFeed(hashTag = filterString, userId = null)
+                }
+                else{
+                    retrofitFeed(null, null)
+                }
 
             }
 
@@ -135,11 +145,13 @@ class FeedFragment : Fragment() {
             filterClearBtn.setOnClickListener {
                 filterClear()
             }
+
             //글쓰기 버튼
             writeBtn.setOnClickListener {
                 val intent = Intent(requireContext(),WriteFeedActivity::class.java)
-                startActivity(intent)
+                startActivityForResult(intent,1)
             }
+
 
         }
 
@@ -155,6 +167,14 @@ class FeedFragment : Fragment() {
         return binding.root
     }
 
+
+    private fun newSlider()
+    {
+        contentView.apply {
+            findViewById<EditText>(R.id.input_text_btn).setText("")
+        }
+
+    }
 
     private fun initSlider()
     {
@@ -180,9 +200,66 @@ class FeedFragment : Fragment() {
             keyboardDown()
         }
 
-
-
+        sendBtn.setOnClickListener {
+            if(selectedFeedId.isNotEmpty() && inputTextBtn.text.isNotBlank()) {
+                writeComments(inputTextBtn.text.toString(), selectedFeedId)
+            }
+        }
     }
+
+    // 댓글 달기
+    private fun writeComments(comments : String, feedId: String)
+    {
+        val retrofit = Client.getInstance()
+        val service = retrofit.create(Service::class.java)
+        val mediaType = "application/json".toMediaTypeOrNull()
+        val param =
+            RequestBody.create(mediaType, "{\"feed_id\":\"${feedId}\",\"content\":\"${comments}\"}")
+        service.uploadComments(param = param).enqueue(object : Callback<ImageUpload>{
+            override fun onResponse(call: Call<ImageUpload>, response: Response<ImageUpload>) {
+                if(response.isSuccessful){
+                    Toast.makeText(requireContext(), "댓글을 작성하였습니다.", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    Toast.makeText(requireContext(), "댓글을 작성실패.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<ImageUpload>, t: Throwable) {
+                Toast.makeText(requireContext(), "댓글을 작성실패.", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    @Deprecated("Deprecated in Java", ReplaceWith(
+        "super.onActivityResult(requestCode, resultCode, data)",
+        "androidx.fragment.app.Fragment"
+    )
+    )
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 1){
+            if(resultCode == 3131){
+                retrofitFeed(null, null)
+            }
+        }
+    }
+
+    // 댓글 가져오기
+    private fun getComments(feedId : String)
+    {
+        val service = Client.getInstance().create(Service::class.java)
+        service.getComments(feedId).enqueue(object :Callback<ComResSuc>{
+            override fun onResponse(call: Call<ComResSuc>, response: Response<ComResSuc>) {
+                if (response.isSuccessful){
+                    Toast.makeText(requireContext(), "댓글 가져오기 성공", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ComResSuc>, t: Throwable) {
+            }
+        })
+    }
+
     // 키보드 올리기
     private fun keyboardUp()
     {
@@ -202,7 +279,7 @@ class FeedFragment : Fragment() {
         feedAdapter = FeedAdapter(requireContext()){
                 item -> Toast.makeText(requireContext(), "${item.user.userNickname}", Toast.LENGTH_SHORT).show()
             slideUpPopup.show()
-
+            selectedFeedId = item.feedId
         }
     }
     // 필터 클리어

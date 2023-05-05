@@ -212,6 +212,8 @@ class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
     }
 
     private fun cancelPosting() {
+        val intent = Intent()
+        setResult(3131,intent)
         finish()
     }
 

@@ -3,6 +3,7 @@ package com.capstone.traffic.model.network.sql
 import com.capstone.traffic.model.network.sql.dataclass.DefaultRes
 import com.capstone.traffic.model.network.sql.dataclass.getfeed.FeedResSuc
 import com.capstone.traffic.model.network.sql.dataclass.ImageUpload
+import com.capstone.traffic.model.network.sql.dataclass.comment.ComResSuc
 import com.capstone.traffic.model.network.sql.dataclass.info.InfoRecSuc
 import com.capstone.traffic.model.network.sql.dataclass.login.LoginResSuc
 import com.capstone.traffic.model.network.sql.dataclass.postfeed.response
@@ -49,4 +50,12 @@ interface Service {
     @POST("feed/image/")
     fun uploadImage(@PartMap feed_id : HashMap<String, RequestBody>, @Part image : MultipartBody.Part) : Call<ImageUpload>
 
+
+    // 댓글 달기
+    @POST("feed/comment/")
+    fun uploadComments(@Body param : RequestBody) : Call<ImageUpload>
+
+    // 댓글 가져오기
+    @GET("feed/comment/")
+    fun getComments(@Query("feed_id", encoded = true) feedId : String) : Call<ComResSuc>
 }

@@ -8,8 +8,8 @@ data class Res(
     @SerializedName("content") val content : String,
     @SerializedName("created_at") val createdAt : String,
     @SerializedName("updated_at") val updatedAt : String,
-    @SerializedName("comments") val comments: List<Comments>?,
+    @SerializedName("comments_num") val comments: String,
     @SerializedName("images") val images: List<Images>?,
     @SerializedName("user") val user: User,
-
+    @SerializedName("hash_tags") val hashTags: List<HashTags>?,
 )
