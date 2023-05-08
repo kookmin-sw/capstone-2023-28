@@ -69,12 +69,15 @@ def lambda_handler(event, context):
         for list in time_steps:
             for data in list:
                 if "data" in data:
-                    print(data)
+                    start_index = data.find('{"data"')
+                    end_index = len(data)
+                    extracted_info = data[start_index:end_index-3]
+                    json_data = json.loads(extracted_info)
+                    
         return {
             'statusCode': 200,
-            'body': {
-                'time_steps': time_steps
-            }
+            'body': json.dumps(extracted_info, ensure_ascii=False)
+            
         }
     else:
         return {
