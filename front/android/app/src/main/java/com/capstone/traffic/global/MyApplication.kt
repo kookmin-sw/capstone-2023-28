@@ -32,7 +32,7 @@ class MyApplication : Application() {
         val retrofit = Client.getInstance()
         val service = retrofit.create(Service::class.java)
 
-        service.getInfo(prefs.getEmail().toString()).enqueue(object : Callback<InfoRecSuc> {
+        service.getInfo(userEmail = prefs.getEmail().toString(), userNickname = null, pageNum = null).enqueue(object : Callback<InfoRecSuc> {
             override fun onResponse(call: Call<InfoRecSuc>, response: Response<InfoRecSuc>) {
                 if(response.isSuccessful){
                     prefs.setUserProfile(response.body()?.res!!.user_profile_image)

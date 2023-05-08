@@ -22,7 +22,7 @@ interface Service {
     fun getLogin(@Body param: RequestBody) : Call<LoginResSuc>
 
     @GET("user/info/")
-    fun getInfo(@Query("user_email", encoded = true) userEmail : String) : Call<InfoRecSuc>
+    fun getInfo(@Query("user_email", encoded = true) userEmail : String?, @Query("user_nickname", encoded = true) userNickname : String?, @Query("page_num", encoded = true) pageNum : String?) : Call<InfoRecSuc>
 
     // 텍스트 업로드
     @POST("feed/")
@@ -30,11 +30,12 @@ interface Service {
     
     // 피드 전체 불러오기
     @GET("feed/")
-    fun getFeed(@Query("hash_tags", encoded = true) hashTag : String?, @Query("user_id", encoded = true) userId : String?) : Call<FeedResSuc>
+    fun getFeed(@Query("hash_tags", encoded = true) hashTag : String?, @Query("user_id", encoded = true) userId : String? , @Query("user_nickname", encoded = true) userNickname : String? ) : Call<FeedResSuc>
 
     // 피드 필터링 (해시 태그) 해서 가져오기
     @GET("feed/")
     fun getFeedByHashTag(@Query("hash_tags", encoded = true) hashTag : String) : Call<FeedResSuc>
+
 
     // 유저 정보를 통해 피드 가져오기
     @GET("feed/")
@@ -58,4 +59,8 @@ interface Service {
     // 댓글 가져오기
     @GET("feed/comment/")
     fun getComments(@Query("feed_id", encoded = true) feedId : String) : Call<ComResSuc>
+
+    // 유저 정보 수정
+    @POST("user/update/")
+    fun updateProfile(@Body param : RequestBody) : Call<DefaultRes>
 }

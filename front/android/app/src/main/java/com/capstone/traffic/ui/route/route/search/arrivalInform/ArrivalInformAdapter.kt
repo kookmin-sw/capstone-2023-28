@@ -47,7 +47,7 @@ class ArrivalInformAdapter(private val context : Context) : RecyclerView.Adapter
         private val timeNm = itemView.findViewById<TextView>(R.id.trainTime_tv)
         fun bind(item: RealtimeArrivalList) {
             stationCv.backgroundTintList =  ColorStateList.valueOf(getStationColor(item.subwayId.last().toString()))
-            stationNm.text = "${item.subwayId.last()} 호선"
+            stationNm.text = "${item.subwayId.last()}"
             trainNm.text = item.trainLineNm
             timeNm.text = item.arvlMsg2
         }

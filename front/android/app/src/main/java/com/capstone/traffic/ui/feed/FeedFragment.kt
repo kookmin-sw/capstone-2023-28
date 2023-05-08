@@ -41,6 +41,7 @@ import com.capstone.traffic.ui.feed.FeedViewModel.Companion.EVENT_START_FILTER_S
 import com.capstone.traffic.ui.feed.comment.CommentAdapter
 import com.capstone.traffic.ui.feed.feedRC.Feed
 import com.capstone.traffic.ui.feed.feedRC.FeedAdapter
+import com.capstone.traffic.ui.feed.find.FindActivity
 import com.capstone.traffic.ui.feed.writefeed.WriteFeedActivity
 import com.capstone.traffic.ui.route.direction.SlideUpDialog
 import com.google.android.material.card.MaterialCardView
@@ -107,7 +108,11 @@ class FeedFragment : Fragment() {
         // 뷰 클릭 이벤트 적용
         binding.run {
 
-
+            // 유저 검새 버튼
+            findBtn.setOnClickListener {
+                val intent = Intent(requireContext(), FindActivity::class.java)
+                startActivity(intent)
+            }
 
             filterApplyBtn.setOnClickListener {
                 feedViewModel.filterApply()
@@ -311,7 +316,7 @@ class FeedFragment : Fragment() {
     private fun retrofitFeed(hashTag : String?, userId : String?){
         val retrofit = Client.getInstance()
         val service = retrofit.create(Service::class.java)
-        service.getFeed(hashTag, userId).enqueue(object : Callback<FeedResSuc>{
+        service.getFeed(hashTag, userId, null).enqueue(object : Callback<FeedResSuc>{
             override fun onResponse(call: Call<FeedResSuc>, response: Response<FeedResSuc>) {
                 if(response.isSuccessful)
                 {

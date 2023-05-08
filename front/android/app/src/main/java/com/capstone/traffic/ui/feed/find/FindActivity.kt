@@ -1,5 +1,6 @@
 package com.capstone.traffic.ui.feed.find
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -14,8 +15,10 @@ class FindActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.apply {
+            // 유저 검색 결과 리사이클러 뷰
 
         }
 
     }
+
 }

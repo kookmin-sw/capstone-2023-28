@@ -7,9 +7,27 @@
             name="find"
             type="com.capstone.traffic.ui.feed.find.FindViewModel" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <SearchView
+            android:queryBackground="@android:color/transparent"
+            android:iconifiedByDefault="false"
+            app:iconifiedByDefault="false"
+            android:queryHint="검색"
+            android:textSize="20sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/find_sv"
+            android:background="@drawable/background_find"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"/>
+        <ListView
+            android:id="@+id/line_lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
 </layout>

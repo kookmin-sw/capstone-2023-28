@@ -32,7 +32,7 @@ class PreferenceUtil(context: Context) {
         prefs.edit().putString("email", email).apply()
     }
 
-    fun setUserProfile(profile : String){
+    fun setUserProfile(profile : String?){
         prefs.edit().putString("profile", profile).apply()
     }
 

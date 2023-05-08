@@ -25,7 +25,11 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
     private val _post =  MutableLiveData<Int>()
     private val _follower =  MutableLiveData<Int>()
     private val _following =  MutableLiveData<Int>()
+    private val _userDefini = MutableLiveData<String>()
+    private val _profile = MutableLiveData<String>()
 
+    val profile : LiveData<String> = _profile
+    val userDefini : LiveData<String> = _userDefini
     val nickname : LiveData<String> = _nickname
     val post : LiveData<Int> = _post
     val follower : LiveData<Int> = _follower
@@ -44,14 +48,18 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
         _following.value = 65
     }
 
-    private fun getUserAPI(){
+    fun getUserAPI(){
         val retrofit = AuthClient.getInstance()
         val infoService = retrofit.create(Service::class.java)
-        infoService.getInfo(MyApplication.prefs.getEmail().toString()).enqueue(object : Callback<InfoRecSuc>{
+        infoService.getInfo(userEmail = MyApplication.prefs.getEmail().toString(), userNickname = null, pageNum = null).enqueue(object : Callback<InfoRecSuc>{
             override fun onResponse(call: Call<InfoRecSuc>, response: Response<InfoRecSuc>) {
                 if(response.isSuccessful){
                     val data = response.body()
-                    if(data != null) _nickname.value = data.res.userNickName
+                    if(data != null) {
+                        _nickname.value = data.res.userNickName
+                        _userDefini.value = data.res.userDefinition
+                        _profile.value = data.res.user_profile_image ?: ""
+                    }
                 }
             }
             override fun onFailure(call: Call<InfoRecSuc>, t: Throwable) {
