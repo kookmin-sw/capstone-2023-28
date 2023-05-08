@@ -64,7 +64,7 @@ class FeedView(generics.ListAPIView):
             feed = Feed.objects.get(feed_id=request.data["feed_id"])
         except Feed.DoesNotExist:
             data["status"] = "ERROR"
-            data["res"] = {"error_name": "존재하지 않는 필드", "error_id": 1}
+            data["res"] = {"error_name": "존재하지 않는 피드", "error_id": 1}
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
         else:
             feed.delete()
@@ -116,6 +116,27 @@ class CommentView(APIView):
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
 class LikeView(generics.ListAPIView):
+    serializer_class = LikeSerializer
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        data = {}
+        data["status"] = "OK"
+        data["res"] = serializer.data
+        return Response(data, status=status.HTTP_200_OK)
+
+    def get_queryset(self):
+        user_id = self.request.query_params.get('user_id', None)
+        user_nickname = self.request.query_params.get('user_nickname', None)
+        feed_id = self.request.query_params.get('feed_id', None)
+        queryset = Like.objects.all()
+        if user_id is not None:
+            queryset = queryset.filter(user_id = user_id)
+        if user_nickname is not None:
+            queryset = queryset.filter(user_id__user_nickname=user_nickname)
+        if feed_id is not None:
+            queryset = queryset.filter(feed_id=feed_id)
+        return queryset
     def post(self, request):
         payload = request.auth.payload
         serializer = LikeSerializer(data=request.data, context={"user_id" : payload["user_id"]})
@@ -129,3 +150,18 @@ class LikeView(generics.ListAPIView):
             data["status"] = "ERROR"
             data["res"] = serializer.errors
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request):
+        data = {}
+        feed_id = request.data.get("feed_id")
+        payload = request.auth.payload
+        try:
+            like = Like.objects.filter(user_id=payload["user_id"], feed_id=feed_id)
+        except Like.DoesNotExist:
+            data["status"] = "ERROR"
+            data["res"] = {"error_name": "존재하지 않는 좋아요", "error_id": 1}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            like.delete()
+            data["status"] = "OK"
+            data["res"] = {}
+            return Response(data, status=status.HTTP_200_OK)

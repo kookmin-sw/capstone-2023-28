@@ -23,6 +23,10 @@ class LikeSerializer(serializers.ModelSerializer):
                  }
             )
         return like
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret["user_id"] = instance.user_id_id
+        return ret
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
