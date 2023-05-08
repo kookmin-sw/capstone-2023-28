@@ -45,15 +45,14 @@ def lambda_handler(event, context):
             
             # Check if the title contains any of the keywords
             if any(keyword in title for keyword in keywords):
-                filtered_news.append({'title': title, 'link': link})
+                filtered_news.append({'news': title, 'url': link})
         
-        # Print the filtered news
-        for news in filtered_news:
-            print(f'Title: {news["title"]}\nLink: {news["link"]}\n')
+        # Create the response data
+        response_data = {'data': filtered_news}
         
         return {
             'statusCode': 200,
-            'body': 'News retrieval and filtering successful'
+            'body': json.dumps(response_data, ensure_ascii=False)
         }
     else:
         return {
