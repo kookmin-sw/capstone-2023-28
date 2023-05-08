@@ -165,3 +165,53 @@ class LikeView(generics.ListAPIView):
             data["status"] = "OK"
             data["res"] = {}
             return Response(data, status=status.HTTP_200_OK)
+class DislikeView(generics.ListAPIView):
+    serializer_class = DislikeSerializer
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        data = {}
+        data["status"] = "OK"
+        data["res"] = serializer.data
+        return Response(data, status=status.HTTP_200_OK)
+
+    def get_queryset(self):
+        user_id = self.request.query_params.get('user_id', None)
+        user_nickname = self.request.query_params.get('user_nickname', None)
+        feed_id = self.request.query_params.get('feed_id', None)
+        queryset = Dislike.objects.all()
+        if user_id is not None:
+            queryset = queryset.filter(user_id = user_id)
+        if user_nickname is not None:
+            queryset = queryset.filter(user_id__user_nickname=user_nickname)
+        if feed_id is not None:
+            queryset = queryset.filter(feed_id=feed_id)
+        return queryset
+    def post(self, request):
+        payload = request.auth.payload
+        serializer = DislikeSerializer(data=request.data, context={"user_id" : payload["user_id"]})
+        data = {}
+        if serializer.is_valid():
+            serializer.save()
+            data["status"] = "OK"
+            data["res"] = {}
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            data["status"] = "ERROR"
+            data["res"] = serializer.errors
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request):
+        data = {}
+        feed_id = request.data.get("feed_id")
+        payload = request.auth.payload
+        try:
+            dislike = Dislike.objects.filter(user_id=payload["user_id"], feed_id=feed_id)
+        except Dislike.DoesNotExist:
+            data["status"] = "ERROR"
+            data["res"] = {"error_name": "존재하지 않는 싫어요", "error_id": 1}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            dislike.delete()
+            data["status"] = "OK"
+            data["res"] = {}
+            return Response(data, status=status.HTTP_200_OK)

@@ -28,3 +28,9 @@ class Like(models.Model):
 
     class Meta:
         unique_together=('user_id', 'feed_id')
+class Dislike(models.Model):
+    user_id = models.ForeignKey(User, related_name='dislike_user', on_delete=models.CASCADE)
+    feed_id = models.ForeignKey(Feed, related_name='dislike_feed', on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together=('user_id', 'feed_id')

@@ -27,7 +27,26 @@ class LikeSerializer(serializers.ModelSerializer):
         ret = super().to_representation(instance)
         ret["user_id"] = instance.user_id_id
         return ret
-
+class DislikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Dislike
+        fields = ["feed_id"]
+    def create(self, validated_data):
+        user_id = self.context.get("user_id")
+        validated_data["user_id"] = User.objects.get(id=user_id)
+        try:
+            dislike = Dislike.objects.create(**validated_data)
+        except IntegrityError:
+            raise serializers.ValidationError(
+                {"status": "ERROR",
+                 "res": {"error_name": "싫어요 중복", "error_id": 1}
+                 }
+            )
+        return dislike
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret["user_id"] = instance.user_id_id
+        return ret
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
