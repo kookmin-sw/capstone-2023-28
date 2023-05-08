@@ -1,8 +1,8 @@
-#This code is for AWS Lambda service.
+# This code is for AWS Lambda in python.
+# Gets 24 hour news info from Naver using API returning in json format.
+# https://uc91n3f4e9.execute-api.ap-northeast-1.amazonaws.com/default/naver-api-news
 #
 #
-
-
 
 import requests
 import datetime
