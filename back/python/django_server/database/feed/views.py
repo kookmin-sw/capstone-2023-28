@@ -40,7 +40,7 @@ class FeedView(generics.ListAPIView):
             except FeedHashTag.DoesNotExist:
                 return []
         page_index = int(self.request.query_params.get('page_index', 0))
-        page_num = int(self.request.query_params.get('page_num', 4))
+        page_num = int(self.request.query_params.get('page_num', 3))
 
         offset = page_num * page_index
         limit = offset + page_num
