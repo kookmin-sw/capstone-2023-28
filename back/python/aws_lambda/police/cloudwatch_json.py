@@ -1,40 +1,34 @@
 import boto3
-import json
 
-def get_latest_json_from_log_stream(log_group, log_stream):
+def get_all_log_messages_from_log_stream(log_group, log_stream):
     client = boto3.client('logs')
+    messages = []
 
     response = client.get_log_events(
         logGroupName=log_group,
         logStreamName=log_stream,
-        limit=1,
+        limit=10000,  # Increase the limit to retrieve more log events if necessary
         startFromHead=True
     )
 
     if 'events' in response:
         events = response['events']
-        if events:
-            log_event = events[0]
+        for log_event in events:
             log_message = log_event['message']
+            messages.append(log_message)
 
-            try:
-                json_data = json.loads(log_message)
-                return json_data
-            except json.JSONDecodeError as e:
-                print(f"Failed to decode JSON: {e}")
-
-    return None
+    return messages
 
 def lambda_handler(event, context):
-    log_group = '/aws/lambda/police_protest_info'
+    log_group = 'aws/lambda/police_protest_info'
     log_stream = '2023/05/08/[$LATEST]65ffdf297e424d2e8ce1687022ac797c'
 
-    json_data = get_latest_json_from_log_stream(log_group, log_stream)
+    log_messages = get_all_log_messages_from_log_stream(log_group, log_stream)
 
-    if json_data:
+    if log_messages:
         return {
             'statusCode': 200,
-            'body': json.dumps(json_data)
+            'body': '\n'.join(log_messages)
         }
     else:
         return {
