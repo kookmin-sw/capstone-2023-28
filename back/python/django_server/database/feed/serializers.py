@@ -3,9 +3,9 @@ from .models import *
 from authentication.models import User
 from authentication.serializers import UserSerializer
 from database import settings
+from django.db import IntegrityError
 import boto3
 import base64
-import time
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,7 +14,14 @@ class LikeSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user_id = self.context.get("user_id")
         validated_data["user_id"] = User.objects.get(id=user_id)
-        like = Like.objects.create(**validated_data)
+        try:
+            like = Like.objects.create(**validated_data)
+        except IntegrityError:
+            raise serializers.ValidationError(
+                {"status": "ERROR",
+                 "res": {"error_name": "좋아요 중복", "error_id": 1}
+                 }
+            )
         return like
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -53,10 +60,8 @@ class FeedImageSerializer(serializers.ModelSerializer):
             region_name=settings.AWS_S3_REGION_NAME
         )
         body = s3_client.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME ,Key=ret['image'])["Body"]
-        start_time = time.time()
         raw_data = body.read()
         ret['image'] = base64.b64encode(raw_data).decode('utf-8')
-        print(time.time() - start_time)
         del ret['feed_id']
         return ret
 class FeedHashTagSerializer(serializers.ModelSerializer):
