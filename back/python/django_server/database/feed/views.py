@@ -155,7 +155,7 @@ class LikeView(generics.ListAPIView):
         feed_id = request.data.get("feed_id")
         payload = request.auth.payload
         try:
-            like = Like.objects.filter(user_id=payload["user_id"], feed_id=feed_id)
+            like = Like.objects.get(user_id=payload["user_id"], feed_id=feed_id)
         except Like.DoesNotExist:
             data["status"] = "ERROR"
             data["res"] = {"error_name": "존재하지 않는 좋아요", "error_id": 1}
@@ -205,7 +205,7 @@ class DislikeView(generics.ListAPIView):
         feed_id = request.data.get("feed_id")
         payload = request.auth.payload
         try:
-            dislike = Dislike.objects.filter(user_id=payload["user_id"], feed_id=feed_id)
+            dislike = Dislike.objects.get(user_id=payload["user_id"], feed_id=feed_id)
         except Dislike.DoesNotExist:
             data["status"] = "ERROR"
             data["res"] = {"error_name": "존재하지 않는 싫어요", "error_id": 1}
