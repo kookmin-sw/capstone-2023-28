@@ -1,4 +1,5 @@
 import boto3
+import json
 
 def separate_time_steps(log_messages):
     time_steps = []
@@ -64,7 +65,11 @@ def lambda_handler(event, context):
 
     if log_messages:
         time_steps = separate_time_steps(log_messages)
-
+        
+        for list in time_steps:
+            for data in list:
+                if "data" in data:
+                    print(data)
         return {
             'statusCode': 200,
             'body': {
