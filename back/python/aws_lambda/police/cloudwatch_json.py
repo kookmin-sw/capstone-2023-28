@@ -1,3 +1,10 @@
+# AWS Lambda function for python.
+# Written for finding out known protest info.
+# https://0d6af728v7.execute-api.ap-northeast-1.amazonaws.com/default/cloudwatch-police-json
+#
+#
+
+
 import boto3
 import json
 
