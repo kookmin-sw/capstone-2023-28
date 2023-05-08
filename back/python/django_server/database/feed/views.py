@@ -29,10 +29,7 @@ class FeedView(generics.ListAPIView):
             try:
                 user = User.objects.get(user_nickname=user_nickname)
             except User.DoesNotExist:
-                data = {"status": "ERROR",
-                        "res": {"error_name": "이메일 없음", "error_id": 1}
-                        }
-                return Response(data, status=status.HTTP_400_BAD_REQUEST)
+                return []
             queryset = queryset.filter(user_id = user.id)
         if hash_tags is not None:
             hash_tag_list = hash_tags.split(',')
@@ -41,10 +38,7 @@ class FeedView(generics.ListAPIView):
                     hash_tag_feeds = FeedHashTag.objects.filter(hash_tag=hash_tag)
                     queryset = queryset.filter(feed_id__in=map(lambda x: x.feed_id_id, hash_tag_feeds))
             except FeedHashTag.DoesNotExist:
-                data = {"status": "ERROR",
-                        "res": {"error_name": "해당하는 해시태그 없음", "error_id": 2}
-                        }
-                return Response(data, status=status.HTTP_400_BAD_REQUEST)
+                return []
         page_index = int(self.request.query_params.get('page_index', 0))
         page_num = int(self.request.query_params.get('page_num', 4))
 
