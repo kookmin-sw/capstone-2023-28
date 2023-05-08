@@ -20,13 +20,31 @@ def separate_time_steps(log_messages):
 
     return time_steps
 
-def get_all_log_messages_from_log_stream(log_group, log_stream):
+def get_latest_log_stream(log_group):
     client = boto3.client('logs')
+    response = client.describe_log_streams(
+        logGroupName=log_group,
+        orderBy='LastEventTime',
+        descending=True,
+        limit=1
+    )
+
+    if 'logStreams' in response and response['logStreams']:
+        return response['logStreams'][0]['logStreamName']
+    else:
+        return None
+
+def get_all_log_messages_from_latest_log_stream(log_group):
+    client = boto3.client('logs')
+    latest_log_stream = get_latest_log_stream(log_group)
+    if not latest_log_stream:
+        return []
+
     messages = []
 
     response = client.get_log_events(
         logGroupName=log_group,
-        logStreamName=log_stream,
+        logStreamName=latest_log_stream,
         limit=10000,
         startFromHead=True
     )
@@ -41,9 +59,8 @@ def get_all_log_messages_from_log_stream(log_group, log_stream):
 
 def lambda_handler(event, context):
     log_group = '/aws/lambda/police_protest_info'
-    log_stream = '2023/05/08/[$LATEST]65ffdf297e424d2e8ce1687022ac797c'
 
-    log_messages = get_all_log_messages_from_log_stream(log_group, log_stream)
+    log_messages = get_all_log_messages_from_latest_log_stream(log_group)
 
     if log_messages:
         time_steps = separate_time_steps(log_messages)
