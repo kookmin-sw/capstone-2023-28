@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import generics
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import *
 from .models import User
@@ -52,32 +53,54 @@ class UserDeleteView(APIView):
             data["status"] = "OK"
             data["res"] = {}
             return Response(data, status=status.HTTP_200_OK)
-class UserInfoView(APIView):
+class UserInfoView(generics.ListAPIView):
     permission_classes = [AllowAny]
-    def get(self, request):
-        try:
-            user_nickname = request.query_params.get('user_nickname', None)
-            user_email = request.query_params.get('user_email', None)
-            if user_email is not None:
-                user = User.objects.get(user_email=user_email)
-            elif user_nickname is not None:
-                user = User.objects.get(user_nickname=user_nickname)
-            else:
-                data = {"status": "ERROR",
-                 "res": {"error_name": "파라미터 없음", "error_id": 3}
-                 }
-                return Response(data, status = status.HTTP_400_BAD_REQUEST)
-        except User.DoesNotExist:
-            data = {"status": "ERROR",
-                 "res": {"error_name": "이메일 없음", "error_id": 1}
-                 }
-            return Response(data, status = status.HTTP_400_BAD_REQUEST)
-        else:
-            serializer = UserSerializer(user)
-            data = {}
-            data["status"] = "OK"
-            data["res"] = serializer.data
-            return Response(data, status=status.HTTP_200_OK)
+    serializer_class = UserSerializer
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        data = {}
+        data["status"] = "OK"
+        data["res"] = serializer.data
+        return Response(data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        user_nickname = self.request.query_params.get('user_nickname', None)
+        user_email = self.request.query_params.get('user_email', None)
+        if user_email is not None:
+            return [User.objects.get(user_email=user_email)]
+        if user_nickname is not None:
+            page_index = int(self.request.query_params.get('page_index', 0))
+            page_num = int(self.request.query_params.get('page_num', 4))
+
+            offset = page_num * page_index
+            limit = offset + page_num
+            queryset = User.objects.filter(user_nickname__startswith=user_nickname)[offset:limit]
+            return queryset
+        return User.objects.none()
+
+
+    # def get(self, request):
+    #     try:
+    #         user_nickname = request.query_params.get('user_nickname', None)
+    #         user_email = request.query_params.get('user_email', None)
+    #         if user_email is not None:
+    #             user = User.objects.get(user_email=user_email)
+    #         if user_nickname is not None:
+    #             user = User.objects.get(user_nickname=user_nickname)
+    #
+    #
+    #
+    #     except User.DoesNotExist:
+    #         data = {"status": "ERROR",
+    #              "res": {"error_name": "이메일 없음", "error_id": 1}
+    #              }
+    #         return Response(data, status = status.HTTP_400_BAD_REQUEST)
+    #     else:
+    #         serializer = UserSerializer(user)
+    #         data = {}
+    #         data["status"] = "OK"
+    #         data["res"] = serializer.data
+    #         return Response(data, status=status.HTTP_200_OK)
 class UserUploadImageView(APIView):
     def post(self, request):
         data = {}
