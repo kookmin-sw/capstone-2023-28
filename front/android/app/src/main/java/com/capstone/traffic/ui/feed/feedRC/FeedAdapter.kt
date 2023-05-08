@@ -50,7 +50,7 @@ class FeedAdapter(private val context: Context, private val onClickListener : (R
         }
         @SuppressLint("NotifyDataSetChanged")
         fun bind(item : Res){
-            userNickname.text = item.user.userNickname
+            userNickname.text = item.user?.userNickname ?: ""
             writeTime.text = item.createdAt.parseTime()
             contents.text = item.content
             commentBtn.apply {
@@ -61,7 +61,7 @@ class FeedAdapter(private val context: Context, private val onClickListener : (R
             }
 
             profileIv.apply {
-                if(item.user.userProfile != null) setBackgroundDrawable(BitmapDrawable(item.user.userProfile.stringToBitmap()))
+                if(item.user?.userProfile != null) setBackgroundDrawable(BitmapDrawable(item.user?.userProfile.stringToBitmap()))
             }
 
 

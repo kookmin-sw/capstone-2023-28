@@ -107,6 +107,8 @@ class FeedFragment : Fragment() {
         // 뷰 클릭 이벤트 적용
         binding.run {
 
+
+
             filterApplyBtn.setOnClickListener {
                 feedViewModel.filterApply()
             }
@@ -284,7 +286,7 @@ class FeedFragment : Fragment() {
     private fun setFeedAdapter()
     {
         feedAdapter = FeedAdapter(requireContext()){
-                item -> Toast.makeText(requireContext(), "${item.user.userNickname}", Toast.LENGTH_SHORT).show()
+                item -> Toast.makeText(requireContext(), "${item.user?.userNickname}", Toast.LENGTH_SHORT).show()
             selectedFeedId = item.feedId
             getComments(selectedFeedId)
             contentView.findViewById<EditText>(R.id.input_text_btn).setText("")

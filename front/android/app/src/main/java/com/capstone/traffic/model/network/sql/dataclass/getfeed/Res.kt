@@ -10,6 +10,6 @@ data class Res(
     @SerializedName("updated_at") val updatedAt : String,
     @SerializedName("comments_num") val comments: String,
     @SerializedName("images") val images: List<Images>?,
-    @SerializedName("user") val user: User,
+    @SerializedName("user") val user: User?,
     @SerializedName("hash_tags") val hashTags: List<HashTags>?,
 )

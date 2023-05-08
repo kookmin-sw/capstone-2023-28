@@ -29,6 +29,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".ui.feed.find.FindActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.feed.comment.CommentsActivity"
             android:exported="false" />
         <activity
@@ -53,9 +56,9 @@
             android:name=".ui.checkout.CheckOutActivity"
             android:exported="false" />
         <activity
-            android:windowSoftInputMode="adjustResize"
             android:name=".ui.HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true">

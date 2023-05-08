@@ -50,19 +50,32 @@ class MyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        setProfileBtn()
         binding.apply {
-            profileIV.apply {
-                this.setOnClickListener {
-                    openGallery()
+            // 스크롤시 새로고침
+            refreshLayout.setOnRefreshListener {
+                // 프로필 새롭게 가져오기
+                profileIV.apply {
+                    setProfileBtn()
                 }
-                val profileData = MyApplication.prefs.getUserProfile()
-                if(profileData != null) setBackgroundDrawable(BitmapDrawable(profileData))
+                // 내 피드 새로 고침
+                refreshLayout.isRefreshing = false
             }
         }
 
         return binding.root
     }
 
+    private fun setProfileBtn()
+    {
+        binding.profileIV.apply {
+            this.setOnClickListener {
+                openGallery()
+            }
+            val profileData = MyApplication.prefs.getUserProfile()
+            if(profileData != null) setBackgroundDrawable(BitmapDrawable(profileData))
+        }
+    }
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.setType("image/*")
@@ -98,6 +111,8 @@ class MyFragment : Fragment() {
             }
         })
     }
+
+
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
