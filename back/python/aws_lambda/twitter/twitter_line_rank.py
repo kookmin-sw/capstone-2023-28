@@ -1,9 +1,11 @@
-# AWS Lambda file for ranking system of 1 - 10 metro lines. 
+# This code is for AWS Lambda in python. 
 #
-# Run this file in AWS Lambda for better results.
+# Gets ranking for line 1 to 9 for past 2 hours in twitter.
+#
+# https://grwlkdonoj.execute-api.ap-northeast-1.amazonaws.com/default/twitter-line-ranking
+#
 #
 # =========================================================================
-
 
 
 import json
@@ -42,14 +44,14 @@ def load_tweet_api():
 
 
 def get_time():
-    dt_utc = datetime.datetime.utcnow()
+    dt_utc = datetime.datetime.utcnow() - datetime.timedelta(hours=2)
     dt_utc = str(dt_utc)
     ymd, hms = dt_utc.split(' ')
     hms = hms[:8]
     global start_time 
     start_time = f'{ymd}T{hms[:2]}:00:00.000Z'
 
-    
+
 def respond(res):
     return {
         'statusCode': 200,
