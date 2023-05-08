@@ -73,10 +73,14 @@ def lambda_handler(event, context):
                     end_index = len(data)
                     extracted_info = data[start_index:end_index-3]
                     json_data = json.loads(extracted_info)
+                    print(json_data)
                     
         return {
             'statusCode': 200,
-            'body': json.dumps(extracted_info, ensure_ascii=False)
+            'body': json.dumps(json_data, ensure_ascii=False),
+            'headers' : {
+            'Content-Type' : 'application/json',
+        },
             
         }
     else:
@@ -84,3 +88,4 @@ def lambda_handler(event, context):
             'statusCode': 404,
             'body': 'No matching log events found.'
         }
+        
