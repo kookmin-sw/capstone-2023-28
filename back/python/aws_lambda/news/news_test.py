@@ -6,8 +6,7 @@ import os
 def lambda_handler(event, context):
     client_id = os.environ['CLIENT_ID']
     client_secret = os.environ['CLIENT_SECRET']
-    keyword1 = '시위'
-    keyword2 = '지연'
+    keywords = ['지연', '무정차', '시위']
     base_url = 'https://openapi.naver.com/v1/search/news.json'
     headers = {
         'X-Naver-Client-Id': client_id,
@@ -22,7 +21,7 @@ def lambda_handler(event, context):
     
     # Build the query parameters
     query_params = {
-        'query': f'{keyword1} {keyword2}',
+        'query': ' '.join(keywords),
         'display': 10,
         'start': 1,
         'sort': 'date',
@@ -39,14 +38,22 @@ def lambda_handler(event, context):
         news_list = news_data['items']
         
         # Process the retrieved news data
+        filtered_news = []
         for news in news_list:
             title = news['title']
             link = news['link']
-            print(f'Title: {title}\nLink: {link}\n')
+            
+            # Check if the title contains any of the keywords
+            if any(keyword in title for keyword in keywords):
+                filtered_news.append({'title': title, 'link': link})
+        
+        # Print the filtered news
+        for news in filtered_news:
+            print(f'Title: {news["title"]}\nLink: {news["link"]}\n')
         
         return {
             'statusCode': 200,
-            'body': 'News retrieval successful'
+            'body': 'News retrieval and filtering successful'
         }
     else:
         return {
