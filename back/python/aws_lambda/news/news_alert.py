@@ -7,10 +7,15 @@
 #
 # ============================================================================
 
+
 import requests
 import datetime
 import json
 import os
+from html import unescape
+
+def strip_tags(text):
+    return unescape(text).replace("<b>", "").replace("</b>", "")
 
 def lambda_handler(event, context):
     client_id = os.environ['CLIENT_ID']
@@ -49,7 +54,7 @@ def lambda_handler(event, context):
         # Process the retrieved news data
         filtered_news = []
         for news in news_list:
-            title = news['title']
+            title = strip_tags(news['title'])
             link = news['link']
             
             # Check if the title contains any of the keywords
