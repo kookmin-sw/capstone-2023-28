@@ -56,9 +56,9 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
                 if(response.isSuccessful){
                     val data = response.body()
                     if(data != null) {
-                        _nickname.value = data.res.userNickName
-                        _userDefini.value = data.res.userDefinition
-                        _profile.value = data.res.user_profile_image ?: ""
+                        _nickname.value = data.res[0].userNickName
+                        _userDefini.value = data.res[0].userDefinition
+                        _profile.value = data.res[0].user_profile_image ?: ""
                     }
                 }
             }

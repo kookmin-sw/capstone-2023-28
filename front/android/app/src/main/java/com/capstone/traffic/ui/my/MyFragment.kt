@@ -6,6 +6,8 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -85,12 +87,6 @@ class MyFragment : Fragment() {
         // 피드 어뎁터 (클릭 이벤트 추가)
         feedAdapter = FeedAdapter(requireContext()){
 
-        }
-        MyViewModel.apply {
-            nickname.observe( viewLifecycleOwner, androidx.lifecycle.Observer {
-                getMyFeed(it)
-                binding.nicknameTv2.text = it
-            })
         }
 
         binding.apply {
@@ -246,6 +242,7 @@ class MyFragment : Fragment() {
             }
             })
     }
+
     @SuppressLint("NotifyDataSetChanged")
     private fun setFeedRecyclerView(feed : List<Res>)
     {
@@ -346,11 +343,20 @@ class MyFragment : Fragment() {
             binding.followingTv.text = it.toString()
         }
         MyViewModel.nickname.observe(viewLifecycleOwner){
+            getMyFeed(it)
+            binding.nicknameTv2.text = it
             binding.nicknameTv1.text = it
         }
         MyViewModel.userDefini.observe(viewLifecycleOwner){
             binding.userMemoTv.text = it
         }
+        MyViewModel.profile.observe(viewLifecycleOwner){
+            binding.profileIV.setBackgroundDrawable(BitmapDrawable(it.stringToBitmap()))
+        }
+    }
+    private fun String.stringToBitmap() : Bitmap {
+        val encodeByte = android.util.Base64.decode(this, android.util.Base64.DEFAULT)
+        return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size)
     }
     companion object {
         fun newInstance(title: String) = MyFragment().apply {

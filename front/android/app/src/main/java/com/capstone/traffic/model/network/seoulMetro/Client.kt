@@ -16,7 +16,7 @@ object Client{
                 .build()
 
             instance =  Retrofit.Builder()
-                .baseUrl("https://xa1jrmwa30.execute-api.ap-northeast-1.amazonaws.com/default/")
+                .baseUrl("https://0qd0s762ic.execute-api.ap-northeast-1.amazonaws.com/default/")
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()

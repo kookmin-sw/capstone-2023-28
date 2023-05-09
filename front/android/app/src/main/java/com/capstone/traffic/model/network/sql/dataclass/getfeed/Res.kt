@@ -12,4 +12,6 @@ data class Res(
     @SerializedName("images") val images: List<Images>?,
     @SerializedName("user") val user: User?,
     @SerializedName("hash_tags") val hashTags: List<HashTags>?,
+    @SerializedName("likes_num") val likesNum : String,
+    @SerializedName("is_liked") val isLiked : String,
 )

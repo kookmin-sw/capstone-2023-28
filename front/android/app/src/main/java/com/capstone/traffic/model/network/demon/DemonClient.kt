@@ -16,7 +16,7 @@ object DemonClient{
                 .build()
 
             instance =  Retrofit.Builder()
-                .baseUrl("https://pycyig2l5d.execute-api.ap-northeast-1.amazonaws.com/default/")
+                .baseUrl("https://0d6af728v7.execute-api.ap-northeast-1.amazonaws.com/default/")
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()

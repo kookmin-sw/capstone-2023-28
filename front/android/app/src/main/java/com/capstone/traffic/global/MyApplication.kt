@@ -35,7 +35,7 @@ class MyApplication : Application() {
         service.getInfo(userEmail = prefs.getEmail().toString(), userNickname = null, pageNum = null).enqueue(object : Callback<InfoRecSuc> {
             override fun onResponse(call: Call<InfoRecSuc>, response: Response<InfoRecSuc>) {
                 if(response.isSuccessful){
-                    prefs.setUserProfile(response.body()?.res!!.user_profile_image)
+                    prefs.setUserProfile(response.body()?.res!![0].user_profile_image)
                 }
             }
 
