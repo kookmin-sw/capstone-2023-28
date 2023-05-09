@@ -30,7 +30,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     user_email = models.CharField(max_length=30, unique=True)
     user_nickname = models.CharField(max_length=10, unique=True)
-    user_definition = models.CharField(max_length=100, null=True)
+    user_definition = models.CharField(max_length=100, null=True, blank=True)
     user_profile_image = models.CharField(max_length=200, null=True)
     user_point_number = models.IntegerField(default=0, null=True)
     is_seller = models.BooleanField(default=False)

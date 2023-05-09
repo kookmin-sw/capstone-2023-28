@@ -30,7 +30,7 @@ class UserUpdateView(APIView):
         if serializer.is_valid():
             updated_user = serializer.save()
             data["status"] = "OK"
-            data["res"] = {}
+            data["res"] = serializer.data
             return Response(data)
         else:
             data["status"] = "ERROR"
