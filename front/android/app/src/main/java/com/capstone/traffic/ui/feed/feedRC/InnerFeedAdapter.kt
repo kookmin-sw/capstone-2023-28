@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.capstone.traffic.R
 import com.capstone.traffic.model.network.sql.dataclass.getfeed.Images
 
@@ -34,7 +35,12 @@ class InnerFeedAdapter(private val context: Context) : RecyclerView.Adapter<Inne
         init {
         }
         fun bind(item : Images){
-            imageView.setBackgroundDrawable(BitmapDrawable(item.image.stringToBitmap()))
+            item.image.stringToBitmap().let{
+                Glide.with(itemView)
+                    .load(it)
+                    .centerCrop()
+                    .into(imageView)
+            }
         }
     }
 
