@@ -2,7 +2,7 @@
 #
 # Requires utils folder to run this file.
 #
-# https://0qd0s762ic.execute-api.ap-northeast-1.amazonaws.com/default/twitter-metro-tweets
+# 
 #
 #
 # ===========================================================================
