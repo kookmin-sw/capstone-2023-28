@@ -49,10 +49,10 @@ class HomeViewModel : ViewModel() {
     private fun getPageType(menuItemId: Int): PageType {
         return when (menuItemId) {
             R.id.feed -> PageType.PAGE1
-            R.id.magazine -> PageType.PAGE2
-            R.id.route -> PageType.PAGE3
-            R.id.inform -> PageType.PAGE4
-            R.id.my -> PageType.PAGE5
+            //R.id.magazine -> PageType.PAGE2
+            R.id.route -> PageType.PAGE2
+            R.id.inform -> PageType.PAGE3
+            R.id.my -> PageType.PAGE4
             else -> throw IllegalArgumentException("not found menu item id")
         }
     }

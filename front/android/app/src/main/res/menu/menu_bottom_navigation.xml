@@ -7,12 +7,6 @@
         android:icon="@drawable/icon_feed"/>
 
     <item
-        android:title="매거진"
-        android:id="@+id/magazine"
-        android:enabled="true"
-        android:icon="@drawable/icon_magazine"/>
-
-    <item
         android:title="노선도"
         android:id="@+id/route"
         android:enabled="true"

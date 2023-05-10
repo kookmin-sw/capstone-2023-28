@@ -51,7 +51,7 @@ class HomeActivity : AppCompatActivity() {
         when (pageType.title)
         {
             "feed" -> fragment = FeedFragment.newInstance(pageType.title)
-            "magazine" -> fragment =  BoardFragment.newInstance(pageType.title)
+            //"magazine" -> fragment =  BoardFragment.newInstance(pageType.title)
             "route" -> fragment = RouteFragment.newInstance(pageType.title)
             "inform" -> fragment = InformFragment.newInstance(pageType.title)
             "my" -> fragment = MyFragment.newInstance(pageType.title)
