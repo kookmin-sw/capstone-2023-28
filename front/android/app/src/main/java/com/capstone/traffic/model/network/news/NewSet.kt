@@ -6,4 +6,5 @@ data class NewSet(
     @SerializedName("image") val image : String?,
     @SerializedName("title") val title : String,
     @SerializedName("description") val description : String,
+    @SerializedName("url") val url : String?
 )

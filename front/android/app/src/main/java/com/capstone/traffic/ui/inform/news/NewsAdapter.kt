@@ -48,6 +48,9 @@ class NewsAdapter(private val context: Context, private val onClickListener : (N
         private val description = itemView.findViewById<TextView>(R.id.description)
 
         init {
+            itemView.setOnClickListener {
+                onClickListener(datas[position])
+            }
         }
         fun bind(item : NewSet){
 

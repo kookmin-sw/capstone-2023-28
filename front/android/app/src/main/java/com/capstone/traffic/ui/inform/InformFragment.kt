@@ -1,6 +1,8 @@
 package com.capstone.traffic.ui.inform
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log.d
@@ -62,7 +64,8 @@ class InformFragment : Fragment() {
 
         newsData = mutableListOf()
         newsAdapter = NewsAdapter(requireContext()){
-
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.url))
+            startActivity(intent)
         }
 
 
@@ -138,7 +141,7 @@ class InformFragment : Fragment() {
                 val ogTitle : String = doc!!.select("meta[property=og:title]").attr("content")
                 val ogImage : String = doc!!.select("meta[property=og:image]").attr("content")
                 val ogDescription : String = doc!!.select("meta[property=og:description]").attr("content")
-                newsSetList.add(NewSet(image = ogImage, title = ogTitle, description = ogDescription))
+                newsSetList.add(NewSet(image = ogImage, title = ogTitle, description = ogDescription, url = url))
             }
             ogThread.start()
             ogThread.join()
