@@ -13,5 +13,5 @@ data class Res(
     @SerializedName("user") val user: User?,
     @SerializedName("hash_tags") val hashTags: List<HashTags>?,
     @SerializedName("likes_num") val likesNum : String,
-    @SerializedName("is_liked") val isLiked : String,
+    @SerializedName("is_liked") var isLiked : String,
 )

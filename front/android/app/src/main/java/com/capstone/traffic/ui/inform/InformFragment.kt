@@ -32,7 +32,7 @@ class InformFragment : Fragment() {
 
     private val binding by lazy { FragmentInformBinding.inflate(layoutInflater) }
     private var job: Job? = null
-    lateinit var DemonData: MutableList<Demon>
+    lateinit var DemonData: MutableList<com.capstone.traffic.model.network.demon.Data>
     lateinit var demonAdapter : DemonAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -94,7 +94,7 @@ class InformFragment : Fragment() {
             demonAdapter.datas = DemonData
             binding.demonRc.apply {
                 this.layoutManager =
-                    LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+                    LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false)
                 this.adapter = demonAdapter
                 demonAdapter.notifyDataSetChanged()
             }
@@ -139,17 +139,15 @@ class InformFragment : Fragment() {
         val service = retrofit.create(DemonService::class.java)
         service.getResponse()
             .enqueue(object : Callback<Response> {
+                @SuppressLint("SetTextI18n")
                 override fun onResponse(
                     call: Call<Response>,
                     response: retrofit2.Response<Response>
                 ) {
                     if (response.isSuccessful) {
-                        val mtl = mutableListOf<Demon>()
-                        val data = response.body()?.Data?.first()
-                        binding.statusTimeTv.text = "${data?.date} 기준"
-                        val protest = data?.protest
-                        mtl.add(Demon(protest?.time, protest?.place, protest?.region ,protest?.people))
-                        DemonData = mtl
+                        val data = response.body()?.Data
+                        binding.statusTimeTv.text = "${data!![0].date} 기준"
+                        DemonData = data as MutableList<com.capstone.traffic.model.network.demon.Data>
                         setDemonRecyclerView()
                     }
                 }

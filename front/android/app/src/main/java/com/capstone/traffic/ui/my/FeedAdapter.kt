@@ -3,6 +3,7 @@ package com.capstone.traffic.ui.my
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -10,9 +11,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide.init
@@ -47,10 +52,33 @@ class FeedAdapter(private val context: Context, private val onClickListener : (R
         private val profileIv = itemView.findViewById<AppCompatImageView>(R.id.profile_IV)
         private val commentBtn = itemView.findViewById<AppCompatButton>(R.id.comment_btn)
 
+        private val thumbUpBtn = itemView.findViewById<AppCompatButton>(R.id.thumb_up_btn)
+
+
         init {
         }
-        @SuppressLint("NotifyDataSetChanged")
+        @SuppressLint("NotifyDataSetChanged", "UseCompatTextViewDrawableApis")
         fun bind(item : Res){
+
+            thumbUpBtn.apply {
+                this.text = item.likesNum
+                setOnClickListener {
+                    var cnt = this.text.toString().toInt()
+                    if(item.isLiked == "false"){
+                        item.isLiked = "true"
+                        this.compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.red))
+                        cnt += 1
+                    }
+                    else {
+                        item.isLiked = "false"
+                        this.compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
+                        cnt -= 1
+                    }
+                    text = cnt.toString()
+                }
+            }
+
+
             userNickname.text = item.user?.userNickname ?: ""
             writeTime.text = item.createdAt.parseTime()
             contents.text = item.content
@@ -91,5 +119,11 @@ class FeedAdapter(private val context: Context, private val onClickListener : (R
             val encodeByte = android.util.Base64.decode(this, android.util.Base64.DEFAULT)
             return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size)
         }
+
+        private fun upDateLike()
+        {
+
+        }
     }
+
 }

@@ -290,14 +290,16 @@ class FeedFragment : Fragment() {
     // 피드 어뎁터 설정
     private fun setFeedAdapter()
     {
-        feedAdapter = FeedAdapter(requireContext()){
-                item -> Toast.makeText(requireContext(), "${item.user?.userNickname}", Toast.LENGTH_SHORT).show()
+        feedAdapter = FeedAdapter(requireContext()){ item ->
             selectedFeedId = item.feedId
             getComments(selectedFeedId)
             contentView.findViewById<EditText>(R.id.input_text_btn).setText("")
             keyboardDown()
             slideUpPopup.show()
+
         }
+
+
     }
     // 필터 클리어
     private fun filterClear()
