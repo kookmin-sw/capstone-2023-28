@@ -10,6 +10,7 @@ urlpatterns = [
     path('update/', UserUpdateView.as_view(), name="user_update_view"),
     path('update/profile/', UserUploadImageView.as_view(), name="user_update_profile_view"),
     path('info/', UserInfoView.as_view(), name="user_info_view"),
+    path('follow/', UserFollowView.as_view(), name="user_follow_view"),
     path('token/', CustomTokenObtainPairView.as_view(), name='token'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify')

@@ -1,9 +1,30 @@
-from .models import User
+from .models import *
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from database import settings
 import boto3
 import base64
+
+class FollowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Follow
+        fields = ["following_user_id", "follow_user_id"]
+        extra_kwargs = {"follow_user_id": {"required": False}}
+    def create(self, validated_data):
+        try:
+            follow_user_id = User.objects.get(id=self.context.get("follow_user_id"))
+            validated_data["follow_user_id"] = follow_user_id
+        except User.DoesNotExist:
+            raise serializers.ValidationError(
+                {
+                    "status": "ERROR",
+                    "res": {
+                        "error_name": "존재하지 않는 유저", "error_name": 9
+                    }
+                }
+            )
+        follow = Follow.objects.create(**validated_data)
+        return follow
 
 class UserSerializer(serializers.Serializer):
     user_nickname = serializers.CharField(max_length=10)

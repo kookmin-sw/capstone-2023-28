@@ -7,6 +7,37 @@ from .serializers import *
 from .models import User
 from rest_framework.permissions import AllowAny
 from API.s3 import S3ImageUploader
+
+class UserFollowView(generics.ListAPIView):
+    serializer_class = FollowSerializer
+    def post(self, request):
+        data = {}
+        payload = request.auth.payload
+        serializer = self.get_serializer(data=request.data, context={"follow_user_id":payload["user_id"]})
+        if serializer.is_valid():
+            serializer.save()
+            data["status"] = "OK"
+            data["res"] = {}
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            data["status"] = "ERROR"
+            data["res"] = serializer.errors
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request):
+        data = {}
+        following_user_id = request.data["following_user_id"]
+        follow_user_id = request.auth.payload["user_id"]
+        try:
+            follow = Follow.objects.get(follow_user_id_id=follow_user_id, following_user_id_id=following_user_id)
+        except Follow.DoesNotExist:
+            data["status"] = "ERROR"
+            data["res"] = {"error_name": "팔로우가 안되어 있음", "error_id": 10}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            follow.delete()
+            data["status"] = "OK"
+            data["res"] = {}
+            return Response(data, status=status.HTTP_200_OK)
 class UserSignupView(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
