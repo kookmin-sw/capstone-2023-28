@@ -19,7 +19,7 @@ class FollowSerializer(serializers.ModelSerializer):
                 {
                     "status": "ERROR",
                     "res": {
-                        "error_name": "존재하지 않는 유저", "error_name": 9
+                        "error_name": "존재하지 않는 팔로우하는 계정", "error_name": 9
                     }
                 }
             )

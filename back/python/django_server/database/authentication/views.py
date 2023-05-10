@@ -10,6 +10,22 @@ from API.s3 import S3ImageUploader
 
 class UserFollowView(generics.ListAPIView):
     serializer_class = FollowSerializer
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        data = {}
+        data["status"] = "OK"
+        data["res"] = serializer.data
+        return Response(data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        queryset = Follow.objects.all()
+        follow_user_id = self.request.query_params.get("follow_user_id", None)
+        following_user_id = self.request.query_params.get("following_user_id", None)
+        if follow_user_id is not None:
+            queryset = queryset.filter(follow_user_id_id=follow_user_id)
+        if following_user_id is not None:
+            queryset = queryset.filter(following_user_id_id=following_user_id)
+        return queryset
     def post(self, request):
         data = {}
         payload = request.auth.payload
