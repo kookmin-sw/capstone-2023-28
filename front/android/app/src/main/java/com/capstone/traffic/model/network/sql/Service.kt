@@ -63,4 +63,12 @@ interface Service {
     // 유저 정보 수정
     @POST("user/update/")
     fun updateProfile(@Body param : RequestBody) : Call<DefaultRes>
+
+    // 좋아요 기능
+    @POST("feed/like/")
+    fun updateLike(@Body param : RequestBody) : Call<DefaultRes>
+
+    // 좋아요 취소 기능
+    @HTTP(method = "DELETE", path = "feed/like/", hasBody = true)
+    fun updateCancleLike(@Body param: RequestBody) : Call<DefaultRes>
 }

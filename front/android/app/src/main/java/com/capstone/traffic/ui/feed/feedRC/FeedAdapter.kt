@@ -3,6 +3,7 @@ package com.capstone.traffic.ui.feed.feedRC
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -13,12 +14,21 @@ import android.widget.AdapterView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide.init
 import com.capstone.traffic.R
+import com.capstone.traffic.model.network.sql.Client
+import com.capstone.traffic.model.network.sql.Service
+import com.capstone.traffic.model.network.sql.dataclass.DefaultRes
 import com.capstone.traffic.model.network.sql.dataclass.getfeed.Res
 import com.capstone.traffic.ui.feed.comment.CommentsActivity
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.sql.Time
 
 class FeedAdapter(private val context: Context, private val onClickListener : (Res) -> Unit) : RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
@@ -45,11 +55,36 @@ class FeedAdapter(private val context: Context, private val onClickListener : (R
         private val innerRc = itemView.findViewById<RecyclerView>(R.id.inner_rc)
         private val profileIv = itemView.findViewById<AppCompatImageView>(R.id.profile_IV)
         private val commentBtn = itemView.findViewById<AppCompatButton>(R.id.comment_btn)
+        private val thumbUpBtn = itemView.findViewById<AppCompatButton>(R.id.thumb_up_btn)
 
         init {
         }
-        @SuppressLint("NotifyDataSetChanged")
+        @SuppressLint("NotifyDataSetChanged", "UseCompatTextViewDrawableApis")
         fun bind(item : Res){
+
+            thumbUpBtn.apply {
+                this.text = item.likesNum
+                if(item.isLiked == "true"){
+                    this.compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.red))
+                }
+                setOnClickListener {
+                    var cnt = this.text.toString().toInt()
+                    if(item.isLiked == "false"){
+                        item.isLiked = "true"
+                        this.compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.red))
+                        cnt += 1
+                        upDateLike(item.feedId)
+                    }
+                    else {
+                        item.isLiked = "false"
+                        this.compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
+                        cnt -= 1
+                        upDateCancleLike(item.feedId)
+                    }
+                    text = cnt.toString()
+                }
+            }
+
             userNickname.text = item.user?.userNickname ?: ""
             writeTime.text = item.createdAt.parseTime()
             contents.text = item.content
@@ -89,6 +124,38 @@ class FeedAdapter(private val context: Context, private val onClickListener : (R
         private fun String.stringToBitmap() : Bitmap {
             val encodeByte = android.util.Base64.decode(this, android.util.Base64.DEFAULT)
             return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size)
+        }
+
+        private fun upDateLike(feedId : String)
+        {
+            val service = Client.getInstance().create(Service::class.java)
+            val mediaType = "application/json".toMediaTypeOrNull()
+            val param =
+                RequestBody.create(mediaType, "{\"feed_id\":\"${feedId}\"}")
+            service.updateLike(param = param).enqueue(object : Callback<DefaultRes> {
+                override fun onResponse(call: Call<DefaultRes>, response: Response<DefaultRes>) {
+
+                }
+                override fun onFailure(call: Call<DefaultRes>, t: Throwable) {
+                }
+            }
+            )
+        }
+
+        private fun upDateCancleLike(feedId : String)
+        {
+            val service = Client.getInstance().create(Service::class.java)
+            val mediaType = "application/json".toMediaTypeOrNull()
+            val param =
+                RequestBody.create(mediaType, "{\"feed_id\":\"${feedId}\"}")
+            service.updateCancleLike(param = param).enqueue(object : Callback<DefaultRes> {
+                override fun onResponse(call: Call<DefaultRes>, response: Response<DefaultRes>) {
+
+                }
+                override fun onFailure(call: Call<DefaultRes>, t: Throwable) {
+                }
+            }
+            )
         }
     }
 }

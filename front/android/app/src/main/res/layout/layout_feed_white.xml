@@ -67,17 +67,18 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/thumb_up_btn"
-                    android:textSize="12sp"
-                    android:textColor="@color/black"
-                    android:drawableStart="@drawable/icon_thumb_up"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:background="@color/transparent"
-                    app:iconTint="@color/black"
+                    android:drawableStart="@drawable/icon_thumb_up"
                     android:drawablePadding="10dp"
                     android:textAlignment="textStart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    app:iconTint="@color/black" />
 
 
                 <View

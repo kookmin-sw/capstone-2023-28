@@ -68,24 +68,14 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/thumb_up_btn"
                     android:textSize="12sp"
-                    android:text="0"
+                    android:drawableStart="@drawable/icon_thumb_up"
+                    android:drawablePadding="10dp"
+                    android:textAlignment="textStart"
                     android:textColor="@color/black"
-                    app:icon="@drawable/icon_thumb_up"
                     android:background="@color/transparent"
-                    app:iconTint="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <Button
-                    android:id="@+id/thumb_down_btn"
-                    android:text="0"
-                    android:textSize="12sp"
-                    android:textColor="@color/black"
-                    app:icon="@drawable/icon_thumb_down"
-                    android:background="@color/transparent"
-                    app:iconTint="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <View
