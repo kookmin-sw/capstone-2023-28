@@ -5,14 +5,14 @@ import time
 from abc import ABC, abstractmethod
 from dotenv import load_dotenv
 from pyfcm import FCMNotification
-from utils.key import BEARER_TOKEN
+from utils.key import BEARER_TOKEN, FIREBASE_TOKEN
 
 load_dotenv()  # load environment variables from .env file
 
 bearer_token = BEARER_TOKEN
 
 # Initialize Firebase
-push_service = FCMNotification(api_key="<your_firebase_api_key>")  # Replace with your Firebase Server API Key
+push_service = FCMNotification(api_key=FIREBASE_TOKEN)  # Replace with your Firebase Server API Key
 
 class TwitterStreamer(ABC):
     def __init__(self):
