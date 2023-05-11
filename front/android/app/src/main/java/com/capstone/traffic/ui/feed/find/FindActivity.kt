@@ -14,6 +14,7 @@ import com.capstone.traffic.model.network.sql.Client
 import com.capstone.traffic.model.network.sql.Service
 import com.capstone.traffic.model.network.sql.dataclass.info.InfoRecSuc
 import com.capstone.traffic.model.network.sql.dataclass.info.Res
+import com.capstone.traffic.ui.profile.ProfileActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,7 +30,13 @@ class FindActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        userAdapter = UserAdapter(this)
+        userAdapter = UserAdapter(this,
+        userCLickEvent = {
+                val profileIntent = Intent(this, ProfileActivity::class.java)
+                profileIntent.putExtra("userName",it.userNickName)
+                startActivity(profileIntent)
+            }
+        )
 
         setInfoRecyclerView()
 

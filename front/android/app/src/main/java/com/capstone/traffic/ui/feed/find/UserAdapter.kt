@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide.init
 import com.capstone.traffic.R
 import com.capstone.traffic.model.network.sql.dataclass.info.Res
 
-class UserAdapter(private val context: Context) : RecyclerView.Adapter<UserAdapter.ViewHolder>() {
+class UserAdapter(private val context: Context, private val userCLickEvent : (Res) -> Unit) : RecyclerView.Adapter<UserAdapter.ViewHolder>() {
     var datas = listOf<Res>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserAdapter.ViewHolder {
@@ -39,6 +39,9 @@ class UserAdapter(private val context: Context) : RecyclerView.Adapter<UserAdapt
         private val nicknameTv = itemView.findViewById<TextView>(R.id.nickname_tv)
         private val informTv = itemView.findViewById<TextView>(R.id.inform_tv)
         init {
+            itemView.setOnClickListener {
+                userCLickEvent(datas[position])
+            }
         }
         fun bind(item : Res){
             profileIv.apply {

@@ -90,10 +90,13 @@ class ProfileActivity : AppCompatActivity() {
                 bind.nicknameTv2.text = it
             })
             this.userProfile.observe(this@ProfileActivity, Observer {
-                Glide.with(this@ProfileActivity)
-                    .load(it.stringToBitmap())
-                    .centerCrop()
-                    .into(bind.profileIV)
+                if(it != null)
+                {
+                    Glide.with(this@ProfileActivity)
+                        .load(it.stringToBitmap())
+                        .centerCrop()
+                        .into(bind.profileIV)
+                }
             })
             this.feedData.observe(this@ProfileActivity, Observer {
                 setFeedRecyclerView(it)
