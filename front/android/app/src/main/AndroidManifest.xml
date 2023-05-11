@@ -29,6 +29,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".ui.profile.ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.my.editProfile.EditProfileActivity"
             android:exported="false" />
         <activity

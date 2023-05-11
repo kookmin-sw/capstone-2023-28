@@ -11,7 +11,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide.init
 import com.capstone.traffic.R
+import com.capstone.traffic.model.network.sk.direction.dataClass.testData.data
 import com.capstone.traffic.model.network.sql.Client
 import com.capstone.traffic.model.network.sql.Service
 import com.capstone.traffic.model.network.sql.dataclass.DefaultRes
@@ -31,7 +34,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.sql.Time
 
-class FeedAdapter(private val context: Context, private val onClickListener : (Res) -> Unit) : RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
+class FeedAdapter(private val context: Context, private val informClickEvent : (Res) -> Unit ,private val onClickListener : (Res) -> Unit) : RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
     var datas = listOf<Res>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedAdapter.ViewHolder {
@@ -56,7 +59,7 @@ class FeedAdapter(private val context: Context, private val onClickListener : (R
         private val profileIv = itemView.findViewById<AppCompatImageView>(R.id.profile_IV)
         private val commentBtn = itemView.findViewById<AppCompatButton>(R.id.comment_btn)
         private val thumbUpBtn = itemView.findViewById<AppCompatButton>(R.id.thumb_up_btn)
-
+        private val userLL = itemView.findViewById<LinearLayout>(R.id.user_ll)
         init {
         }
         @SuppressLint("NotifyDataSetChanged", "UseCompatTextViewDrawableApis")
@@ -85,6 +88,10 @@ class FeedAdapter(private val context: Context, private val onClickListener : (R
                 }
             }
 
+            userLL.setOnClickListener {
+                informClickEvent(datas[position])
+            }
+
             userNickname.text = item.user?.userNickname ?: ""
             writeTime.text = item.createdAt.parseTime()
             contents.text = item.content
@@ -94,6 +101,8 @@ class FeedAdapter(private val context: Context, private val onClickListener : (R
                 }
                 this.text = item.comments
             }
+
+
 
             profileIv.apply {
                 if(item.user?.userProfile != null) setBackgroundDrawable(BitmapDrawable(item.user?.userProfile.stringToBitmap()))

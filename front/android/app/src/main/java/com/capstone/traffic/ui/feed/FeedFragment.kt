@@ -43,6 +43,7 @@ import com.capstone.traffic.ui.feed.feedRC.Feed
 import com.capstone.traffic.ui.feed.feedRC.FeedAdapter
 import com.capstone.traffic.ui.feed.find.FindActivity
 import com.capstone.traffic.ui.feed.writefeed.WriteFeedActivity
+import com.capstone.traffic.ui.profile.ProfileActivity
 import com.capstone.traffic.ui.route.direction.SlideUpDialog
 import com.google.android.material.card.MaterialCardView
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -287,20 +288,28 @@ class FeedFragment : Fragment() {
         val imm : InputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
     }
+
     // 피드 어뎁터 설정
     private fun setFeedAdapter()
     {
-        feedAdapter = FeedAdapter(requireContext()){ item ->
-            selectedFeedId = item.feedId
-            getComments(selectedFeedId)
-            contentView.findViewById<EditText>(R.id.input_text_btn).setText("")
-            keyboardDown()
-            slideUpPopup.show()
-
-        }
-
-
+        feedAdapter = FeedAdapter(
+            context = requireContext(),
+            // 해당 유저 프로필로 이동
+            informClickEvent = {
+                val profileIntent = Intent(context, ProfileActivity::class.java)
+                startActivity(profileIntent)
+            },
+            // 댓글 창
+            onClickListener = {
+                selectedFeedId = it.feedId
+                getComments(selectedFeedId)
+                contentView.findViewById<EditText>(R.id.input_text_btn).setText("")
+                keyboardDown()
+                slideUpPopup.show()
+            }
+        )
     }
+
     // 필터 클리어
     private fun filterClear()
     {
