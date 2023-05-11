@@ -234,6 +234,7 @@ class MyFragment : Fragment() {
                 {
                     val data = response.body()?.res
                     if(data != null) setFeedRecyclerView(data)
+                    binding.postTv.text = data?.size.toString()
                 }
             }
 

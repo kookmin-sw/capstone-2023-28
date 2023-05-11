@@ -297,6 +297,7 @@ class FeedFragment : Fragment() {
             // 해당 유저 프로필로 이동
             informClickEvent = {
                 val profileIntent = Intent(context, ProfileActivity::class.java)
+                profileIntent.putExtra("userName", it.user?.userNickname)
                 startActivity(profileIntent)
             },
             // 댓글 창
