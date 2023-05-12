@@ -105,7 +105,8 @@ class UserInfoView(generics.ListAPIView):
     serializer_class = UserSerializer
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
+        payload = request.auth.payload
+        serializer = self.get_serializer(queryset, many=True, context={"user_id": payload["user_id"]})
         data = {}
         data["status"] = "OK"
         data["res"] = serializer.data
@@ -113,6 +114,7 @@ class UserInfoView(generics.ListAPIView):
     def get_queryset(self):
         user_nickname = self.request.query_params.get('user_nickname', None)
         user_email = self.request.query_params.get('user_email', None)
+        user_id = self.request.query_params.get('user_id', None)
         page_index = int(self.request.query_params.get('page_index', 0))
         page_num = int(self.request.query_params.get('page_num', 4))
 
@@ -123,6 +125,9 @@ class UserInfoView(generics.ListAPIView):
             return queryset
         if user_nickname is not None:
             queryset = User.objects.filter(user_nickname__startswith=user_nickname)[offset:limit]
+            return queryset
+        if user_id is not None:
+            queryset = User.objects.filter(id=user_id)[offset:limit]
             return queryset
         return User.objects.none()
 

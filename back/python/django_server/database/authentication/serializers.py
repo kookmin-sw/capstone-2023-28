@@ -41,6 +41,7 @@ class FollowSerializer(serializers.ModelSerializer):
         return follow
 
 class UserSerializer(serializers.Serializer):
+    id = serializers.IntegerField(required=False)
     user_nickname = serializers.CharField(max_length=10)
     user_email = serializers.EmailField(max_length=30)
     user_definition = serializers.CharField(max_length=100, allow_null=True, allow_blank=True, required=False)
@@ -48,10 +49,11 @@ class UserSerializer(serializers.Serializer):
     follower_num = serializers.SerializerMethodField()
     following_num = serializers.SerializerMethodField()
     user_profile_image = serializers.CharField(max_length=200, allow_null=True, required=False)
+    def get_following_num(self, obj):
+        return obj.user_follow.count()
     def get_follower_num(self, obj):
         return obj.user_following.count()
-    def get_following_num(self, obj):
-        return obj.user_follower.count()
+
     def validate_unique_user_nickname(self, value):
         if User.objects.filter(user_nickname=value).exists():
             raise serializers.ValidationError(
@@ -84,6 +86,9 @@ class UserSerializer(serializers.Serializer):
         return instance
     def to_representation(self, instance):
         ret = super().to_representation(instance)
+        user_id = self.context.get("user_id")
+        ret["is_follower"] = Follow.objects.filter(follow_user_id=user_id, following_user_id=instance.id).exists()
+        ret["is_following"] = Follow.objects.filter(following_user_id=user_id, follow_user_id=instance.id).exists()
         if ret['user_profile_image'] is not None:
             s3_client = boto3.client(
                 's3',
