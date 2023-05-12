@@ -45,12 +45,14 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var slideUpPopup : SlideUpDialog
     private lateinit var selectedFeedId : String
     private lateinit var commentAdapter: CommentAdapter
-
-
+    private lateinit var feedDatas : MutableList<Res>
+    private var page = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(bind.root)
+
+        feedDatas = mutableListOf()
         feedAdapter = FeedAdapter(
             context = applicationContext,
             informClickEvent = {
@@ -68,8 +70,16 @@ class ProfileActivity : AppCompatActivity() {
         val userNickName = intent.getStringExtra("userName")
         bind.profile = profileViewModel
 
-        profileViewModel.getUserInfo(userNickName!!)
+        profileViewModel.getUserInfo(userNickName!!, page++.toString())
 
+        bind.apply {
+            // 페이징
+            feedSv.setOnScrollChangeListener { v, _, scrollY, _, _ ->
+                if (scrollY == feedSv.getChildAt(0).measuredHeight - v.measuredHeight){
+                    profileViewModel.getUserInfo(userNickName, page++.toString())
+                }
+            }
+        }
 
         // slideview 동적 추가
         contentView = (applicationContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(
@@ -99,7 +109,8 @@ class ProfileActivity : AppCompatActivity() {
                 }
             })
             this.feedData.observe(this@ProfileActivity, Observer {
-                setFeedRecyclerView(it)
+                feedDatas.addAll(it)
+                setFeedRecyclerView()
                 bind.postTv.text = it.size.toString()
             })
         }
@@ -209,10 +220,10 @@ class ProfileActivity : AppCompatActivity() {
 
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun setFeedRecyclerView(feed : List<Res>)
+    private fun setFeedRecyclerView()
     {
         feedAdapter.apply {
-            datas = feed
+            datas = feedDatas
         }
 
         bind.feedRc.apply {

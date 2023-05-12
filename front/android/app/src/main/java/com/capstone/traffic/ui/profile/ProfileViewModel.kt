@@ -21,23 +21,25 @@ class ProfileViewModel : ViewModel() {
     private val _userNickName = MutableLiveData<String>()
     private val _userProfile = MutableLiveData<String>()
     private val _userDefinition = MutableLiveData<String>()
-    private val _feedData = MutableLiveData<List<Res>>()
+    private val _feedData = MutableLiveData<MutableList<Res>>()
 
     val userNickname : LiveData<String> = _userNickName
     val userProfile : LiveData<String> = _userProfile
     val userDefinition : LiveData<String> = _userDefinition
-    val feedData : LiveData<List<Res>> = _feedData
+    val feedData : LiveData<MutableList<Res>> = _feedData
 
     init {
-
+        _feedData.value = mutableListOf()
     }
 
-    fun getFeedData(userName : String) {
+    fun getFeedData(userName : String, pageIndex: String) {
         val feedService = Client.getInstance().create(Service::class.java)
-        feedService.getFeed(null,null,userName).enqueue(object : Callback<FeedResSuc>{
+        feedService.getFeed(null,null,userName,"5",pageIndex).enqueue(object : Callback<FeedResSuc>{
             override fun onResponse(call: Call<FeedResSuc>, response: Response<FeedResSuc>) {
                 if(response.isSuccessful){
-                    _feedData.value = response.body()?.res
+                    if(response.body()?.res != null){
+                        _feedData.value = response.body()?.res!! as MutableList<Res>
+                    }
                 }
             }
 
@@ -47,7 +49,7 @@ class ProfileViewModel : ViewModel() {
         })
 
     }
-    fun getUserInfo(userName : String) {
+    fun getUserInfo(userName : String, pageIndex : String) {
 
         _userNickName.value = userName
 
@@ -59,7 +61,7 @@ class ProfileViewModel : ViewModel() {
                         val userData = response.body()?.res!![0]
                         _userDefinition.value = userData.userDefinition
                         _userProfile.value = userData.user_profile_image
-                        getFeedData(userName = userData.userNickName)
+                        getFeedData(userName = userData.userNickName, pageIndex)
                     }
                 }
             }

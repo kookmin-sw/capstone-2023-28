@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/backgroundWhite"
+    android:background="@color/transparent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
+        app:cardBackgroundColor="@color/white"
         android:layout_margin="10dp"
         app:cardCornerRadius="10dp"
         android:layout_width="match_parent"
@@ -52,6 +53,7 @@
                 </LinearLayout>
             </LinearLayout>
             <TextView
+                android:textSize="14sp"
                 android:id="@+id/contents"
                 android:layout_marginTop="15dp"
                 android:layout_marginStart="5dp"
@@ -67,6 +69,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </androidx.core.widget.NestedScrollView>
+            <TextView
+                android:layout_marginTop="5dp"
+                android:textSize="12sp"
+                android:id="@+id/hash_tag_tv"
+                android:textColor="@color/hs4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
             <LinearLayout
                 android:layout_marginTop="5dp"
                 android:layout_marginStart="5dp"

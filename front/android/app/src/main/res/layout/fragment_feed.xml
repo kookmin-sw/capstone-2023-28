@@ -347,6 +347,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp">
             <androidx.core.widget.NestedScrollView
+                android:id="@+id/feed_sv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <androidx.recyclerview.widget.RecyclerView

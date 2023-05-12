@@ -30,7 +30,7 @@ interface Service {
     
     // 피드 전체 불러오기
     @GET("feed/")
-    fun getFeed(@Query("hash_tags", encoded = true) hashTag : String?, @Query("user_id", encoded = true) userId : String? , @Query("user_nickname", encoded = true) userNickname : String? ) : Call<FeedResSuc>
+    fun getFeed(@Query("hash_tags", encoded = true) hashTag : String?, @Query("user_id", encoded = true) userId : String? , @Query("user_nickname", encoded = true) userNickname : String?  , @Query("page_num", encoded = true) pageNum : String? , @Query("page_index", encoded = true) pageIndex : String? ) : Call<FeedResSuc>
 
     // 피드 필터링 (해시 태그) 해서 가져오기
     @GET("feed/")

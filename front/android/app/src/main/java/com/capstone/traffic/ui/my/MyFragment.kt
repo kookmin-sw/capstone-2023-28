@@ -67,6 +67,8 @@ class MyFragment : Fragment() {
     private lateinit var slideUpPopup : SlideUpDialog
     private lateinit var selectedFeedId : String
     private lateinit var commentAdapter: CommentAdapter
+    private lateinit var feedData : MutableList<Res>
+    private var page = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,6 +76,7 @@ class MyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        feedData = mutableListOf()
 
         // slideview 동적 추가
         contentView = (requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.dialog_comment,null)
@@ -96,6 +99,8 @@ class MyFragment : Fragment() {
                 profileIV.apply {
                     setProfileBtn()
                 }
+                feedData = mutableListOf()
+                page = 0
                 getMyFeed(MyViewModel.nickname.value.toString())
                 // 내 피드 새로 고침
                 refreshLayout.isRefreshing = false
@@ -107,8 +112,11 @@ class MyFragment : Fragment() {
                 startActivityForResult(intent,999)
             }
 
-            feedRc.apply {
-
+            // 페이징
+            feedSv.setOnScrollChangeListener { v, _, scrollY, _, _ ->
+                if (scrollY == feedSv.getChildAt(0).measuredHeight - v.measuredHeight){
+                    getMyFeed(MyViewModel.nickname.value.toString())
+                }
             }
         }
         return binding.root
@@ -227,13 +235,16 @@ class MyFragment : Fragment() {
 
         val retrofit = Client.getInstance()
         val service = retrofit.create(Service::class.java)
-        service.getFeed(userNickname = nickname, userId = null, hashTag = null).enqueue(object :
+        service.getFeed(userNickname = nickname, userId = null, hashTag = null, pageNum = "5", pageIndex = page++.toString()).enqueue(object :
             Callback<FeedResSuc>{
             override fun onResponse(call: Call<FeedResSuc>, response: Response<FeedResSuc>) {
                 if(response.isSuccessful)
                 {
                     val data = response.body()?.res
-                    if(data != null) setFeedRecyclerView(data)
+                    if(data != null) {
+                        feedData.addAll(data)
+                        setFeedRecyclerView()
+                    }
                     binding.postTv.text = data?.size.toString()
                 }
             }
@@ -245,10 +256,10 @@ class MyFragment : Fragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun setFeedRecyclerView(feed : List<Res>)
+    private fun setFeedRecyclerView()
     {
         feedAdapter.apply {
-            datas = feed
+            datas = feedData
         }
 
         binding.feedRc.apply {

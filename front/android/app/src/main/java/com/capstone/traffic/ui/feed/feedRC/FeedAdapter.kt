@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.View
@@ -32,6 +33,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File.separator
 import java.sql.Time
 
 class FeedAdapter(private val context: Context, private val informClickEvent : (Res) -> Unit ,private val onClickListener : (Res) -> Unit) : RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
@@ -60,11 +62,25 @@ class FeedAdapter(private val context: Context, private val informClickEvent : (
         private val commentBtn = itemView.findViewById<AppCompatButton>(R.id.comment_btn)
         private val thumbUpBtn = itemView.findViewById<AppCompatButton>(R.id.thumb_up_btn)
         private val userLL = itemView.findViewById<LinearLayout>(R.id.user_ll)
+        private val hashTagTv = itemView.findViewById<TextView>(R.id.hash_tag_tv)
+
         init {
         }
         @SuppressLint("NotifyDataSetChanged", "UseCompatTextViewDrawableApis")
         fun bind(item : Res){
 
+            hashTagTv.apply {
+                if(item.hashTags!!.isEmpty()) {
+                    visibility = View.GONE
+                }
+                else{
+                    val hashTag = item.hashTags.joinToString(prefix = "#", separator = "호선 ,", postfix = "호선"){
+                        it.hashTag
+                    }
+                    text = hashTag
+                    paintFlags = Paint.UNDERLINE_TEXT_FLAG
+                }
+            }
             thumbUpBtn.apply {
                 this.text = item.likesNum
                 if(item.isLiked == "true"){

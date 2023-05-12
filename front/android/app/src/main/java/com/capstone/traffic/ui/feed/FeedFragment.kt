@@ -4,9 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.renderscript.ScriptGroup.Input
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,6 +67,8 @@ class FeedFragment : Fragment() {
     private lateinit var slideUpPopup : SlideUpDialog
     private lateinit var selectedFeedId : String
     private lateinit var commentAdapter: CommentAdapter
+    private lateinit var feedData: MutableList<Res>
+    private var page = 0
     private fun initData(){
         lineFilterList = listOf(
             binding.hs1,
@@ -77,10 +82,6 @@ class FeedFragment : Fragment() {
             binding.hs9,
         )
 
-        val profileData = MyApplication.prefs.getUserProfile()
-        binding.myProfileIv.apply {
-            if(profileData != null) setBackgroundDrawable(BitmapDrawable(profileData))
-        }
     }
 
     private var hsList = hs()
@@ -92,6 +93,8 @@ class FeedFragment : Fragment() {
     ): View? {
 
         initData()
+
+        feedData = mutableListOf()
 
 
         // slideview 동적 추가
@@ -127,6 +130,8 @@ class FeedFragment : Fragment() {
 
             // 스크롤시 새로고침
             refreshLayout.setOnRefreshListener {
+                page = 0
+                feedData = mutableListOf()
                 retrofitFeed(null, null)
                 refreshLayout.isRefreshing = false
             }
@@ -135,20 +140,8 @@ class FeedFragment : Fragment() {
             filterApplyBtn.setOnClickListener {
                 filterLl.apply { visibility = View.GONE }
 
-                val filterDataList = mutableListOf<Int>()
-                // 필터 적용
-                lineFilterList.forEachIndexed { index,  it ->
-                    if(it.backgroundTintList != null && it.backgroundTintList!!.equals(ColorStateList.valueOf(requireContext().resources.getColor(R.color.gray)))){
-                        filterDataList.add(index + 1)
-                    }
-                }
-                val filterString = filterDataList.joinToString(",")
-                if(filterString.isNotEmpty()){
-                    retrofitFeed(hashTag = filterString, userId = null)
-                }
-                else{
-                    retrofitFeed(null, null)
-                }
+                val filterData = getFilterTag()
+                retrofitFeed(filterData,null)
 
             }
 
@@ -164,7 +157,17 @@ class FeedFragment : Fragment() {
             }
 
 
+
+            // 페이징
+            feedSv.setOnScrollChangeListener { v, _, scrollY, _, _ ->
+                if (scrollY == feedSv.getChildAt(0).measuredHeight - v.measuredHeight){
+                    val filterData = getFilterTag()
+                    retrofitFeed(filterData, null)
+                }
+            }
+
         }
+
 
         binding.filterBtn.setOnClickListener {
 
@@ -178,7 +181,17 @@ class FeedFragment : Fragment() {
         return binding.root
     }
 
-
+    private fun getFilterTag() : String {
+        val filterDataList = mutableListOf<Int>()
+        // 필터 적용
+        lineFilterList.forEachIndexed { index,  it ->
+            if(it.backgroundTintList != null && it.backgroundTintList!!.equals(ColorStateList.valueOf(requireContext().resources.getColor(R.color.gray)))){
+                filterDataList.add(index + 1)
+            }
+        }
+        val filterString = filterDataList.joinToString(",")
+        return filterString
+    }
     private fun initSlider()
     {
         commentAdapter = CommentAdapter(requireContext())
@@ -252,7 +265,9 @@ class FeedFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == 1){
             if(resultCode == 3131){
-                retrofitFeed(null, null)
+                feedData = mutableListOf()
+                page = 0
+                retrofitFeed("", null)
             }
         }
     }
@@ -309,6 +324,7 @@ class FeedFragment : Fragment() {
                 slideUpPopup.show()
             }
         )
+
     }
 
     // 필터 클리어
@@ -328,12 +344,16 @@ class FeedFragment : Fragment() {
     private fun retrofitFeed(hashTag : String?, userId : String?){
         val retrofit = Client.getInstance()
         val service = retrofit.create(Service::class.java)
-        service.getFeed(hashTag, userId, null).enqueue(object : Callback<FeedResSuc>{
+        service.getFeed(hashTag, userId, null,"5",page++.toString()).enqueue(object : Callback<FeedResSuc>{
             override fun onResponse(call: Call<FeedResSuc>, response: Response<FeedResSuc>) {
                 if(response.isSuccessful)
                 {
                     val data = response.body()?.res
-                    if(data != null) setFeedRecyclerView(data)
+                    if(data != null)
+                    {
+                        feedData.addAll(data)
+                        setFeedRecyclerView()
+                    }
                 }
             }
             override fun onFailure(call: Call<FeedResSuc>, t: Throwable) {
@@ -345,10 +365,10 @@ class FeedFragment : Fragment() {
 
     // recyclerView
     @SuppressLint("NotifyDataSetChanged")
-    private fun setFeedRecyclerView(feed : List<Res>)
+    private fun setFeedRecyclerView()
     {
         feedAdapter.apply {
-            datas = feed
+            datas = feedData
         }
 
         binding.feedRc.apply {
@@ -357,6 +377,7 @@ class FeedFragment : Fragment() {
         }
         feedAdapter.notifyDataSetChanged()
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -381,7 +402,18 @@ class FeedFragment : Fragment() {
             }
             else it.backgroundTintList = ColorStateList.valueOf(requireContext().resources.getColor(R.color.gray))
         })
+
+        feedViewModel.profile.observe(viewLifecycleOwner, Observer {
+            binding.myProfileIv.apply {
+                if(it != null) setBackgroundDrawable(BitmapDrawable(it.stringToBitmap()))
+            }
+        })
     }
+    private fun String.stringToBitmap() : Bitmap {
+        val encodeByte = android.util.Base64.decode(this, android.util.Base64.DEFAULT)
+        return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size)
+    }
+
     companion object {
         fun newInstance(title: String) = FeedFragment().apply {
         }
