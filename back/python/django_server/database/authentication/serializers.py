@@ -10,7 +10,15 @@ class FollowSerializer(serializers.ModelSerializer):
         model = Follow
         fields = ["following_user_id", "follow_user_id"]
         extra_kwargs = {"follow_user_id": {"required": False}}
+    def validate_unique(self, following_user_id, follow_user_id):
+        if Follow.objects.filter(following_user_id=following_user_id, follow_user_id=follow_user_id).exists():
+            raise serializers.ValidationError(
+                {"status": "ERROR",
+                 "res": {"error_name": "팔로우 중복", "error_id": 7}
+                 }
+            )
     def create(self, validated_data):
+        self.validate_unique(validated_data["following_user_id"], self.context.get("follow_user_id"))
         try:
             follow_user_id = User.objects.get(id=self.context.get("follow_user_id"))
             validated_data["follow_user_id"] = follow_user_id
@@ -31,7 +39,13 @@ class UserSerializer(serializers.Serializer):
     user_email = serializers.EmailField(max_length=30)
     user_definition = serializers.CharField(max_length=100, allow_null=True, allow_blank=True, required=False)
     password = serializers.CharField()
+    follower_num = serializers.SerializerMethodField()
+    following_num = serializers.SerializerMethodField()
     user_profile_image = serializers.CharField(max_length=200, allow_null=True, required=False)
+    def get_follower_num(self, obj):
+        return obj.user_following.count()
+    def get_following_num(self, obj):
+        return obj.user_follower.count()
     def validate_unique_user_nickname(self, value):
         if User.objects.filter(user_nickname=value).exists():
             raise serializers.ValidationError(

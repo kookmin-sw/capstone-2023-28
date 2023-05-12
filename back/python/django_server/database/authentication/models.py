@@ -51,8 +51,8 @@ class User(AbstractBaseUser):
 
 # follow unfollow
 class Follow(models.Model):
-    following_user_id = models.ForeignKey('User', on_delete=models.CASCADE, related_name="user_following_set")
-    follow_user_id = models.ForeignKey('User', on_delete=models.CASCADE, related_name="user_follow_set")
+    following_user_id = models.ForeignKey('User', on_delete=models.CASCADE, related_name="user_following")
+    follow_user_id = models.ForeignKey('User', on_delete=models.CASCADE, related_name="user_follower")
 
     class Meta:
         db_table = "follow"
