@@ -10,7 +10,13 @@ class FollowSerializer(serializers.ModelSerializer):
         model = Follow
         fields = ["following_user_id", "follow_user_id"]
         extra_kwargs = {"follow_user_id": {"required": False}}
-    def validate_unique(self, following_user_id, follow_user_id):
+
+    def validate_user(self, following_user_id, follow_user_id):
+        if following_user_id.id == follow_user_id:
+            raise serializers.ValidationError(
+                {"status": "ERROR",
+                 "res": {"error_name": "자기 자신을 팔로우", "error_id": 11}}
+            )
         if Follow.objects.filter(following_user_id=following_user_id, follow_user_id=follow_user_id).exists():
             raise serializers.ValidationError(
                 {"status": "ERROR",
@@ -18,7 +24,7 @@ class FollowSerializer(serializers.ModelSerializer):
                  }
             )
     def create(self, validated_data):
-        self.validate_unique(validated_data["following_user_id"], self.context.get("follow_user_id"))
+        self.validate_user(validated_data["following_user_id"], self.context.get("follow_user_id"))
         try:
             follow_user_id = User.objects.get(id=self.context.get("follow_user_id"))
             validated_data["follow_user_id"] = follow_user_id

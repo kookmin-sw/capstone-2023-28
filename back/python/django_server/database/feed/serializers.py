@@ -115,7 +115,6 @@ class FeedSerializer(serializers.ModelSerializer):
         return obj.like_feed.count()
     def get_is_liked(self, obj):
         user_id = self.context.get("user_id")
-        print(user_id)
         is_liked = obj.like_feed.filter(user_id=user_id).exists()
         return is_liked
 

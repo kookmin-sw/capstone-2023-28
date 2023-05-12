@@ -23,15 +23,15 @@ class FeedView(generics.ListAPIView):
         user_id = self.request.query_params.get('user_id', None)
         user_nickname = self.request.query_params.get('user_nickname', None)
         hash_tags = self.request.query_params.get('hash_tags', None)
-        if user_id is not None:
+        if user_id is not None and user_id != "":
             queryset = queryset.filter(user_id=user_id)
-        if user_nickname is not None:
+        if user_nickname is not None and user_nickname != "":
             try:
                 user = User.objects.get(user_nickname=user_nickname)
             except User.DoesNotExist:
                 return []
             queryset = queryset.filter(user_id = user.id)
-        if hash_tags is not None:
+        if hash_tags is not None and hash_tags != "":
             hash_tag_list = hash_tags.split(',')
             try:
                 for hash_tag in hash_tag_list:
