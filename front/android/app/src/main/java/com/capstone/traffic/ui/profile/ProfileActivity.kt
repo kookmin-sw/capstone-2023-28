@@ -24,6 +24,7 @@ import com.capstone.traffic.R
 import com.capstone.traffic.databinding.ActivityProfileBinding
 import com.capstone.traffic.model.network.sql.Client
 import com.capstone.traffic.model.network.sql.Service
+import com.capstone.traffic.model.network.sql.dataclass.DefaultRes
 import com.capstone.traffic.model.network.sql.dataclass.ImageUpload
 import com.capstone.traffic.model.network.sql.dataclass.comment.ComResSuc
 import com.capstone.traffic.model.network.sql.dataclass.getfeed.Res
@@ -79,6 +80,15 @@ class ProfileActivity : AppCompatActivity() {
                     profileViewModel.getUserInfo(userNickName, page++.toString())
                 }
             }
+
+            followingBtn.setOnClickListener {
+                if(profileViewModel.isFollowing.value!!){
+                    makeUnFollowing()
+                }
+                else{
+                    makeFollowing()
+                }
+            }
         }
 
         // slideview 동적 추가
@@ -113,6 +123,20 @@ class ProfileActivity : AppCompatActivity() {
                 setFeedRecyclerView()
                 bind.postTv.text = it.size.toString()
             })
+            follower.observe(this@ProfileActivity){
+                bind.followerTv.text = it.toString()
+            }
+            following.observe(this@ProfileActivity){
+                bind.followingTv.text = it.toString()
+            }
+            isFollowing.observe(this@ProfileActivity){
+                if(it) {
+                    bind.followingBtn.text = "언팔로잉"
+                }
+                else {
+                    bind.followingBtn.text = "팔로잉"
+                }
+            }
         }
 
         bind.apply {
@@ -123,6 +147,43 @@ class ProfileActivity : AppCompatActivity() {
 
         }
     }
+    private fun makeFollowing()
+    {
+        val service = Client.getInstance().create(Service::class.java)
+        val mediaType = "application/json".toMediaTypeOrNull()
+        val param =
+            RequestBody.create(mediaType, "{\"following_user_id\":\"${profileViewModel.id.value}\"}")
+        service.makeFollowing(param = param).enqueue(object :Callback<DefaultRes>{
+            override fun onResponse(call: Call<DefaultRes>, response: Response<DefaultRes>) {
+                if(response.isSuccessful){
+                    profileViewModel.getUserInfo(userName = null, pageIndex = "1", updateFeed = false)
+                }
+            }
+
+            override fun onFailure(call: Call<DefaultRes>, t: Throwable) {
+
+            }
+        })
+    }
+    private fun makeUnFollowing()
+    {
+        val service = Client.getInstance().create(Service::class.java)
+        val mediaType = "application/json".toMediaTypeOrNull()
+        val param =
+            RequestBody.create(mediaType, "{\"following_user_id\":\"${profileViewModel.id.value}\"}")
+        service.makeUnfollowing(param = param).enqueue(object :Callback<DefaultRes>{
+            override fun onResponse(call: Call<DefaultRes>, response: Response<DefaultRes>) {
+                if(response.isSuccessful){
+                    profileViewModel.getUserInfo(userName = null, pageIndex = "1", updateFeed = false)
+                }
+            }
+
+            override fun onFailure(call: Call<DefaultRes>, t: Throwable) {
+
+            }
+        })
+    }
+
     // 키보드 올리기
     private fun keyboardUp()
     {

@@ -71,4 +71,14 @@ interface Service {
     // 좋아요 취소 기능
     @HTTP(method = "DELETE", path = "feed/like/", hasBody = true)
     fun updateCancleLike(@Body param: RequestBody) : Call<DefaultRes>
+
+    // 팔로잉 기능
+    @POST("user/follow/")
+    fun makeFollowing(@Body param: RequestBody) : Call<DefaultRes>
+
+    // 언팔
+    @HTTP(method = "DELETE", path = "user/follow/", hasBody = true)
+    fun makeUnfollowing(@Body param: RequestBody) : Call<DefaultRes>
+
+
 }

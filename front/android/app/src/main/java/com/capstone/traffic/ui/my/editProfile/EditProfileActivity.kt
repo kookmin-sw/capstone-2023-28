@@ -104,7 +104,7 @@ class EditProfileActivity : AppCompatActivity() {
             Callback<InfoRecSuc>{
             override fun onResponse(call: Call<InfoRecSuc>, response: Response<InfoRecSuc>) {
                 if(response.isSuccessful && response.body()?.res!!.isNotEmpty()){
-                    binding.profileIv.setBackgroundDrawable(BitmapDrawable(response.body()?.res!![0].user_profile_image.stringToBitmap()))
+                    if(response.body()?.res!![0].user_profile_image != null)binding.profileIv.setBackgroundDrawable(BitmapDrawable(response.body()?.res!![0].user_profile_image!!.stringToBitmap()))
                     binding.nameEt.setText(response.body()?.res!![0].userNickName)
                     binding.defiEt.setText(response.body()?.res!![0].userDefinition)
                 }
@@ -175,7 +175,7 @@ class EditProfileActivity : AppCompatActivity() {
         })
     }
 
-    private fun String.stringToBitmap() : Bitmap {
+    private fun String.stringToBitmap() : Bitmap? {
         val encodeByte = android.util.Base64.decode(this, android.util.Base64.DEFAULT)
         return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size)
     }

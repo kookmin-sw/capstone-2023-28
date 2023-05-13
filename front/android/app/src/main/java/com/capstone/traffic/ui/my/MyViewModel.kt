@@ -23,33 +23,30 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _nickname = MutableLiveData<String>()
     private val _post =  MutableLiveData<Int>()
-    private val _follower =  MutableLiveData<Int>()
-    private val _following =  MutableLiveData<Int>()
+    private val _follower =  MutableLiveData<String>()
+    private val _following =  MutableLiveData<String>()
     private val _userDefini = MutableLiveData<String>()
     private val _profile = MutableLiveData<String>()
+    private val _userId = MutableLiveData<String>()
 
     val profile : LiveData<String> = _profile
     val userDefini : LiveData<String> = _userDefini
     val nickname : LiveData<String> = _nickname
     val post : LiveData<Int> = _post
-    val follower : LiveData<Int> = _follower
-    val following : LiveData<Int> = _following
+    val follower : LiveData<String> = _follower
+    val following : LiveData<String> = _following
 
     init {
-        getUserData()
         getUserAPI()
     }
 
-    private fun getUserData()
+    fun setUserId()
     {
-        // 임시로 데이터 설정
-        _post.value = 2
-        _follower.value = 53
-        _following.value = 65
+
     }
 
     fun getUserAPI(){
-        val retrofit = AuthClient.getInstance()
+        val retrofit = Client.getInstance()
         val infoService = retrofit.create(Service::class.java)
         infoService.getInfo(userEmail = MyApplication.prefs.getEmail().toString(), userNickname = null, pageNum = null).enqueue(object : Callback<InfoRecSuc>{
             override fun onResponse(call: Call<InfoRecSuc>, response: Response<InfoRecSuc>) {
@@ -59,6 +56,8 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
                         _nickname.value = data.res[0].userNickName
                         _userDefini.value = data.res[0].userDefinition
                         _profile.value = data.res[0].user_profile_image ?: ""
+                        _follower.value = data.res[0].followerNum
+                        _following.value = data.res[0].followingNum
                     }
                 }
             }

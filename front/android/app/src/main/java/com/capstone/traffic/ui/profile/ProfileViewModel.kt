@@ -19,14 +19,23 @@ import retrofit2.create
 class ProfileViewModel : ViewModel() {
 
     private val _userNickName = MutableLiveData<String>()
-    private val _userProfile = MutableLiveData<String>()
+    private val _userProfile = MutableLiveData<String?>()
     private val _userDefinition = MutableLiveData<String>()
     private val _feedData = MutableLiveData<MutableList<Res>>()
+    private val _follower =  MutableLiveData<String>()
+    private val _following =  MutableLiveData<String>()
+    private val _isFollowing = MutableLiveData<Boolean>()
+    private val _id = MutableLiveData<String>()
 
     val userNickname : LiveData<String> = _userNickName
-    val userProfile : LiveData<String> = _userProfile
+    val userProfile : LiveData<String?> = _userProfile
     val userDefinition : LiveData<String> = _userDefinition
     val feedData : LiveData<MutableList<Res>> = _feedData
+    val follower : LiveData<String> = _follower
+    val following : LiveData<String> = _following
+    val isFollowing : LiveData<Boolean> = _isFollowing
+    val id : LiveData<String> = _id
+
 
     init {
         _feedData.value = mutableListOf()
@@ -49,19 +58,23 @@ class ProfileViewModel : ViewModel() {
         })
 
     }
-    fun getUserInfo(userName : String, pageIndex : String) {
+    fun getUserInfo(userName : String?, pageIndex : String, updateFeed: Boolean = true) {
 
-        _userNickName.value = userName
+        if(userName != null) _userNickName.value = userName!!
 
         val infoService = Client.getInstance().create(Service::class.java)
-        infoService.getInfo(null, userNickname = userName, "1").enqueue(object :Callback<InfoRecSuc>{
+        infoService.getInfo(null, userNickname = _userNickName.value, "1").enqueue(object :Callback<InfoRecSuc>{
             override fun onResponse(call: Call<InfoRecSuc>, response: Response<InfoRecSuc>) {
                 if(response.isSuccessful){
                     if(response.body()?.res?.size != 0){
                         val userData = response.body()?.res!![0]
                         _userDefinition.value = userData.userDefinition
-                        _userProfile.value = userData.user_profile_image
-                        getFeedData(userName = userData.userNickName, pageIndex)
+                        if(userData.user_profile_image != null) _userProfile.value = userData.user_profile_image
+                        _follower.value = userData.followerNum
+                        _following.value = userData.followingNum
+                        _isFollowing.value = userData.isFollower.toBoolean()
+                        _id.value = userData.id
+                        if(updateFeed) getFeedData(userName = userData.userNickName, pageIndex)
                     }
                 }
             }

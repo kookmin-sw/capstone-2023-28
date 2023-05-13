@@ -345,25 +345,27 @@ class MyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        MyViewModel.follower.observe(viewLifecycleOwner){
-            binding.followerTv.text = it.toString()
-        }
-        MyViewModel.post.observe(viewLifecycleOwner){
-            binding.postTv.text = it.toString()
-        }
-        MyViewModel.following.observe(viewLifecycleOwner){
-            binding.followingTv.text = it.toString()
-        }
-        MyViewModel.nickname.observe(viewLifecycleOwner){
-            getMyFeed(it)
-            binding.nicknameTv2.text = it
-            binding.nicknameTv1.text = it
-        }
-        MyViewModel.userDefini.observe(viewLifecycleOwner){
-            binding.userMemoTv.text = it
-        }
-        MyViewModel.profile.observe(viewLifecycleOwner){
-            binding.profileIV.setBackgroundDrawable(BitmapDrawable(it.stringToBitmap()))
+        MyViewModel.apply {
+            post.observe(viewLifecycleOwner){
+                binding.postTv.text = it.toString()
+            }
+            follower.observe(viewLifecycleOwner){
+                binding.followerTv.text = it.toString()
+            }
+            following.observe(viewLifecycleOwner){
+                binding.followingTv.text = it.toString()
+            }
+            nickname.observe(viewLifecycleOwner){
+                getMyFeed(it)
+                binding.nicknameTv2.text = it
+                binding.nicknameTv1.text = it
+            }
+            userDefini.observe(viewLifecycleOwner){
+                binding.userMemoTv.text = it
+            }
+            profile.observe(viewLifecycleOwner){
+                binding.profileIV.setBackgroundDrawable(BitmapDrawable(it.stringToBitmap()))
+            }
         }
     }
     private fun String.stringToBitmap() : Bitmap {
