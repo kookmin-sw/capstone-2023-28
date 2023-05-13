@@ -321,6 +321,7 @@ class MyFragment : Fragment() {
     private fun refresh(){
         feedData = mutableListOf()
         page = 0
+        MyViewModel.getUserAPI()
         getMyFeed(MyViewModel.nickname.value.toString())
         // 내 피드 새로 고침
         binding.refreshLayout.isRefreshing = false
