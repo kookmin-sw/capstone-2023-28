@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide.init
 import com.capstone.traffic.R
+import com.capstone.traffic.global.MyApplication
 import com.capstone.traffic.model.network.sk.direction.dataClass.testData.data
 import com.capstone.traffic.model.network.sql.Client
 import com.capstone.traffic.model.network.sql.Service
@@ -36,7 +37,7 @@ import retrofit2.Response
 import java.io.File.separator
 import java.sql.Time
 
-class FeedAdapter(private val context: Context, private val informClickEvent : (Res) -> Unit ,private val onClickListener : (Res) -> Unit) : RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
+class FeedAdapter(private val context: Context, private val informClickEvent : (Res) -> Unit ,private val onClickListener : (Res) -> Unit, private val deleteListener : (Res) -> Unit) : RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
     var datas = listOf<Res>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedAdapter.ViewHolder {
@@ -63,11 +64,24 @@ class FeedAdapter(private val context: Context, private val informClickEvent : (
         private val thumbUpBtn = itemView.findViewById<AppCompatButton>(R.id.thumb_up_btn)
         private val userLL = itemView.findViewById<LinearLayout>(R.id.user_ll)
         private val hashTagTv = itemView.findViewById<TextView>(R.id.hash_tag_tv)
+        private val deleteBtn = itemView.findViewById<AppCompatButton>(R.id.delete_btn)
 
         init {
         }
         @SuppressLint("NotifyDataSetChanged", "UseCompatTextViewDrawableApis")
         fun bind(item : Res){
+
+            deleteBtn.apply {
+                if(item.user!!.userEmail == MyApplication.prefs.getEmail()){
+                    visibility = View.VISIBLE
+                    setOnClickListener {
+                        deleteListener(datas[position])
+                    }
+                }
+                else {
+                    visibility = View.GONE
+                }
+            }
 
             hashTagTv.apply {
                 if(item.hashTags!!.isEmpty()) {

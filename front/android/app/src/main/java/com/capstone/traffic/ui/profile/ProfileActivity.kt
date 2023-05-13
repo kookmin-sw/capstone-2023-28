@@ -65,6 +65,9 @@ class ProfileActivity : AppCompatActivity() {
                 contentView.findViewById<EditText>(R.id.input_text_btn).setText("")
                 keyboardDown()
                 slideUpPopup.show()
+            },
+            deleteListener = {
+
             }
         )
 
@@ -121,7 +124,6 @@ class ProfileActivity : AppCompatActivity() {
             this.feedData.observe(this@ProfileActivity, Observer {
                 feedDatas.addAll(it)
                 setFeedRecyclerView()
-                bind.postTv.text = it.size.toString()
             })
             follower.observe(this@ProfileActivity){
                 bind.followerTv.text = it.toString()
@@ -136,6 +138,9 @@ class ProfileActivity : AppCompatActivity() {
                 else {
                     bind.followingBtn.text = "팔로잉"
                 }
+            }
+            feedNum.observe(this@ProfileActivity){
+                bind.postTv.text = it
             }
         }
 

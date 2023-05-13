@@ -1,6 +1,7 @@
 package com.capstone.traffic.ui.feed
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -35,6 +36,7 @@ import com.capstone.traffic.global.MyApplication
 import com.capstone.traffic.model.network.sk.direction.dataClass.testData.data
 import com.capstone.traffic.model.network.sql.Client
 import com.capstone.traffic.model.network.sql.Service
+import com.capstone.traffic.model.network.sql.dataclass.DefaultRes
 import com.capstone.traffic.model.network.sql.dataclass.ImageUpload
 import com.capstone.traffic.model.network.sql.dataclass.comment.ComResSuc
 import com.capstone.traffic.model.network.sql.dataclass.getfeed.FeedResSuc
@@ -130,10 +132,7 @@ class FeedFragment : Fragment() {
 
             // 스크롤시 새로고침
             refreshLayout.setOnRefreshListener {
-                page = 0
-                feedData = mutableListOf()
-                retrofitFeed(null, null)
-                refreshLayout.isRefreshing = false
+                refresh()
             }
 
             // 필터 적용 버튼
@@ -180,7 +179,12 @@ class FeedFragment : Fragment() {
 
         return binding.root
     }
-
+    private fun refresh(){
+        page = 0
+        feedData = mutableListOf()
+        retrofitFeed(null, null)
+        binding.refreshLayout.isRefreshing = false
+    }
     private fun getFilterTag() : String {
         val filterDataList = mutableListOf<Int>()
         // 필터 적용
@@ -322,9 +326,49 @@ class FeedFragment : Fragment() {
                 contentView.findViewById<EditText>(R.id.input_text_btn).setText("")
                 keyboardDown()
                 slideUpPopup.show()
+            },
+            deleteListener = {
+                deleteDialog(it.feedId)
             }
         )
 
+    }
+    private fun deleteDialog(feedId : String) {
+        val dialog: AlertDialog = this.let {
+            val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+            builder.apply {
+                this.setMessage("해당 피드를 삭제하시겠습니까?")
+                this.setCancelable(false)
+                this.setPositiveButton("삭제") { dialog, _ ->
+                    dialog.dismiss()
+                    deleteFeed(feedId)
+                }
+                this.setNegativeButton("취소") { dialog, _ ->
+                    dialog.cancel()
+                }
+            }
+            builder.create()
+        }
+        dialog.show()
+    }
+
+    private fun deleteFeed(feedId : String)
+    {
+        val service = Client.getInstance().create(Service::class.java)
+
+        val mediaType = "application/json".toMediaTypeOrNull()
+        val param =
+            RequestBody.create(mediaType, "{\"feed_id\":\"${feedId}\"}")
+
+        service.deleteFeed(param = param).enqueue(object :Callback<DefaultRes>{
+            override fun onResponse(call: Call<DefaultRes>, response: Response<DefaultRes>) {
+                refresh()
+            }
+
+            override fun onFailure(call: Call<DefaultRes>, t: Throwable) {
+
+            }
+        })
     }
 
     // 필터 클리어

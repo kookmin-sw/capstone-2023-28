@@ -2,6 +2,7 @@ package com.capstone.traffic.ui.my
 
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
@@ -88,9 +89,14 @@ class MyFragment : Fragment() {
         setProfileBtn()
 
         // 피드 어뎁터 (클릭 이벤트 추가)
-        feedAdapter = FeedAdapter(requireContext()){
+        feedAdapter = FeedAdapter(context = requireContext(),
+        deleteListener = {
 
-        }
+        },
+            onClickListener = {
+
+            }
+        )
 
         binding.apply {
             // 스크롤시 새로고침
@@ -99,11 +105,7 @@ class MyFragment : Fragment() {
                 profileIV.apply {
                     setProfileBtn()
                 }
-                feedData = mutableListOf()
-                page = 0
-                getMyFeed(MyViewModel.nickname.value.toString())
-                // 내 피드 새로 고침
-                refreshLayout.isRefreshing = false
+                refresh()
 
             }
 
@@ -137,14 +139,19 @@ class MyFragment : Fragment() {
 
     private fun setFeedAdapter()
     {
-        feedAdapter = FeedAdapter(requireContext()){
-                item -> Toast.makeText(requireContext(), "${item.user?.userNickname}", Toast.LENGTH_SHORT).show()
-            selectedFeedId = item.feedId
-            getComments(selectedFeedId)
-            contentView.findViewById<EditText>(R.id.input_text_btn).setText("")
-            keyboardDown()
-            slideUpPopup.show()
-        }
+        feedAdapter = FeedAdapter(context = requireContext(),
+            deleteListener = {
+                deleteDialog(it.feedId)
+            },
+            onClickListener = {
+                    item -> Toast.makeText(requireContext(), "${item.user?.userNickname}", Toast.LENGTH_SHORT).show()
+                selectedFeedId = item.feedId
+                getComments(selectedFeedId)
+                contentView.findViewById<EditText>(R.id.input_text_btn).setText("")
+                keyboardDown()
+                slideUpPopup.show()
+            }
+        )
     }
 
     private fun initSlider()
@@ -245,7 +252,6 @@ class MyFragment : Fragment() {
                         feedData.addAll(data)
                         setFeedRecyclerView()
                     }
-                    binding.postTv.text = data?.size.toString()
                 }
             }
 
@@ -293,6 +299,50 @@ class MyFragment : Fragment() {
         if (result.resultCode == AppCompatActivity.RESULT_OK) {
             CropImage.activity(result.data?.data).setCropShape(CropImageView.CropShape.OVAL).setFixAspectRatio(true).start(requireContext(), this)
         }
+    }
+    private fun deleteFeed(feedId : String)
+    {
+        val service = Client.getInstance().create(Service::class.java)
+
+        val mediaType = "application/json".toMediaTypeOrNull()
+        val param =
+            RequestBody.create(mediaType, "{\"feed_id\":\"${feedId}\"}")
+
+        service.deleteFeed(param = param).enqueue(object :Callback<DefaultRes>{
+            override fun onResponse(call: Call<DefaultRes>, response: Response<DefaultRes>) {
+                refresh()
+            }
+
+            override fun onFailure(call: Call<DefaultRes>, t: Throwable) {
+
+            }
+        })
+    }
+    private fun refresh(){
+        feedData = mutableListOf()
+        page = 0
+        getMyFeed(MyViewModel.nickname.value.toString())
+        // 내 피드 새로 고침
+        binding.refreshLayout.isRefreshing = false
+    }
+
+    private fun deleteDialog(feedId : String) {
+        val dialog: AlertDialog = this.let {
+            val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+            builder.apply {
+                this.setMessage("해당 피드를 삭제하시겠습니까?")
+                this.setCancelable(false)
+                this.setPositiveButton("삭제") { dialog, _ ->
+                    dialog.dismiss()
+                    deleteFeed(feedId)
+                }
+                this.setNegativeButton("취소") { dialog, _ ->
+                    dialog.cancel()
+                }
+            }
+            builder.create()
+        }
+        dialog.show()
     }
 
     // 업데이트 된 프로필 서버에 업로드
@@ -346,9 +396,6 @@ class MyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         MyViewModel.apply {
-            post.observe(viewLifecycleOwner){
-                binding.postTv.text = it.toString()
-            }
             follower.observe(viewLifecycleOwner){
                 binding.followerTv.text = it.toString()
             }
@@ -365,6 +412,9 @@ class MyFragment : Fragment() {
             }
             profile.observe(viewLifecycleOwner){
                 binding.profileIV.setBackgroundDrawable(BitmapDrawable(it.stringToBitmap()))
+            }
+            feedNum.observe(viewLifecycleOwner){
+                binding.postTv.text = it
             }
         }
     }

@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide.init
 import com.capstone.traffic.R
+import com.capstone.traffic.global.MyApplication
 import com.capstone.traffic.model.network.sql.Client
 import com.capstone.traffic.model.network.sql.Service
 import com.capstone.traffic.model.network.sql.dataclass.DefaultRes
@@ -36,7 +37,7 @@ import retrofit2.Response
 import retrofit2.create
 import java.sql.Time
 
-class FeedAdapter(private val context: Context, private val onClickListener : (Res) -> Unit) : RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
+class FeedAdapter(private val context: Context, private val onClickListener : (Res) -> Unit, private val deleteListener : (Res) -> Unit) : RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
     var datas = listOf<Res>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedAdapter.ViewHolder {
@@ -60,14 +61,25 @@ class FeedAdapter(private val context: Context, private val onClickListener : (R
         private val innerRc = itemView.findViewById<RecyclerView>(R.id.inner_rc)
         private val profileIv = itemView.findViewById<AppCompatImageView>(R.id.profile_IV)
         private val commentBtn = itemView.findViewById<AppCompatButton>(R.id.comment_btn)
-
         private val thumbUpBtn = itemView.findViewById<AppCompatButton>(R.id.thumb_up_btn)
-
+        private val deleteBtn = itemView.findViewById<AppCompatButton>(R.id.delete_btn)
 
         init {
         }
         @SuppressLint("NotifyDataSetChanged", "UseCompatTextViewDrawableApis")
         fun bind(item : Res){
+
+            deleteBtn.apply {
+                if(item.user!!.userEmail == MyApplication.prefs.getEmail()){
+                    visibility = View.VISIBLE
+                    setOnClickListener {
+                        deleteListener(datas[position])
+                    }
+                }
+                else {
+                    visibility = View.GONE
+                }
+            }
 
             thumbUpBtn.apply {
                 this.text = item.likesNum

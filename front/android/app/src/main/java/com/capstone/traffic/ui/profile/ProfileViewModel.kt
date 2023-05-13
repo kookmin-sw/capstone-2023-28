@@ -26,6 +26,7 @@ class ProfileViewModel : ViewModel() {
     private val _following =  MutableLiveData<String>()
     private val _isFollowing = MutableLiveData<Boolean>()
     private val _id = MutableLiveData<String>()
+    private val _feedNum = MutableLiveData<String>()
 
     val userNickname : LiveData<String> = _userNickName
     val userProfile : LiveData<String?> = _userProfile
@@ -35,6 +36,7 @@ class ProfileViewModel : ViewModel() {
     val following : LiveData<String> = _following
     val isFollowing : LiveData<Boolean> = _isFollowing
     val id : LiveData<String> = _id
+    val feedNum : LiveData<String> = _feedNum
 
 
     init {
@@ -74,6 +76,7 @@ class ProfileViewModel : ViewModel() {
                         _following.value = userData.followingNum
                         _isFollowing.value = userData.isFollower.toBoolean()
                         _id.value = userData.id
+                        _feedNum.value = userData.feedNum
                         if(updateFeed) getFeedData(userName = userData.userNickName, pageIndex)
                     }
                 }

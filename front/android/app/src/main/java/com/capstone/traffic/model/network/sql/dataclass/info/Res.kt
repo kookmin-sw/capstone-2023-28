@@ -10,5 +10,6 @@ data class Res(
     @SerializedName("follower_num") val followerNum : String,
     @SerializedName("following_num") val followingNum : String,
     @SerializedName("is_follower") val isFollower : String,
-    @SerializedName("id") val id : String
+    @SerializedName("id") val id : String,
+    @SerializedName("feed_num") val feedNum : String,
 )

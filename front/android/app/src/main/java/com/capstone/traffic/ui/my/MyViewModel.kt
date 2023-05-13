@@ -5,6 +5,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.bumptech.glide.Glide.init
 import com.capstone.traffic.global.MyApplication
 import com.capstone.traffic.model.network.sql.AuthClient
 import com.capstone.traffic.model.network.sql.Client
@@ -28,6 +29,7 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
     private val _userDefini = MutableLiveData<String>()
     private val _profile = MutableLiveData<String>()
     private val _userId = MutableLiveData<String>()
+    private val _feedNum = MutableLiveData<String>()
 
     val profile : LiveData<String> = _profile
     val userDefini : LiveData<String> = _userDefini
@@ -35,6 +37,7 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
     val post : LiveData<Int> = _post
     val follower : LiveData<String> = _follower
     val following : LiveData<String> = _following
+    val feedNum : LiveData<String> = _feedNum
 
     init {
         getUserAPI()
@@ -58,6 +61,7 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
                         _profile.value = data.res[0].user_profile_image ?: ""
                         _follower.value = data.res[0].followerNum
                         _following.value = data.res[0].followingNum
+                        _feedNum.value = data.res[0].feedNum
                     }
                 }
             }

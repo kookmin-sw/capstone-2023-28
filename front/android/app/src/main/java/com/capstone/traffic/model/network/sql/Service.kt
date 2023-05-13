@@ -80,5 +80,7 @@ interface Service {
     @HTTP(method = "DELETE", path = "user/follow/", hasBody = true)
     fun makeUnfollowing(@Body param: RequestBody) : Call<DefaultRes>
 
-
+    // 피드 삭제
+    @HTTP(method = "DELETE", path = "feed/", hasBody = true)
+    fun deleteFeed(@Body param: RequestBody) : Call<DefaultRes>
 }
