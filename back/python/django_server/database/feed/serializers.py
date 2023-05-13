@@ -48,6 +48,7 @@ class DislikeSerializer(serializers.ModelSerializer):
         ret["user_id"] = instance.user_id_id
         return ret
 class CommentSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Comment
         fields = ["user_id", "feed_id", "content", "created_at", "updated_at"]
@@ -55,14 +56,7 @@ class CommentSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         ret = super().to_representation(instance)
         user = UserSerializer(instance.user_id).data
-
-        user_dict = {}
-        user_dict["user_id"] = ret["user_id"]
-        user_dict["user_email"] = user["user_email"]
-        user_dict["user_profile_image"] = user["user_profile_image"]
-        user_dict["user_nickname"] = user["user_nickname"]
-
-        ret["user"] = user_dict
+        ret["user"] = user
         del ret["user_id"]
         return ret
     def create(self, validated_data):
