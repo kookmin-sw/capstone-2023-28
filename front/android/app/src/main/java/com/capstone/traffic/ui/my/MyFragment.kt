@@ -43,6 +43,7 @@ import com.capstone.traffic.model.network.sql.dataclass.getfeed.Res
 import com.capstone.traffic.ui.feed.comment.CommentAdapter
 import com.capstone.traffic.ui.feed.writefeed.WriteFeedActivity
 import com.capstone.traffic.ui.my.editProfile.EditProfileActivity
+import com.capstone.traffic.ui.my.setting.SettingActivity
 import com.capstone.traffic.ui.route.direction.SlideUpDialog
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
@@ -99,6 +100,14 @@ class MyFragment : Fragment() {
         )
 
         binding.apply {
+
+            // 설정 버튼
+            settingBtn.setOnClickListener {
+                val intent = Intent(requireContext(), SettingActivity::class.java)
+                startActivity(intent)
+            }
+
+
             // 스크롤시 새로고침
             refreshLayout.setOnRefreshListener {
                 // 프로필 새롭게 가져오기

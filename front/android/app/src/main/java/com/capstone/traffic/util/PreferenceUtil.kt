@@ -44,4 +44,12 @@ class PreferenceUtil(context: Context) {
         val encodeByte = android.util.Base64.decode(this, android.util.Base64.DEFAULT)
         return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size)
     }
+
+    fun setAlert(alert : Boolean) {
+        prefs.edit().putBoolean("alert", alert).apply()
+    }
+
+    fun getAlert() : Boolean {
+        return prefs.getBoolean("alert", false)
+    }
 }
