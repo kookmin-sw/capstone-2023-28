@@ -1,6 +1,8 @@
 package com.capstone.traffic.ui.login
 
 import android.content.Intent
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.capstone.traffic.R
@@ -36,14 +38,25 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             }
         })
     }
-
-    fun goHome(){
+    var lastTimeBackPressed : Long = 0
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        if(System.currentTimeMillis() - lastTimeBackPressed >= 1500){
+            lastTimeBackPressed = System.currentTimeMillis()
+            Toast.makeText(this,"'뒤로' 버튼을 한번 더 누르시면 종료됩니다.",Toast.LENGTH_LONG).show() }
+        else {
+            ActivityCompat.finishAffinity(this)
+            System.runFinalization()
+            System.exit(0)
+        }
+    }
+    private fun goHome(){
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
         finish()
     }
     private fun checkLoginStatus() : Boolean {
         val hasToken = MyApplication.prefs.getToken() != null
-        return MyApplication.prefs.getBoolean("status") && hasToken
+        return MyApplication.prefs.getBoolean("status") || hasToken
     }
 }

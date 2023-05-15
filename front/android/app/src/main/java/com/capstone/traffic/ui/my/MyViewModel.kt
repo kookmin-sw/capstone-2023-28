@@ -70,4 +70,5 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
             }
         })
     }
+
 }

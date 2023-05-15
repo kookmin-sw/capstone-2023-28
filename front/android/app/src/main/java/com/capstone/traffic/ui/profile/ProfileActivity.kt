@@ -53,6 +53,7 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(bind.root)
 
+
         feedDatas = mutableListOf()
         feedAdapter = FeedAdapter(
             context = applicationContext,

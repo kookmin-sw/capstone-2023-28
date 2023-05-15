@@ -9,7 +9,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.capstone.traffic.global.MyApplication
 import com.capstone.traffic.model.network.sql.AuthClient
-import com.capstone.traffic.model.network.sql.Client
 import com.capstone.traffic.model.network.sql.Service
 import com.capstone.traffic.model.network.sql.dataclass.login.LoginResFail
 import com.capstone.traffic.model.network.sql.dataclass.login.LoginResSuc
@@ -72,6 +71,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application){
                     }
                 }
                 override fun onFailure(call: Call<LoginResSuc>, t: Throwable) {
+                    val k = 0
                 }
             })
     }

@@ -1,14 +1,18 @@
 package com.capstone.traffic.ui.my.setting
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.Observer
 import com.capstone.traffic.databinding.ActivitySettingBinding
 import com.capstone.traffic.global.MyApplication
+import com.capstone.traffic.ui.login.LoginActivity
 import com.google.firebase.messaging.FirebaseMessaging
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
@@ -36,6 +40,9 @@ class SettingActivity : AppCompatActivity() {
                 unSub("chul")
             }
         }
+        binding.logoutBtn.setOnClickListener {
+            LogoutDialog()
+        }
         setContentView(binding.root)
     }
 
@@ -47,10 +54,31 @@ class SettingActivity : AppCompatActivity() {
             }
             else {
                 Toast.makeText(this,"알림 설정 실패", Toast.LENGTH_SHORT).show()
-                return@addOnCompleteListener
             }
         }
     }
+    private fun LogoutDialog() {
+        val dialog: AlertDialog = this.let {
+            val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            builder.apply {
+                this.setMessage("로그아웃 하시겠습니까?")
+                this.setCancelable(false)
+                this.setPositiveButton("로그아웃") { dialog, _ ->
+                    dialog.dismiss()
+                    MyApplication.prefs.setToken(null)
+                    MyApplication.prefs.setBoolean("status",false)
+                    val intent = Intent(context, LoginActivity::class.java)
+                    startActivity(intent)
+                }
+                this.setNegativeButton("취소") { dialog, _ ->
+                    dialog.cancel()
+                }
+            }
+            builder.create()
+        }
+        dialog.show()
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun requestPermission() {
@@ -77,7 +105,6 @@ class SettingActivity : AppCompatActivity() {
             }
             else {
                 Toast.makeText(this,"알림 취소 실패", Toast.LENGTH_SHORT).show()
-                return@addOnCompleteListener
             }
         }
     }

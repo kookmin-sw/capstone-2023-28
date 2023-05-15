@@ -20,7 +20,7 @@ class PreferenceUtil(context: Context) {
         return prefs.getString("token", null)
     }
 
-    fun setToken(token : String){
+    fun setToken(token: String?){
         prefs.edit().putString("token", token).apply()
     }
 
