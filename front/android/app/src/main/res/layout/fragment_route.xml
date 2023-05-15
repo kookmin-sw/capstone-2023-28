@@ -5,7 +5,7 @@
     <data>
         <variable
             name="route"
-            type="com.capstone.traffic.ui.home.HomeViewModel" />
+            type="com.capstone.traffic.ui.HomeViewModel" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"

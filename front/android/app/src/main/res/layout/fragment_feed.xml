@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="feed"
+            type="com.capstone.traffic.ui.feed.FeedViewModel" />
+    </data>
+
+    <LinearLayout
+        android:background="@color/backgroundWhite"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/today_feed_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|start"
+                        android:layout_marginStart="5dp"
+                        android:text="오늘의 지하철은"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/filter_btn"
+                        android:layout_width="55dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="end|center"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/shape_rectangle_with_radius_and_line"
+                        android:text="필터"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:layout_gravity="center"
+                        android:background="@drawable/icon_search"
+                        android:id="@+id/find_btn"
+                        android:width="30dp"
+                        android:height="30dp"
+                        android:minHeight="0dp"
+                        android:minWidth="0dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/filter_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/today_feed_ll"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="호선"
+                            android:textAlignment="center" />
+
+                        <GridLayout
+                            android:id="@+id/filter_grid_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:columnCount="5"
+                            android:rowCount="2">
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                app:cardCornerRadius="12dp"
+                                app:strokeColor="@color/hs1"
+                                app:strokeWidth="2dp">
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/hs1"
+                                    android:layout_width="60dp"
+                                    android:layout_height="30dp"
+                                    android:background="@color/white"
+                                    android:text="1호선"
+                                    android:textColor="@color/hs1"
+                                    android:textSize="13sp" />
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                app:cardCornerRadius="12dp"
+                                app:strokeColor="@color/hs2"
+                                app:strokeWidth="2dp">
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/hs2"
+                                    android:layout_width="60dp"
+                                    android:layout_height="30dp"
+                                    android:background="@color/white"
+                                    android:text="2호선"
+                                    android:textColor="@color/hs2"
+                                    android:textSize="13sp" />
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                app:cardCornerRadius="12dp"
+                                app:strokeColor="@color/hs3"
+                                app:strokeWidth="2dp">
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/hs3"
+                                    android:layout_width="60dp"
+                                    android:layout_height="30dp"
+                                    android:background="@color/white"
+                                    android:text="3호선"
+                                    android:textColor="@color/hs3"
+                                    android:textSize="13sp" />
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                app:cardCornerRadius="12dp"
+                                app:strokeColor="@color/hs4"
+                                app:strokeWidth="2dp">
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/hs4"
+                                    android:layout_width="60dp"
+                                    android:layout_height="30dp"
+                                    android:background="@color/white"
+                                    android:text="4호선"
+                                    android:textColor="@color/hs4"
+                                    android:textSize="13sp" />
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                app:cardCornerRadius="12dp"
+                                app:strokeColor="@color/hs5"
+                                app:strokeWidth="2dp">
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/hs5"
+                                    android:layout_width="60dp"
+                                    android:layout_height="30dp"
+                                    android:background="@color/white"
+                                    android:text="5호선"
+                                    android:textColor="@color/hs5"
+                                    android:textSize="13sp" />
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                app:cardCornerRadius="12dp"
+                                app:strokeColor="@color/hs6"
+                                app:strokeWidth="2dp">
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/hs6"
+                                    android:layout_width="60dp"
+                                    android:layout_height="30dp"
+                                    android:background="@color/white"
+                                    android:text="6호선"
+                                    android:textColor="@color/hs6"
+                                    android:textSize="13sp" />
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                app:cardCornerRadius="12dp"
+                                app:strokeColor="@color/hs7"
+                                app:strokeWidth="2dp">
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/hs7"
+                                    android:layout_width="60dp"
+                                    android:layout_height="30dp"
+                                    android:background="@color/white"
+                                    android:text="7호선"
+                                    android:textColor="@color/hs7"
+                                    android:textSize="13sp" />
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                app:cardCornerRadius="12dp"
+                                app:strokeColor="@color/hs8"
+                                app:strokeWidth="2dp">
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/hs8"
+                                    android:layout_width="60dp"
+                                    android:layout_height="30dp"
+                                    android:background="@color/white"
+                                    android:text="8호선"
+                                    android:textColor="@color/hs8"
+                                    android:textSize="13sp" />
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                app:cardCornerRadius="12dp"
+                                app:strokeColor="@color/hs9"
+                                app:strokeWidth="2dp">
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/hs9"
+                                    android:layout_width="60dp"
+                                    android:layout_height="30dp"
+                                    android:background="@color/white"
+                                    android:text="9호선"
+                                    android:textColor="@color/hs9"
+                                    android:textSize="13sp" />
+                            </com.google.android.material.card.MaterialCardView>
+                        </GridLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:orientation="horizontal">
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/filter_clear_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:stateListAnimator="@null"
+                                android:text="초기화"
+                                android:textSize="13sp" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/filter_apply_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:stateListAnimator="@null"
+                                android:text="필터 적용"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="100dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/my_profile_iv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/shape_circle" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/write_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/background_shape_now_subway"
+                    android:paddingStart="10dp"
+                    android:text="지금 지하철은 어떤가요?"
+                    android:textAlignment="textStart"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray" />
+        </LinearLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/feed_sv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/feed_rc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </LinearLayout>
+</layout>

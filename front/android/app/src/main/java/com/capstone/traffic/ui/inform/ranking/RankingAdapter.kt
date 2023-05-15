@@ -1,31 +1,16 @@
 package com.capstone.traffic.ui.inform.ranking
 
 import android.content.Context
-import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
-import android.view.Display.Mode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide.init
 import com.capstone.traffic.R
 import com.capstone.traffic.model.network.twitter.Data
-import com.capstone.traffic.ui.home.board.bulletinBoard.ArriveInformActivity
-import com.capstone.traffic.ui.home.route.SubwayAdapter
-import com.capstone.traffic.ui.home.route.dataClass.NeighborLineData
-import com.capstone.traffic.ui.home.route.dataClass.SubwayData
 
 class RankingAdapter(private val context: Context) : RecyclerView.Adapter<RankingAdapter.ViewHolder>() {
 

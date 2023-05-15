@@ -7,7 +7,7 @@
 
         <variable
             name="arrival_inform"
-            type="com.capstone.traffic.ui.home.route.search.arrivalInform.ArrivalInformViewModel" />
+            type="com.capstone.traffic.ui.route.route.search.arrivalInform.ArrivalInformViewModel" />
     </data>
 
     <LinearLayout
@@ -71,18 +71,12 @@
             android:textSize="15sp"
             android:textStyle="bold" />
 
-        <androidx.cardview.widget.CardView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/arrival_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/arrival_rv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp" />
-        </androidx.cardview.widget.CardView>
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
     </LinearLayout>
 </layout>
