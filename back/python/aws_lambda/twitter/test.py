@@ -1,14 +1,3 @@
-# If a user makes a new tweet, it sends info and notify user through firebase.
-#
-# Requires utils folder to run this file.
-#
-# 
-#
-#
-# ===========================================================================
-
-
-
 import os
 import requests
 import json

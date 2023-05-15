@@ -1,14 +1,3 @@
-# If a user makes a new tweet, it sends info and notify user through firebase.
-#
-# Requires utils folder to run this file.
-#
-# 
-#
-#
-# ===========================================================================
-
-
-
 import os
 import requests
 import json
@@ -16,11 +5,10 @@ import time
 from abc import ABC, abstractmethod
 from dotenv import load_dotenv
 from pyfcm import FCMNotification
-from utils.key import BEARER_TOKEN, FIREBASE_TOKEN, FCM_APIKEY
+from utils.key import BEARER_TOKEN, FIREBASE_TOKEN
 
-
-push_service = FCMNotification(FCM_APIKEY)
-
+APIKEY = "AAAA7cnIpUQ:APA91bGZxpASqBqs54TRTt1dlgiIE0waj-jz7VURruhsJXj5CnRilkxrYtXVghV2C8lZIYt3Zb2HeAt9XtK3HCXovJ6tXiUrxlSdB0-k5VFjVmYQZjhfBS_mxJiHr60ovP3z3eoY72RZ"
+push_service = FCMNotification(APIKEY)
 
 load_dotenv()  # load environment variables from .env file
 
@@ -105,11 +93,12 @@ class SteelohssStreamer(TwitterStreamer):
         # Replace this with your own logic to store data in Firebase Firestore
         
         # Send notification to mobile device
+        registration_ids = ["<device_registration_token>"]  # Replace with your device registration token
         message = {
             "title": "New tweet from @steelohss!",
             "body": tweet["data"]["text"],
         }
-        result = push_service.notify_topic_subscribers(topic_name="test",data_message=message)
+        result = push_service.notify_multiple_devices(registration_ids=registration_ids, data_message=message)
         print("Notification sent to mobile device")
         print()
 
