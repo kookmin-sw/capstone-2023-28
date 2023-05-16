@@ -428,7 +428,7 @@ class MyFragment : Fragment() {
             }
         }
     }
-    private fun String.stringToBitmap() : Bitmap {
+    private fun String.stringToBitmap() : Bitmap? {
         val encodeByte = android.util.Base64.decode(this, android.util.Base64.DEFAULT)
         return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size)
     }
