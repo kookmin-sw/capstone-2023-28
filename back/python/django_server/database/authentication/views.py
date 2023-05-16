@@ -119,14 +119,15 @@ class UserInfoView(generics.ListAPIView):
 
         offset = page_num * page_index
         limit = offset + page_num
+        queryset = User.objects.all().order_by("user_nickname")
         if user_email is not None:
-            queryset = User.objects.filter(user_email__startswith=user_email)[offset:limit]
+            queryset = queryset.filter(user_email__startswith=user_email)[offset:limit]
             return queryset
         if user_nickname is not None:
-            queryset = User.objects.filter(user_nickname__startswith=user_nickname)[offset:limit]
+            queryset = queryset.filter(user_nickname__startswith=user_nickname)[offset:limit]
             return queryset
         if user_id is not None:
-            queryset = User.objects.filter(id=user_id)[offset:limit]
+            queryset = queryset.filter(id=user_id)[offset:limit]
             return queryset
         return User.objects.none()
 
