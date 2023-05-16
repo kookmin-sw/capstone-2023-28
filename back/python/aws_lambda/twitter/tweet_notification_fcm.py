@@ -107,7 +107,7 @@ class SteelohssStreamer(TwitterStreamer):
             "title": "New tweet from @steelohss!",
             "body": tweet["data"]["text"],
         }
-        result = push_service.notify_topic_subscribers(topic_name="test",data_message=message)
+        result = push_service.notify_topic_subscribers(topic_name="chul",data_message=message)
         print("Notification sent to mobile device")
         print()
 
