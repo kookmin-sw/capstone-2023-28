@@ -393,11 +393,12 @@ class FeedFragment : Fragment() {
                 if(response.isSuccessful)
                 {
                     val data = response.body()?.res
-                    if(data != null)
+                    if(data != null && data.isNotEmpty())
                     {
                         feedData.addAll(data)
                         setFeedRecyclerView()
                     }
+                    else --page
                 }
             }
             override fun onFailure(call: Call<FeedResSuc>, t: Throwable) {

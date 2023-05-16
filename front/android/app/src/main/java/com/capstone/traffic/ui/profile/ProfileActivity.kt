@@ -47,7 +47,6 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var selectedFeedId : String
     private lateinit var commentAdapter: CommentAdapter
     private lateinit var feedDatas : MutableList<Res>
-    private var page = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,13 +74,13 @@ class ProfileActivity : AppCompatActivity() {
         val userNickName = intent.getStringExtra("userName")
         bind.profile = profileViewModel
 
-        profileViewModel.getUserInfo(userNickName!!, page++.toString())
+        profileViewModel.getUserInfo(userNickName!!)
 
         bind.apply {
             // 페이징
             feedSv.setOnScrollChangeListener { v, _, scrollY, _, _ ->
                 if (scrollY == feedSv.getChildAt(0).measuredHeight - v.measuredHeight){
-                    profileViewModel.getUserInfo(userNickName, page++.toString())
+                    profileViewModel.getUserInfo(userNickName)
                 }
             }
 
@@ -162,7 +161,7 @@ class ProfileActivity : AppCompatActivity() {
         service.makeFollowing(param = param).enqueue(object :Callback<DefaultRes>{
             override fun onResponse(call: Call<DefaultRes>, response: Response<DefaultRes>) {
                 if(response.isSuccessful){
-                    profileViewModel.getUserInfo(userName = null, pageIndex = "1", updateFeed = false)
+                    profileViewModel.getUserInfo(userName = null, updateFeed = false)
                 }
             }
 
@@ -180,7 +179,7 @@ class ProfileActivity : AppCompatActivity() {
         service.makeUnfollowing(param = param).enqueue(object :Callback<DefaultRes>{
             override fun onResponse(call: Call<DefaultRes>, response: Response<DefaultRes>) {
                 if(response.isSuccessful){
-                    profileViewModel.getUserInfo(userName = null, pageIndex = "1", updateFeed = false)
+                    profileViewModel.getUserInfo(userName = null, updateFeed = false)
                 }
             }
 
