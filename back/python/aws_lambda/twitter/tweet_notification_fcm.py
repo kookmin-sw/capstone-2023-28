@@ -104,8 +104,8 @@ class SteelohssStreamer(TwitterStreamer):
         
         # Send notification to mobile device
         message = {
-            "title": "New tweet from @steelohss!",
-            "body": tweet["data"]["text"],
+            "title": tweet["data"]["text"],
+            "body": "서울메트로에서 새로운 알림이 도착했습니다.",
         }
         result = push_service.notify_topic_subscribers(topic_name="chul",data_message=message)
         print("Notification sent to mobile device")
