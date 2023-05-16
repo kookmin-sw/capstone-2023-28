@@ -373,7 +373,7 @@ class FeedFragment : Fragment() {
     private fun filterClear()
     {
         val count = binding.filterGridLayout.childCount
-        for(i in 0 until count-1){
+        for(i in 0 until count){
             val childView = binding.filterGridLayout.getChildAt(i)
             if(childView is MaterialCardView){
                 val lineBtn = childView.getChildAt(0)
