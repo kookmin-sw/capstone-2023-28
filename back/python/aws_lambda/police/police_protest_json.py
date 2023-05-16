@@ -8,7 +8,7 @@ updatelist = []
 
 
 def find_data():
-    for i in range(1,4):
+    for i in range(1,2):
         selector = "#subContents > div > div.inContent > table > tbody > tr:nth-child({}) > td.subject > a".format(i)
         html = requests.get("https://www.smpa.go.kr/user/nd54882.do")
         soup = BeautifulSoup(html.text, 'html.parser').select_one(selector)
