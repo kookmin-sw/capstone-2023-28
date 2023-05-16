@@ -134,7 +134,8 @@ class FeedFragment : Fragment() {
             // 스크롤시 새로고침
             refreshLayout.setOnRefreshListener {
                 refresh()
-                retrofitFeed(null, null)
+                val hashTag = getFilterTag()
+                retrofitFeed(hashTag, null)
                 binding.refreshLayout.isRefreshing = false
 
             }
@@ -265,7 +266,8 @@ class FeedFragment : Fragment() {
             if(resultCode == 3131){
                 feedData = mutableListOf()
                 page = 0
-                retrofitFeed("", null)
+                filterClear()
+                retrofitFeed(null, null)
             }
         }
     }
@@ -357,7 +359,8 @@ class FeedFragment : Fragment() {
         service.deleteFeed(param = param).enqueue(object :Callback<DefaultRes>{
             override fun onResponse(call: Call<DefaultRes>, response: Response<DefaultRes>) {
                 refresh()
-                retrofitFeed(null, null)
+                val hashTag = getFilterTag()
+                retrofitFeed(hashTag, null)
             }
 
             override fun onFailure(call: Call<DefaultRes>, t: Throwable) {
