@@ -1,55 +1,36 @@
 package com.capstone.traffic.ui.feed.writefeed
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ContentProvider
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.res.ColorStateList
-import android.database.Cursor
+import android.icu.text.SimpleDateFormat
 import android.net.Uri
-import android.os.Build
+import android.os.Environment
+import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
-import androidx.compose.ui.graphics.StrokeCap.Companion.Square
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.bumptech.glide.request.RequestOptions
 import com.capstone.traffic.R
 import com.capstone.traffic.databinding.ActivityWriteFeedBinding
-import com.capstone.traffic.global.Auth
 import com.capstone.traffic.global.BaseActivity
-import com.capstone.traffic.global.MyApplication
-import com.capstone.traffic.model.network.sk.direction.dataClass.name
-import com.capstone.traffic.model.network.sk.direction.dataClass.testData.data
-import com.capstone.traffic.model.network.sql.AuthClient
 import com.capstone.traffic.model.network.sql.Client
 import com.capstone.traffic.model.network.sql.Service
 import com.capstone.traffic.model.network.sql.dataclass.ImageUpload
-import com.capstone.traffic.model.network.sql.dataclass.login.LoginResFail
-import com.capstone.traffic.model.network.sql.dataclass.login.LoginResSuc
 import com.capstone.traffic.model.network.sql.dataclass.postfeed.response
 import com.capstone.traffic.ui.feed.writefeed.addImage.Image
 import com.capstone.traffic.ui.feed.writefeed.addImage.ListAdapterGrid
 import com.capstone.traffic.ui.feed.writefeed.addImage.Status
-import com.google.gson.Gson
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
-import kotlinx.coroutines.NonCancellable.start
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -61,15 +42,17 @@ import okio.source
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.awaitResponse
-import retrofit2.http.Url
 import java.io.File
+import java.io.IOException
+import java.util.*
+import kotlin.collections.HashMap
 
 class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
     override var layoutResourceId: Int = R.layout.activity_write_feed
     private lateinit var writeFeedViewModel: WriteFeedViewModel
     private var userId = -1
     private lateinit var lineFilterList : List<AppCompatButton>
+    var fileAbsolutePath: String? = null
     private fun initFilterBtn()
     {
         lineFilterList = listOf(
@@ -142,28 +125,49 @@ class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
         }
 
     }
-    private fun String?.toPlainRequestBody() =
-        requireNotNull(this).toRequestBody("text/plain".toMediaTypeOrNull())
-
-
-    // 절대경로 변환
-    private fun absolutelyPath(path: Uri?, context : Context): String {
-        val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
-        val c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
-        val index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        c?.moveToFirst()
-
-        val result = c?.getString(index!!)
-
-        return result!!
+    private fun getRealPathFromURI(contentUri: Uri): String? {
+        if (contentUri.path!!.startsWith("/storage")) {
+            return contentUri.path
+        }
+        val id = DocumentsContract.getDocumentId(contentUri).split(":".toRegex())
+            .dropLastWhile { it.isEmpty() }
+            .toTypedArray()[1]
+        val columns = arrayOf(MediaStore.Files.FileColumns.DATA)
+        val selection = MediaStore.Files.FileColumns._ID + " = " + id
+        val cursor = contentResolver.query(
+            MediaStore.Files.getContentUri("external"),
+            columns,
+            selection,
+            null,
+            null
+        )
+        try {
+            val columnIndex = cursor!!.getColumnIndex(columns[0])
+            if (cursor.moveToFirst()) {
+                return cursor.getString(columnIndex)
+            }
+        } finally {
+            cursor!!.close()
+        }
+        return null
     }
 
     private fun uploadingPhoto() {
+        for(i in 0 until pathList.size){
+            val file = getRealPathFromURI(pathList[i])?.let { File(it) }
+            if(file != null) fileList.add(file)
+        }
 
-        val file = File(absolutelyPath(photoList[0].uri, this))
-        val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), file)
-        val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
+        for(i in 0 until fileList.size)
+        {
+            dbUploadImage(i)
+        }
+    }
 
+    private fun dbUploadImage(cnt : Int)
+    {
+        val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), fileList[cnt])
+        val body = MultipartBody.Part.createFormData("image", fileList[cnt].name, requestFile)
 
         val retrofit = Client.getInstance()
         val service = retrofit.create(Service::class.java)
@@ -172,16 +176,8 @@ class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
         hashMap["feed_id"] = userId.toString().toRequestBody()
         service.uploadImage(hashMap, body).enqueue(object : Callback<ImageUpload> {
             override fun onResponse(call: Call<ImageUpload>, response: Response<ImageUpload>) {
-                if(response.isSuccessful){
-                    print(1)
-
-                    Log.d("fd","fdsa")
-
-                }
             }
-
             override fun onFailure(call: Call<ImageUpload>, t: Throwable) {
-                Log.d("fd","fdsa")
             }
         }
         )
@@ -272,7 +268,9 @@ class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
     }
 
     private fun openGallery() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        status = 2
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.action = Intent.ACTION_GET_CONTENT
         intent.setType("image/*")
         imageResult.launch(intent)
     }
@@ -289,6 +287,47 @@ class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
         imageResult.launch(intent)
     }
 
+    private fun takeCamera(){
+        status = 1
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(packageManager)?.also {
+                //찍은 사진을 File형식으로 변환
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    null
+                }
+                if(photoFile != null) fileList.add(photoFile)
+
+                photoFile?.also {
+                    camUri = FileProvider.getUriForFile(
+                        this,
+                        "com.capstone.traffic",
+                        it
+                    )
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, camUri)
+                    imageResult.launch(takePictureIntent)
+                }
+            }
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        //이미지 경로 지정
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_",
+            ".jpg",
+            storageDir
+        ).apply {
+            //절대경로 변수에 저장
+            fileAbsolutePath = absolutePath
+        }
+    }
+
+
     @SuppressLint("NotifyDataSetChanged")
     private val imageResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -299,6 +338,7 @@ class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
                 photoList.add(Image(camUri))
             }
             else {
+                if(status == 2) pathList.add(result.data?.data!!)
                 photoList.add(Image(result.data?.data))
             }
             binding.rcv.adapter?.notifyDataSetChanged()
@@ -312,7 +352,7 @@ class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
 
                         //권한이 허용됐을 때
                         override fun onPermissionGranted() {
-                            openCamera()
+                            takeCamera()
                         }
 
                         //권한이 거부됐을 때
@@ -341,13 +381,33 @@ class WriteFeedActivity : BaseActivity<ActivityWriteFeedBinding>() {
                     .setPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     .check()
             }
+            MEDIA -> {
+                TedPermission.create()
+                    .setPermissionListener(object : PermissionListener {
+
+                        //권한이 허용됐을 때
+                        override fun onPermissionGranted() {
+                        }
+
+                        //권한이 거부됐을 때
+                        override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
+                        }
+                    })
+                    .setDeniedMessage("권한을 허용해주세요.")
+                    .setPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                    .check()
+            }
         }
     }
 
     companion object {
+        const val MEDIA = 2
         const val CAMERA_PERMISSION = 0
         const val GALLERY_PERMISSION = 1
-        lateinit var camUri: Uri
+        private var fileList = arrayListOf<File>()
+        lateinit var camUri : Uri
+        var status = 0
         private var photoList = arrayListOf<Image>()
+        private var pathList = arrayListOf<Uri>()
     }
 }
