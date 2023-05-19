@@ -5,11 +5,11 @@
 * `pip install -r requirements.txt` : 서버 운영에 필요한 라이브러리, 의존성 통합 설치
 * `sudo apt-get install python3-dev default-libmysqlclient-dev build-essential` : mysqlclient를 설치하기 위함
 * `pip install mysqlclient` : dbms 설치
-* `cd database/database`, `vim secrets.json` 후 시크릿 키 작성 : 시크릿 키는 보안사항으로 따로 생성해야함
 ## mysql 스키마 생성
 로컬 환경에 mysql를 설치하고 mysqlworkbench에 들어가서 scheme 생성
 <img width="879" alt="image" src="https://user-images.githubusercontent.com/39481106/230592742-e3c3f048-7d0c-4229-b8bf-944830e03db2.png">
-
+## *RDS 사용하는 경우
+RDS를 사용하는 경우 DNS를 복사했다가 settings의 database의 host에 붙여넣기를 한 후 RDS에서 설정한 비밀번호도 입력한다.
 ## /database/ 에 시크릿 파일 생성
 서버 운영을 위한 시크릿 키가 정의된 secrets.json을 생성한다
 <img width="281" alt="image" src="https://user-images.githubusercontent.com/39481106/230593774-b1a74378-ae3f-48fc-b188-b91be72f0eb1.png">
