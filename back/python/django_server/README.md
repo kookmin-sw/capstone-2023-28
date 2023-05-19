@@ -3,7 +3,8 @@
 * `python3 -m venv venv` : venv라는 이름으로 가상환경 생성
 * `source venv/bin/activate` : 생성한 가상환경에 진입
 * `pip install -r requirements.txt` : 서버 운영에 필요한 라이브러리, 의존성 통합 설치
-* `pip install mysql-client` : 우분투 환경이라면 설치 (맥이라면 mysqlclient)
+* `sudo apt-get install python3-dev default-libmysqlclient-dev build-essential` : mysqlclient를 설치하기 위함
+* `pip install mysqlclient` : dbms 설치
 * `cd database/database`, `vim secrets.json` 후 시크릿 키 작성 : 시크릿 키는 보안사항으로 따로 생성해야함
 ## mysql 스키마 생성
 로컬 환경에 mysql를 설치하고 mysqlworkbench에 들어가서 scheme 생성
