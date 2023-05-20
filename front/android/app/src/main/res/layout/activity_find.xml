@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="find"
+            type="com.capstone.traffic.ui.feed.find.FindViewModel" />
+    </data>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <SearchView
+            android:queryBackground="@android:color/transparent"
+            android:iconifiedByDefault="false"
+            app:iconifiedByDefault="false"
+            android:queryHint="검색"
+            android:textSize="20sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/find_sv"
+            android:background="@drawable/background_find"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/info_rc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+</layout>

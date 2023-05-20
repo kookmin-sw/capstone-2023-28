@@ -28,7 +28,7 @@ class UserManager(BaseUserManager):
 # Create your models here.
 
 class User(AbstractBaseUser):
-    user_email = models.CharField(max_length=30)
+    user_email = models.CharField(max_length=30, unique=True)
     user_nickname = models.CharField(max_length=10, unique=True)
     user_definition = models.CharField(max_length=100, null=True)
     user_profile_image = models.CharField(max_length=200, null=True)
@@ -37,8 +37,8 @@ class User(AbstractBaseUser):
 
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-    USERNAME_FIELD = "user_nickname"
-    REQUIRED_FIELD = ["user_nickname"]
+    USERNAME_FIELD = "user_email"
+    REQUIRED_FIELD = ["user_email"]
 
     objects = UserManager()
 
@@ -46,7 +46,8 @@ class User(AbstractBaseUser):
         if self.password:
             self.password = make_password(self.password)
         super().save(*args, **kwargs)
-
+    def save_without_password(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
 # follow unfollow
 class Follow(models.Model):

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="inform"
-            type="com.capstone.traffic.ui.home.board.bulletinBoard.BulletinViewModel" />
+            type="com.capstone.traffic.ui.route.board.bulletinBoard.BulletinViewModel" />
     </data>
     <LinearLayout
         android:orientation="vertical"

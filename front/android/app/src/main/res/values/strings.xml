@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">임시</string>
+    <string name="app_name">출그니</string>
     <string name="Email">Email</string>
     <string name="Password">Password</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -18,6 +18,9 @@
     <string name="emo1">🏢</string>
     <string name="emo2">🕖</string>
     <string name="emo3">👤</string>
+    <string name="emo_photo">🌄 갤러리</string>
+    <string name="emo_take_photo">📷 카메라</string>
+    <string name="emo_tag">🏷️ 태그</string>
     <string-array name="select_sort">
         <item>시간순</item>
         <item>비용순</item>
