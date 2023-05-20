@@ -101,6 +101,8 @@ class UserDeleteView(APIView):
             data["res"] = {}
             return Response(data, status=status.HTTP_200_OK)
 class UserInfoView(generics.ListAPIView):
+
+    permission_classes = [AllowAny]
     serializer_class = UserSerializer
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
