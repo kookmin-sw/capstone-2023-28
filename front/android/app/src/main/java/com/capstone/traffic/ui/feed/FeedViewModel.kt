@@ -32,7 +32,7 @@ class FeedViewModel() : BaseViewModel(){
         getUserAPI()
     }
     fun getUserAPI(){
-        val retrofit = AuthClient.getInstance()
+        val retrofit = Client.getInstance()
         val infoService = retrofit.create(Service::class.java)
         infoService.getInfo(userEmail = MyApplication.prefs.getEmail().toString(), userNickname = null, pageNum = null).enqueue(object : Callback<InfoRecSuc>{
             override fun onResponse(call: Call<InfoRecSuc>, response: Response<InfoRecSuc>) {
