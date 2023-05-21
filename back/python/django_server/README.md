@@ -7,7 +7,7 @@
 * `pip install mysqlclient` : dbms 설치
 
 ## /database/ 에 시크릿 파일 생성
-서버 운영을 위한 시크릿 키가 정의된 secrets.json을 생성한다. 
+서버 운영을 위한 시크릿 키가 정의된 secrets.json을 생성한다. (secrets.json 내용 : S3 
 <img width="281" alt="image" src="https://user-images.githubusercontent.com/39481106/230593774-b1a74378-ae3f-48fc-b188-b91be72f0eb1.png">
 
 ## mysql 스키마 생성
@@ -20,4 +20,4 @@ RDS를 사용하는 경우 DNS를 복사했다가 settings의 database의 host�
 * `python manage.py makemigrations`: 정의한 models.py 대로 db 버전 관리가 가능한 마이그레이션 파일 생성
 * `python manage.py migrate`: makemigrations와 다르게 실제 db에 변경사항을 적용함
 * `python manage.py runserver`: (로컬) 서버 실행
-
+* (`python manage.py runserver 0:8000`: (퍼블릭 IP로) 서버 실행)
