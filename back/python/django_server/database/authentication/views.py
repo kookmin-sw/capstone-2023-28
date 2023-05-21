@@ -57,7 +57,7 @@ class UserFollowView(generics.ListAPIView):
 class UserSignupView(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
+        serializer = UserSerializer(data=request.data, partial=True)
         data = {}
         if serializer.is_valid():
             data["status"] = "OK"

@@ -41,6 +41,7 @@ import com.capstone.traffic.model.network.sql.dataclass.ImageUpload
 import com.capstone.traffic.model.network.sql.dataclass.comment.ComResSuc
 import com.capstone.traffic.model.network.sql.dataclass.getfeed.FeedResSuc
 import com.capstone.traffic.model.network.sql.dataclass.getfeed.Res
+import com.capstone.traffic.model.network.sql.dataclass.postfeed.res
 import com.capstone.traffic.ui.feed.FeedViewModel.Companion.EVENT_START_FILTER_APPLY
 import com.capstone.traffic.ui.feed.FeedViewModel.Companion.EVENT_START_FILTER_SELECT
 import com.capstone.traffic.ui.feed.comment.CommentAdapter
@@ -133,16 +134,12 @@ class FeedFragment : Fragment() {
             // 스크롤시 새로고침
             refreshLayout.setOnRefreshListener {
                 refresh()
-            }
-
-            // 필터 적용 버튼
-            filterApplyBtn.setOnClickListener {
-                filterLl.apply { visibility = View.GONE }
-
-                val filterData = getFilterTag()
-                retrofitFeed(filterData,null)
+                val hashTag = getFilterTag()
+                retrofitFeed(hashTag, null)
+                binding.refreshLayout.isRefreshing = false
 
             }
+
 
             // 필터 초기화
             filterClearBtn.setOnClickListener {
@@ -182,8 +179,6 @@ class FeedFragment : Fragment() {
     private fun refresh(){
         page = 0
         feedData = mutableListOf()
-        retrofitFeed(null, null)
-        binding.refreshLayout.isRefreshing = false
     }
     private fun getFilterTag() : String {
         val filterDataList = mutableListOf<Int>()
@@ -271,7 +266,8 @@ class FeedFragment : Fragment() {
             if(resultCode == 3131){
                 feedData = mutableListOf()
                 page = 0
-                retrofitFeed("", null)
+                filterClear()
+                retrofitFeed(null, null)
             }
         }
     }
@@ -363,6 +359,8 @@ class FeedFragment : Fragment() {
         service.deleteFeed(param = param).enqueue(object :Callback<DefaultRes>{
             override fun onResponse(call: Call<DefaultRes>, response: Response<DefaultRes>) {
                 refresh()
+                val hashTag = getFilterTag()
+                retrofitFeed(hashTag, null)
             }
 
             override fun onFailure(call: Call<DefaultRes>, t: Throwable) {
@@ -375,7 +373,7 @@ class FeedFragment : Fragment() {
     private fun filterClear()
     {
         val count = binding.filterGridLayout.childCount
-        for(i in 0 until count-1){
+        for(i in 0 until count){
             val childView = binding.filterGridLayout.getChildAt(i)
             if(childView is MaterialCardView){
                 val lineBtn = childView.getChildAt(0)
@@ -388,15 +386,21 @@ class FeedFragment : Fragment() {
     private fun retrofitFeed(hashTag : String?, userId : String?){
         val retrofit = Client.getInstance()
         val service = retrofit.create(Service::class.java)
-        service.getFeed(hashTag, userId, null,"5",page++.toString()).enqueue(object : Callback<FeedResSuc>{
+        service.getFeed(hashTag = hashTag, userId, null,"5",page++.toString()).enqueue(object : Callback<FeedResSuc>{
             override fun onResponse(call: Call<FeedResSuc>, response: Response<FeedResSuc>) {
                 if(response.isSuccessful)
                 {
                     val data = response.body()?.res
-                    if(data != null)
+                    if(data != null && data.isNotEmpty())
                     {
                         feedData.addAll(data)
                         setFeedRecyclerView()
+                    }
+                    else{
+                        if(hashTag != null && hashTag.isNotEmpty()){
+                            setFeedRecyclerView()
+                        }
+                        else --page
                     }
                 }
             }
@@ -430,11 +434,14 @@ class FeedFragment : Fragment() {
                 when (event) {
                     // 필터 적용 버튼 클릭
                     EVENT_START_FILTER_APPLY -> {
-                        Toast.makeText(context, "click", Toast.LENGTH_SHORT).show()
+                        binding.filterLl.apply { visibility = View.GONE }
+                        val filterData = getFilterTag()
+                        refresh()
+                        retrofitFeed(hashTag = filterData,null)
+
                     }
                     // 호선 별 필터 버튼 클릭시
                     EVENT_START_FILTER_SELECT -> {
-                        //Toast.makeText(context, "select", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

@@ -82,6 +82,7 @@ class UserSerializer(serializers.Serializer):
         if instance.user_nickname != validated_data.get("user_nickname", None) and validated_data.get("user_nickname", None) is not None:
             self.validate_unique_user_nickname(validated_data.get("user_nickname"))
             instance.user_nickname = validated_data.get("user_nickname")
+
         instance.user_definition = validated_data.get("user_definition", instance.user_definition)
         instance.user_profile_image = validated_data.get("user_profile_image", instance.user_profile_image)
         instance.save_without_password()
@@ -105,6 +106,9 @@ class UserSerializer(serializers.Serializer):
             ret['user_profile_image'] = None
         del ret['password']
         return ret
+
+
+
 
 
 

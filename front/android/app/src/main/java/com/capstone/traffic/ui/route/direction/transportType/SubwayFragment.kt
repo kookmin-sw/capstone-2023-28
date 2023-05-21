@@ -36,7 +36,6 @@ class SubwayFragment : Fragment() {
         directionAdapter = DirectionAdapter(requireContext())
 
         viewModel.status.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(context,it.toString(), Toast.LENGTH_SHORT).show()
             setDirectionRcView(it)
             directionAdapter.notifyDataSetChanged()
         })

@@ -10,6 +10,27 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <androidx.appcompat.widget.AppCompatImageView
+            app:layout_constraintBottom_toTopOf="@id/create_tv"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@mipmap/chul_app_icon"
+            android:layout_width="90dp"
+            android:layout_height="90dp"/>
+        <TextView
+            android:id="@+id/create_tv"
+            android:text="Login to your Account"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/LL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
         <LinearLayout
             android:id="@+id/LL"
             android:layout_margin="5dp"
@@ -21,6 +42,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:endIconMode="clear_text"
                 android:layout_width="match_parent"
@@ -32,8 +55,10 @@
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="8dp"
                 app:endIconMode="password_toggle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

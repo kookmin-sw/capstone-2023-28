@@ -27,6 +27,7 @@ class ProfileViewModel : ViewModel() {
     private val _isFollowing = MutableLiveData<Boolean>()
     private val _id = MutableLiveData<String>()
     private val _feedNum = MutableLiveData<String>()
+    private val _pageIndex = MutableLiveData<Int>()
 
     val userNickname : LiveData<String> = _userNickName
     val userProfile : LiveData<String?> = _userProfile
@@ -41,14 +42,17 @@ class ProfileViewModel : ViewModel() {
 
     init {
         _feedData.value = mutableListOf()
+        _pageIndex.value = 0
     }
 
-    fun getFeedData(userName : String, pageIndex: String) {
+    fun getFeedData(userName : String) {
         val feedService = Client.getInstance().create(Service::class.java)
-        feedService.getFeed(null,null,userName,"5",pageIndex).enqueue(object : Callback<FeedResSuc>{
+        feedService.getFeed(null,null,userName,"5", _pageIndex.value.toString()).enqueue(object : Callback<FeedResSuc>{
             override fun onResponse(call: Call<FeedResSuc>, response: Response<FeedResSuc>) {
                 if(response.isSuccessful){
-                    if(response.body()?.res != null){
+                    val data = response.body()?.res
+                    if(data != null && data.isNotEmpty()){
+                        _pageIndex.value = _pageIndex.value!! + 1
                         _feedData.value = response.body()?.res!! as MutableList<Res>
                     }
                 }
@@ -60,7 +64,7 @@ class ProfileViewModel : ViewModel() {
         })
 
     }
-    fun getUserInfo(userName : String?, pageIndex : String, updateFeed: Boolean = true) {
+    fun getUserInfo(userName : String?, updateFeed: Boolean = true) {
 
         if(userName != null) _userNickName.value = userName!!
 
@@ -77,7 +81,7 @@ class ProfileViewModel : ViewModel() {
                         _isFollowing.value = userData.isFollower.toBoolean()
                         _id.value = userData.id
                         _feedNum.value = userData.feedNum
-                        if(updateFeed) getFeedData(userName = userData.userNickName, pageIndex)
+                        if(updateFeed) getFeedData(userName = userData.userNickName)
                     }
                 }
             }

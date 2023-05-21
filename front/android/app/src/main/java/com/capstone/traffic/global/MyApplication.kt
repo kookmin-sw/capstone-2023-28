@@ -1,6 +1,7 @@
 package com.capstone.traffic.global
 
 import android.app.Application
+import com.capstone.traffic.model.network.sql.AuthClient
 import com.capstone.traffic.model.network.sql.Client
 import com.capstone.traffic.model.network.sql.Service
 import com.capstone.traffic.model.network.sql.dataclass.info.InfoRecSuc
