@@ -30,7 +30,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     user_email = models.CharField(max_length=30, unique=True)
     user_nickname = models.CharField(max_length=10, unique=True)
-    user_definition = models.CharField(max_length=100, null=True)
+    user_definition = models.CharField(max_length=100, null=True, blank=True)
     user_profile_image = models.CharField(max_length=200, null=True)
     user_point_number = models.IntegerField(default=0, null=True)
     is_seller = models.BooleanField(default=False)
@@ -51,11 +51,8 @@ class User(AbstractBaseUser):
 
 # follow unfollow
 class Follow(models.Model):
-    following_user_id = models.ForeignKey('User', on_delete=models.CASCADE, related_name="user_following_set")
-    follow_user_id = models.ForeignKey('User', on_delete=models.CASCADE, related_name="user_follow_set")
+    following_user_id = models.ForeignKey('User', on_delete=models.CASCADE, related_name="user_following")
+    follow_user_id = models.ForeignKey('User', on_delete=models.CASCADE, related_name="user_follow")
 
     class Meta:
         db_table = "follow"
-
-    def __str__(self):
-        return 'User ID ' + self.follow_user_id + ' is following ' + str(self.following_user_id)

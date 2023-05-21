@@ -1,14 +1,59 @@
-import uuid
-
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import generics
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import *
 from .models import User
 from rest_framework.permissions import AllowAny
-from database import settings
-import boto3
+from API.s3 import S3ImageUploader
+
+class UserFollowView(generics.ListAPIView):
+    serializer_class = FollowSerializer
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        data = {}
+        data["status"] = "OK"
+        data["res"] = serializer.data
+        return Response(data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        queryset = Follow.objects.all()
+        follow_user_id = self.request.query_params.get("follow_user_id", None)
+        following_user_id = self.request.query_params.get("following_user_id", None)
+        if follow_user_id is not None:
+            queryset = queryset.filter(follow_user_id_id=follow_user_id)
+        if following_user_id is not None:
+            queryset = queryset.filter(following_user_id_id=following_user_id)
+        return queryset
+    def post(self, request):
+        data = {}
+        payload = request.auth.payload
+        serializer = self.get_serializer(data=request.data, context={"follow_user_id":payload["user_id"]})
+        if serializer.is_valid():
+            serializer.save()
+            data["status"] = "OK"
+            data["res"] = {}
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            data["status"] = "ERROR"
+            data["res"] = serializer.errors
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request):
+        data = {}
+        following_user_id = request.data["following_user_id"]
+        follow_user_id = request.auth.payload["user_id"]
+        try:
+            follow = Follow.objects.get(follow_user_id_id=follow_user_id, following_user_id_id=following_user_id)
+        except Follow.DoesNotExist:
+            data["status"] = "ERROR"
+            data["res"] = {"error_name": "팔로우가 안되어 있음", "error_id": 10}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            follow.delete()
+            data["status"] = "OK"
+            data["res"] = {}
+            return Response(data, status=status.HTTP_200_OK)
 class UserSignupView(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
@@ -26,87 +71,94 @@ class UserSignupView(APIView):
 class UserUpdateView(APIView):
     def post(self, request):
         data = {}
-        try:
-            user = User.objects.get(user_email=request.data["user_email"])
-        except User.DoesNotExist:
-            data["status"] = "ERROR"
-            data["res"] = {"error_name" : "유저가 존재하지 않음", "error_id": 4}
-            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        payload = request.auth.payload
+        user = User.objects.get(user_email=payload["user_email"])
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            updated_user = serializer.save()
+            data["status"] = "OK"
+            data["res"] = serializer.data
+            return Response(data)
         else:
-            password = request.data["password"]
-            if user.check_password(password):
-                del request.data["password"]
-                serializer = UserSerializer(user, data=request.data, partial=True)
-                if serializer.is_valid():
-                    updated_user = serializer.save()
-                    data["status"] = "OK"
-                    data["res"] = {}
-                    return Response(data)
-                else:
-                    data["status"] = "ERROR"
-                    data["res"] = serializer.errors
-                    return Response(data, status=status.HTTP_400_BAD_REQUEST)
+            data["status"] = "ERROR"
+            data["res"] = serializer.errors
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-            else:
-                data["status"] = "ERROR"
-                data["res"] = {"error_name" : "비밀번호 불일치", "error_id" : 3}
-                return Response(data, status=status.HTTP_400_BAD_REQUEST)
-
-
-class UserInfoView(APIView):
-    # Token 으로 유저의 정보를 탐색
-    def get(self, request):
+class UserDeleteView(APIView):
+    def delete(self, request):
+        data = {}
+        payload = request.auth.payload
         try:
-            user = User.objects.get(user_email=request.GET["user_email"])
-
+            user = User.objects.get(user_email=payload["user_email"])
         except User.DoesNotExist:
             data = {"status": "ERROR",
-                 "res": {"error_name": "이메일 없음", "error_id": 1}
-                 }
-            return Response(data, status = status.HTTP_400_BAD_REQUEST)
+                    "res": {"error_name": "이메일 없음", "error_id": 1}
+                    }
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
         else:
-            data = {}
+            user.delete()
             data["status"] = "OK"
-            data["res"] = {"user_email":user.user_email, "user_nickname":user.user_nickname, "user_definition":user.user_definition, "user_point_number":user.user_point_number, "user_profile_image": user.user_profile_image}
+            data["res"] = {}
             return Response(data, status=status.HTTP_200_OK)
+class UserInfoView(generics.ListAPIView):
+
+    permission_classes = [AllowAny]
+    serializer_class = UserSerializer
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        payload = request.auth.payload
+        serializer = self.get_serializer(queryset, many=True, context={"user_id": payload["user_id"]})
+        data = {}
+        data["status"] = "OK"
+        data["res"] = serializer.data
+        return Response(data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        user_nickname = self.request.query_params.get('user_nickname', None)
+        user_email = self.request.query_params.get('user_email', None)
+        user_id = self.request.query_params.get('user_id', None)
+        page_index = int(self.request.query_params.get('page_index', 0))
+        page_num = int(self.request.query_params.get('page_num', 4))
+
+        offset = page_num * page_index
+        limit = offset + page_num
+        queryset = User.objects.all().order_by("user_nickname")
+        if user_email is not None:
+            queryset = queryset.filter(user_email__startswith=user_email)[offset:limit]
+            return queryset
+        if user_nickname is not None:
+            queryset = queryset.filter(user_nickname__startswith=user_nickname)[offset:limit]
+            return queryset
+        if user_id is not None:
+            queryset = queryset.filter(id=user_id)[offset:limit]
+            return queryset
+        return User.objects.none()
+
 class UserUploadImageView(APIView):
     def post(self, request):
-        image = request.FILES["image"]
-        user_nickname = request.data["user_nickname"]
         data = {}
-        if User.objects.filter(user_nickname=user_nickname):
-            user = User.objects.get(user_nickname=user_nickname)
-            url = S3ImageUploader(image).upload()
-            serializer = UserProfileUploadSerializer(user,{"user_nickname":user_nickname, "user_profile_image":url})
-            if serializer.is_valid():
-                serializer.save()
-                data["status"] = "OK"
-                data["res"] = {"URL": url}
-                return Response(data)
-            else:
-                ""
-                data["error"] = "Wrong Request"
-                return Response(data, status=status.HTTP_400_BAD_REQUEST)
-        else:
+        user_email = request.auth.payload["user_email"]
+        image = request.FILES["image"]
+        user = User.objects.get(user_email=user_email)
 
-            data["error"] = "User is not exist"
+        imageUploader = S3ImageUploader(image)
+        image_name = imageUploader.get_image_name()
+        serializer = UserProfileUploadSerializer(user,{"user_email":user_email, "user_profile_image":image_name})
+        if serializer.is_valid():
+            # 만약 이미 프로필 이미지가 있을 시 삭제
+            if user.user_profile_image is not None:
+                imageUploader.delete(user.user_profile_image)
+            imageUploader.upload()
+            serializer.save()
+            data["status"] = "OK"
+            data["res"] = {}
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            data = {"status": "ERROR",
+                    "res": {"error_name": "요청 에러", "error_id": 1}
+                    }
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
 
-class S3ImageUploader:
-    def __init__(self, file):
-        self.file = file
-
-    def upload(self):
-        s3_client = boto3.client(
-            's3',
-            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-            region_name=settings.AWS_S3_REGION_NAME
-        )
-        i = str(uuid.uuid4())
-        response = s3_client.upload_fileobj(self.file, settings.AWS_STORAGE_BUCKET_NAME, i)
-        return f'https://{settings.AWS_STORAGE_BUCKET_NAME}.s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{i}'
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
