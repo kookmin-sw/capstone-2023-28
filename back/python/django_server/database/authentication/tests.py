@@ -1,4 +1,3 @@
-from django.test import TestCase
 import requests
 # Create your tests here.
 endpoint = "http://localhost:8000/user/signup/"
