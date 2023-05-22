@@ -27,3 +27,14 @@ AWS Lambda 함수를 트리거할 이벤트를 구성해야 합니다. 예를 �
 필요한 패키지를 설치하기 위해서는 AWS Lambda Layer를 추가하여 패키지를 설치해 주어야 합니다.
 
 https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/configuration-layers.html
+
+![image](https://github.com/kookmin-sw/capstone-2023-28/assets/39542956/5a3f9e0c-b216-48b6-9959-4229314e5715)
+
+
+## API 게이트웨이 사용
+
+API 게이트웨이를 사용하여 프론트에게 정보를 전달합니다.
+
+![image](https://github.com/kookmin-sw/capstone-2023-28/assets/39542956/f7f843ac-79d1-4422-9fbd-a4ad29567356)
+
+![image](https://github.com/kookmin-sw/capstone-2023-28/assets/39542956/bb05dc81-4eb4-4cb1-99a0-61235a112598)
