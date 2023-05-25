@@ -16,10 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
@@ -154,6 +151,8 @@ class MyFragment : Fragment() {
             },
             onClickListener = {
                     item -> Toast.makeText(requireContext(), "${item.user?.userNickname}", Toast.LENGTH_SHORT).show()
+
+                contentView.findViewById<TextView>(R.id.comment_size_tv).text  = item.comments
                 selectedFeedId = item.feedId
                 getComments(selectedFeedId)
                 contentView.findViewById<EditText>(R.id.input_text_btn).setText("")
