@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.capstone.traffic.R
@@ -142,6 +144,8 @@ class RouteFragment : Fragment() {
 
         return binding.root
     }
+
+
 
     private fun getStationColor(line : String) : Int {
         val color = mapOf("1" to R.color.hs1,

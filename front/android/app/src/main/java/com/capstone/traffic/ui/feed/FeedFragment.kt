@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
@@ -320,6 +321,7 @@ class FeedFragment : Fragment() {
                 selectedFeedId = it.feedId
                 getComments(selectedFeedId)
                 contentView.findViewById<EditText>(R.id.input_text_btn).setText("")
+                contentView.findViewById<TextView>(R.id.comment_size_tv).text  = it.comments
                 keyboardDown()
                 slideUpPopup.show()
             },
