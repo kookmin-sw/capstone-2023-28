@@ -59,3 +59,7 @@
 
 ## 6. 시연영상
 [![Video Label](http://img.youtube.com/vi/ircUPDWF8c8/0.jpg)](https://youtu.be/ircUPDWF8c8?t=0s)
+
+## 7. 어플리케이션 다운로드 
+![출그니 다운로드 QR](https://github.com/kookmin-sw/capstone-2023-28/assets/82868004/8a4f5aee-3e51-4b9f-920d-2e9cd747ba0a)
+
