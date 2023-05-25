@@ -150,7 +150,7 @@ class MyFragment : Fragment() {
                 deleteDialog(it.feedId)
             },
             onClickListener = {
-                    item -> Toast.makeText(requireContext(), "${item.user?.userNickname}", Toast.LENGTH_SHORT).show()
+                    item ->
 
                 contentView.findViewById<TextView>(R.id.comment_size_tv).text  = item.comments
                 selectedFeedId = item.feedId
