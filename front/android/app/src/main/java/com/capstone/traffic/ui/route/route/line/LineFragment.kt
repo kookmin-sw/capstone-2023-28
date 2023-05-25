@@ -1,5 +1,6 @@
 package com.capstone.traffic.ui.route.route.line
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -13,6 +14,8 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.traffic.R
@@ -41,6 +44,7 @@ class LineFragment(var searchLine : String) : Fragment() {
         initAnimaion()
         setLottie()
         getApi()
+
 
         return binding.root
     }
@@ -99,6 +103,13 @@ class LineFragment(var searchLine : String) : Fragment() {
             endLoading()
         }
     }
+
+    @SuppressLint("DetachAndAttachSameFragment")
+    private fun refreshFragment(fragment : Fragment, fragmentManager: FragmentManager){
+        var ft : FragmentTransaction = fragmentManager.beginTransaction()
+        ft.detach(fragment).attach(fragment).commit()
+    }
+
     private fun endLoading() {
         //
         if(apiAns) {
