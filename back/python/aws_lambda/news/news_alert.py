@@ -1,13 +1,3 @@
-# This code is for AWS Lambda in python.
-# 
-# Gets 24 hour news info from Naver using API returning in json format.
-# 
-# https://uc91n3f4e9.execute-api.ap-northeast-1.amazonaws.com/default/naver-api-news
-#
-#
-# ============================================================================
-
-
 import requests
 import datetime
 import json
@@ -20,7 +10,7 @@ def strip_tags(text):
 def lambda_handler(event, context):
     client_id = os.environ['CLIENT_ID']
     client_secret = os.environ['CLIENT_SECRET']
-    keywords = ['지연', '무정차', '시위']
+    keywords = ['지연', '무정차','시위', '지하철', '장애인']
     base_url = 'https://openapi.naver.com/v1/search/news.json'
     headers = {
         'X-Naver-Client-Id': client_id,
