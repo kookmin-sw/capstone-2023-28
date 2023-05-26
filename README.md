@@ -53,6 +53,7 @@
 |송민준|****1631|백엔드, 데이터베이스 개발|
 
 ## 4. 소개 영상
+[![Video Label](http://img.youtube.com/vi/qCBbdiZZTuc/0.jpg)](https://youtu.be/qCBbdiZZTuc?t=0s)
 
 ## 5. 구조도
 ![구조도](https://github.com/kookmin-sw/capstone-2023-28/assets/39481106/9a43aff3-1b6e-4517-bf4b-a2eb1d42e725)
