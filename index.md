@@ -65,6 +65,7 @@ Internet community is a place where people share their interests. Recently there
     - 실시간으로 글을 작성하여 사람들과 소통할 수 있습니다.
     
 ## 4. 소개 영상 
+[![Video Label](http://img.youtube.com/vi/qCBbdiZZTuc/0.jpg)](https://youtu.be/qCBbdiZZTuc?t=0s)
 
 ## 5. 팀 소개
 - 신명철 
